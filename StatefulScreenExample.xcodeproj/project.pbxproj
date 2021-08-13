@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		59A2CB3726C54B1300A6323D /* ProfileEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59A2CB3626C54B1300A6323D /* ProfileEditViewController.swift */; };
+		59A2CB3926C64E6D00A6323D /* GreenButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59A2CB3826C64E6D00A6323D /* GreenButton.swift */; };
 		8E5925D724812927002623FB /* PublishObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5925D624812927002623FB /* PublishObservable.swift */; };
 		8E5925D924812D75002623FB /* Observable+LoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5925D824812D75002623FB /* Observable+LoadingIndicator.swift */; };
 		8E5925DB24812DD5002623FB /* LoadingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5925DA24812DD5002623FB /* LoadingState.swift */; };
@@ -85,6 +87,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		59A2CB3626C54B1300A6323D /* ProfileEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditViewController.swift; sourceTree = "<group>"; };
+		59A2CB3826C64E6D00A6323D /* GreenButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreenButton.swift; sourceTree = "<group>"; };
 		8E5925D624812927002623FB /* PublishObservable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishObservable.swift; sourceTree = "<group>"; };
 		8E5925D824812D75002623FB /* Observable+LoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Observable+LoadingIndicator.swift"; sourceTree = "<group>"; };
 		8E5925DA24812DD5002623FB /* LoadingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingState.swift; sourceTree = "<group>"; };
@@ -298,6 +302,7 @@
 				8E73C8A4239C45AE000A7F8A /* ContactFieldView.xib */,
 				8E73C8AB239C493A000A7F8A /* DisclosureTextView.swift */,
 				8E73C8AC239C493A000A7F8A /* DisclosureTextView.xib */,
+				59A2CB3826C64E6D00A6323D /* GreenButton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -356,6 +361,7 @@
 			children = (
 				8EFD7C09239BF000002EBA60 /* ProfileStackViewController.swift */,
 				8EFD7C08239BF000002EBA60 /* ProfileStackViewController.storyboard */,
+				59A2CB3626C54B1300A6323D /* ProfileEditViewController.swift */,
 			);
 			path = StackViewController;
 			sourceTree = "<group>";
@@ -561,6 +567,7 @@
 				8E73C8CA239C5B01000A7F8A /* RootNavigationProtocols.swift in Sources */,
 				8E73C8E6239C64D9000A7F8A /* MainScreenViewController.swift in Sources */,
 				8E73C8F1239C6D13000A7F8A /* Router+Detach.swift in Sources */,
+				59A2CB3926C64E6D00A6323D /* GreenButton.swift in Sources */,
 				8E73C8C9239C5B01000A7F8A /* RootNavigationViewController.swift in Sources */,
 				8EFD7C39239C1504002EBA60 /* LoadingIndicatorView.swift in Sources */,
 				8E71C13D23999E920051C45E /* SceneDelegate.swift in Sources */,
@@ -584,6 +591,7 @@
 				8EFD7C1E239BF582002EBA60 /* Tooling.swift in Sources */,
 				8E73C8C7239C5B01000A7F8A /* RootNavigationRouter.swift in Sources */,
 				8E5925E324813924002623FB /* DenestifyTuple.swift in Sources */,
+				59A2CB3726C54B1300A6323D /* ProfileEditViewController.swift in Sources */,
 				8E73C8A5239C45AE000A7F8A /* ContactFieldView.swift in Sources */,
 				8EFD7C13239BF000002EBA60 /* ProfileInteractor.swift in Sources */,
 				8E73C8CB239C5B01000A7F8A /* RootNavigationBuilder.swift in Sources */,

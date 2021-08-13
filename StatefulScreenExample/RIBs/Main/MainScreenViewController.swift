@@ -11,28 +11,34 @@ import RxSwift
 import UIKit
 
 final class MainScreenViewController: UIViewController, MainScreenViewControllable {
-  @IBOutlet private weak var stackViewScreenButton: UIButton!
-  @IBOutlet private weak var tableViewScreenButton: UIButton!
-
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    initialSetup()
-  }
+    @IBOutlet private weak var stackViewScreenButton: UIButton!
+    @IBOutlet private weak var tableViewScreenButton: UIButton!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        initialSetup()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for:.default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+    }
 }
 
 extension MainScreenViewController {
-  private func initialSetup() {}
+    private func initialSetup() {}
 }
 
 // MARK: - BindableView
 
 extension MainScreenViewController: BindableView {
-  func getOutput() -> MainScreenViewOutput {
-    return MainScreenViewOutput(stackViewButtonTap: stackViewScreenButton.rx.tap,
-                                tableViewButtonTap: tableViewScreenButton.rx.tap)
-  }
-
-  func bindWith(_ input: Empty) {}
+    func getOutput() -> MainScreenViewOutput {
+        return MainScreenViewOutput(stackViewButtonTap: stackViewScreenButton.rx.tap,
+                                    tableViewButtonTap: tableViewScreenButton.rx.tap)
+    }
+    
+    func bindWith(_ input: Empty) {}
 }
 
 // MARK: - RibStoryboardInstantiatable
