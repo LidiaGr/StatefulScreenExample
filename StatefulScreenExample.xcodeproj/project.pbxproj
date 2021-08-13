@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		595FE92A26C6952300D55EAF /* EditProfileRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 595FE92626C6952300D55EAF /* EditProfileRouter.swift */; };
+		595FE92B26C6952300D55EAF /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 595FE92726C6952300D55EAF /* EditProfileViewController.swift */; };
+		595FE92C26C6952300D55EAF /* EditProfileBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 595FE92826C6952300D55EAF /* EditProfileBuilder.swift */; };
+		595FE92D26C6952300D55EAF /* EditProfileInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 595FE92926C6952300D55EAF /* EditProfileInteractor.swift */; };
+		595FE92F26C69AB100D55EAF /* EditProfileProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 595FE92E26C69AB100D55EAF /* EditProfileProtocols.swift */; };
+		595FE93126C69E7800D55EAF /* EditProfilePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 595FE93026C69E7800D55EAF /* EditProfilePresenter.swift */; };
+		598153FD26C6A97100B0583A /* ProfileField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598153FC26C6A97100B0583A /* ProfileField.swift */; };
+		598153FF26C6A9B100B0583A /* GreenButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598153FE26C6A9B100B0583A /* GreenButton.swift */; };
 		8E5925D724812927002623FB /* PublishObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5925D624812927002623FB /* PublishObservable.swift */; };
 		8E5925D924812D75002623FB /* Observable+LoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5925D824812D75002623FB /* Observable+LoadingIndicator.swift */; };
 		8E5925DB24812DD5002623FB /* LoadingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5925DA24812DD5002623FB /* LoadingState.swift */; };
@@ -85,6 +93,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		595FE92626C6952300D55EAF /* EditProfileRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileRouter.swift; sourceTree = "<group>"; };
+		595FE92726C6952300D55EAF /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
+		595FE92826C6952300D55EAF /* EditProfileBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileBuilder.swift; sourceTree = "<group>"; };
+		595FE92926C6952300D55EAF /* EditProfileInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileInteractor.swift; sourceTree = "<group>"; };
+		595FE92E26C69AB100D55EAF /* EditProfileProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileProtocols.swift; sourceTree = "<group>"; };
+		595FE93026C69E7800D55EAF /* EditProfilePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfilePresenter.swift; sourceTree = "<group>"; };
+		598153FC26C6A97100B0583A /* ProfileField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileField.swift; sourceTree = "<group>"; };
+		598153FE26C6A9B100B0583A /* GreenButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreenButton.swift; sourceTree = "<group>"; };
 		8E5925D624812927002623FB /* PublishObservable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishObservable.swift; sourceTree = "<group>"; };
 		8E5925D824812D75002623FB /* Observable+LoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Observable+LoadingIndicator.swift"; sourceTree = "<group>"; };
 		8E5925DA24812DD5002623FB /* LoadingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingState.swift; sourceTree = "<group>"; };
@@ -185,6 +201,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		595FE92526C6950400D55EAF /* EditProfile */ = {
+			isa = PBXGroup;
+			children = (
+				598153FB26C6A93000B0583A /* Views */,
+				595FE92626C6952300D55EAF /* EditProfileRouter.swift */,
+				595FE92726C6952300D55EAF /* EditProfileViewController.swift */,
+				595FE92826C6952300D55EAF /* EditProfileBuilder.swift */,
+				595FE92926C6952300D55EAF /* EditProfileInteractor.swift */,
+				595FE92E26C69AB100D55EAF /* EditProfileProtocols.swift */,
+				595FE93026C69E7800D55EAF /* EditProfilePresenter.swift */,
+			);
+			path = EditProfile;
+			sourceTree = "<group>";
+		};
+		598153FB26C6A93000B0583A /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				598153FC26C6A97100B0583A /* ProfileField.swift */,
+				598153FE26C6A9B100B0583A /* GreenButton.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		8E71C12E23999E920051C45E = {
 			isa = PBXGroup;
 			children = (
@@ -244,6 +283,7 @@
 		8E71C16A23999EA90051C45E /* RIBs */ = {
 			isa = PBXGroup;
 			children = (
+				595FE92526C6950400D55EAF /* EditProfile */,
 				8E73C8CD239C5B42000A7F8A /* Main */,
 				8EFD7C14239BF005002EBA60 /* Profile */,
 				8E73C8C0239C5ADE000A7F8A /* RootNavigation */,
@@ -548,6 +588,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				595FE92B26C6952300D55EAF /* EditProfileViewController.swift in Sources */,
 				8EFD7C10239BF000002EBA60 /* ProfileStackViewController.swift in Sources */,
 				8E71C13B23999E920051C45E /* AppDelegate.swift in Sources */,
 				8EFD7C4D239C22A4002EBA60 /* Observable+Extensions.swift in Sources */,
@@ -567,12 +608,17 @@
 				8EFD7C2A239BF95B002EBA60 /* ProfileTableViewController.swift in Sources */,
 				8E73C8BF239C5A46000A7F8A /* AppComponent.swift in Sources */,
 				8EFD7C25239BF77A002EBA60 /* VIPBinder.swift in Sources */,
+				595FE93126C69E7800D55EAF /* EditProfilePresenter.swift in Sources */,
 				8E5925DB24812DD5002623FB /* LoadingState.swift in Sources */,
 				8E73C8E9239C64D9000A7F8A /* MainScreenInteractor.swift in Sources */,
 				8EFD7C1C239BF15C002EBA60 /* ProfileServiceImp.swift in Sources */,
 				8EAFFC4726C51ACC00613A07 /* Observable+filteredByState.swift in Sources */,
+				595FE92D26C6952300D55EAF /* EditProfileInteractor.swift in Sources */,
 				8EFD7C0E239BF000002EBA60 /* ProfileRouter.swift in Sources */,
+				595FE92F26C69AB100D55EAF /* EditProfileProtocols.swift in Sources */,
 				8E73C8AD239C493A000A7F8A /* DisclosureTextView.swift in Sources */,
+				595FE92C26C6952300D55EAF /* EditProfileBuilder.swift in Sources */,
+				598153FD26C6A97100B0583A /* ProfileField.swift in Sources */,
 				8E5925D724812927002623FB /* PublishObservable.swift in Sources */,
 				8EFD7C42239C1A04002EBA60 /* UIView+Extensions.swift in Sources */,
 				8E73C893239C4411000A7F8A /* TableViewRegisterable.swift in Sources */,
@@ -589,6 +635,8 @@
 				8E73C8CB239C5B01000A7F8A /* RootNavigationBuilder.swift in Sources */,
 				8E5925D924812D75002623FB /* Observable+LoadingIndicator.swift in Sources */,
 				8EFD7C12239BF000002EBA60 /* ProfileBuilder.swift in Sources */,
+				598153FF26C6A9B100B0583A /* GreenButton.swift in Sources */,
+				595FE92A26C6952300D55EAF /* EditProfileRouter.swift in Sources */,
 				8EFD7C1A239BF0A1002EBA60 /* ProfileService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

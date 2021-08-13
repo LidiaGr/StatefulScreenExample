@@ -26,6 +26,10 @@ extension MainScreenInteractor: IOTransformer {
     viewOutput.tableViewButtonTap.subscribe(onNext: { [weak self] in
       self?.router?.routeToTableViewProfile()
     }).disposed(by: disposeBag)
+    
+    viewOutput.editProfileButtonTap.subscribe(onNext: { [weak self] in
+      self?.router?.routeToEditProfile()
+    }).disposed(by: disposeBag)
 
     return Empty()
   }

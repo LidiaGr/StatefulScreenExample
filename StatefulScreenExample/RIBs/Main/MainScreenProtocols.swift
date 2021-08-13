@@ -30,6 +30,8 @@ protocol MainScreenRouting: ViewableRouting {
   func routeToStackViewProfile()
   
   func routeToTableViewProfile()
+    
+  func routeToEditProfile()
 }
 
 // MARK: Outputs
@@ -37,4 +39,5 @@ protocol MainScreenRouting: ViewableRouting {
 struct MainScreenViewOutput {
   let stackViewButtonTap: ControlEvent<Void>
   let tableViewButtonTap: ControlEvent<Void>
+  let editProfileButtonTap: ControlEvent<Void>
 }

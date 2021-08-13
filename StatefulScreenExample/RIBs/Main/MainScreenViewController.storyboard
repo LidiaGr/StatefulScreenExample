@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="vKn-9P-Ny8">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="vKn-9P-Ny8">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -30,33 +31,51 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e1k-cu-P59">
-                                <rect key="frame" x="16" y="336" width="122" height="32"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e1k-cu-P59">
+                                <rect key="frame" x="126.5" y="367" width="122" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="32" id="Rdc-H0-4DZ"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <state key="normal" title="StackViewProfile"/>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C2q-LF-23C">
-                                <rect key="frame" x="239" y="336" width="120" height="32"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qcb-58-DQP">
+                                <rect key="frame" x="150" y="327" width="75" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="32" id="KTV-M6-1AK"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <state key="normal" title="EditProfile"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C2q-LF-23C">
+                                <rect key="frame" x="128" y="407" width="119" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="32" id="w84-aP-MOI"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <state key="normal" title="TableViewProfile"/>
                             </button>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="HgA-Aw-ocO"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="HgA-Aw-ocO" firstAttribute="trailing" secondItem="C2q-LF-23C" secondAttribute="trailing" constant="16" id="H3a-hv-ZMl"/>
-                            <constraint firstItem="edm-EQ-T2e" firstAttribute="leading" secondItem="HgA-Aw-ocO" secondAttribute="leading" constant="16" id="NFO-N7-W57"/>
-                            <constraint firstItem="e1k-cu-P59" firstAttribute="leading" secondItem="HgA-Aw-ocO" secondAttribute="leading" constant="16" id="OPT-x8-N4p"/>
-                            <constraint firstItem="HgA-Aw-ocO" firstAttribute="trailing" secondItem="edm-EQ-T2e" secondAttribute="trailing" constant="16" id="SyW-Yn-odq"/>
-                            <constraint firstItem="X5V-jA-GYP" firstAttribute="leading" secondItem="HgA-Aw-ocO" secondAttribute="leading" constant="16" id="XhI-BT-tVc"/>
-                            <constraint firstItem="HgA-Aw-ocO" firstAttribute="trailing" secondItem="X5V-jA-GYP" secondAttribute="trailing" constant="16" id="ZOW-qQ-cg8"/>
-                            <constraint firstItem="e1k-cu-P59" firstAttribute="top" secondItem="X5V-jA-GYP" secondAttribute="bottom" constant="24" id="eve-vr-ccz"/>
-                            <constraint firstItem="C2q-LF-23C" firstAttribute="top" secondItem="X5V-jA-GYP" secondAttribute="bottom" constant="24" id="hUa-JR-jHK"/>
-                            <constraint firstItem="edm-EQ-T2e" firstAttribute="top" secondItem="HgA-Aw-ocO" secondAttribute="top" constant="16" id="lHZ-4g-BGd"/>
-                            <constraint firstItem="X5V-jA-GYP" firstAttribute="top" secondItem="edm-EQ-T2e" secondAttribute="bottom" constant="16" id="w63-24-dOd"/>
+                            <constraint firstItem="edm-EQ-T2e" firstAttribute="top" secondItem="HgA-Aw-ocO" secondAttribute="top" constant="16" id="36p-YP-sjw"/>
+                            <constraint firstItem="C2q-LF-23C" firstAttribute="leading" secondItem="HgA-Aw-ocO" secondAttribute="leading" constant="128" id="Bpc-N4-ZTS"/>
+                            <constraint firstItem="e1k-cu-P59" firstAttribute="top" secondItem="qcb-58-DQP" secondAttribute="bottom" constant="8" id="PRr-j2-dGu"/>
+                            <constraint firstItem="qcb-58-DQP" firstAttribute="centerX" secondItem="e1k-cu-P59" secondAttribute="centerX" id="UjY-eV-dFd"/>
+                            <constraint firstItem="X5V-jA-GYP" firstAttribute="centerX" secondItem="qcb-58-DQP" secondAttribute="centerX" id="ZM8-Al-uqB"/>
+                            <constraint firstItem="edm-EQ-T2e" firstAttribute="trailing" secondItem="X5V-jA-GYP" secondAttribute="trailing" id="dYq-Ox-eGn"/>
+                            <constraint firstItem="edm-EQ-T2e" firstAttribute="trailing" secondItem="BNZ-bO-rhc" secondAttribute="trailingMargin" id="hgr-EB-1hq"/>
+                            <constraint firstItem="edm-EQ-T2e" firstAttribute="leading" secondItem="BNZ-bO-rhc" secondAttribute="leadingMargin" id="jlP-7r-JU7"/>
+                            <constraint firstItem="edm-EQ-T2e" firstAttribute="leading" secondItem="X5V-jA-GYP" secondAttribute="leading" id="jmz-fU-pPh"/>
+                            <constraint firstItem="X5V-jA-GYP" firstAttribute="top" secondItem="edm-EQ-T2e" secondAttribute="bottom" constant="16" id="lfk-rP-ycc"/>
+                            <constraint firstItem="C2q-LF-23C" firstAttribute="top" secondItem="e1k-cu-P59" secondAttribute="bottom" constant="8" id="li1-KA-ya3"/>
+                            <constraint firstItem="e1k-cu-P59" firstAttribute="centerX" secondItem="C2q-LF-23C" secondAttribute="centerX" id="qez-1y-hXg"/>
+                            <constraint firstItem="qcb-58-DQP" firstAttribute="top" secondItem="X5V-jA-GYP" secondAttribute="bottom" constant="15" id="rC4-dU-dR5"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="HgA-Aw-ocO"/>
                     </view>
                     <connections>
+                        <outlet property="editProfileButton" destination="qcb-58-DQP" id="Sgo-9c-Vqv"/>
                         <outlet property="stackViewScreenButton" destination="e1k-cu-P59" id="a9A-I9-kVW"/>
                         <outlet property="tableViewScreenButton" destination="C2q-LF-23C" id="kwy-c4-icO"/>
                     </connections>
