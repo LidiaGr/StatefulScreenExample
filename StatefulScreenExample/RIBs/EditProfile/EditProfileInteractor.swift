@@ -20,7 +20,7 @@ final class EditProfileInteractor: PresentableInteractor<EditProfilePresentable>
 
     // MARK: Internals
    
-    private let _state = BehaviorRelay<ProfileInteractorStates>(value: .isEditing)
+    private let _state = BehaviorRelay<EditProfileInteractorStates>(value: .isEditing)
     
 //    private let responses = Responses()
     

@@ -56,7 +56,7 @@ protocol EditProfileListener: AnyObject {
 
 // MARK: Outputs
 
-typealias ProfileInteractorStates = interactorLoadingState<EditProfile, Error>
+typealias EditProfileInteractorStates = EditProfileState<EditProfile, Error>
 
 protocol EditProfileViewOutput {
   var nameUpdateTap: ControlEvent<Void> { get }

@@ -142,17 +142,16 @@ extension LoadingState: LoadingIndicatableState {
 }
 
 
-// MARK: - InteractorLoadingState
+// MARK: - EditProfileState
 
-/// Состояние интеракторов, которое встречается на многих экранах..
 /// L - Loading, D  - Data, E - Error
-public enum interactorLoadingState<D, E> {
+public enum EditProfileState<D, E> {
   case isEditing
   case isLoading
   case dataLoaded(D)
   case loadingError(E)
 }
 
-extension interactorLoadingState: Equatable where D: Equatable, E: Equatable {}
+extension EditProfileState: Equatable where D: Equatable, E: Equatable {}
 
-extension interactorLoadingState: Hashable where D: Hashable, E: Hashable {}
+extension EditProfileState: Hashable where D: Hashable, E: Hashable {}
