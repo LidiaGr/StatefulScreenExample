@@ -12,15 +12,16 @@ import RxSwift
 
 // MARK: - Builder
 
-protocol EditProfileDependency: Dependency {
-    // TODO: Declare the set of dependencies required by this RIB, but cannot be
-    // created by this RIB.
-}
-
-final class EditProfileComponent: Component<EditProfileDependency> {
-
-    // TODO: Declare 'fileprivate' dependencies that are only used by this RIB.
-}
+//protocol EditProfileDependency: Dependency {
+//    // TODO: Declare the set of dependencies required by this RIB, but cannot be
+//    // created by this RIB.
+//    
+//}
+//
+//final class EditProfileComponent: Component<EditProfileDependency> {
+//
+//    // TODO: Declare 'fileprivate' dependencies that are only used by this RIB.
+//}
 
 protocol EditProfileBuildable: Buildable {
 //    func build(withListener listener: EditProfileListener) -> EditProfileRouting
@@ -55,6 +56,15 @@ protocol EditProfileListener: AnyObject {
 
 // MARK: Outputs
 
-typealias ProfileInteractorStates = interactorLoadingState<ProfileModel, Error>
+typealias ProfileInteractorStates = interactorLoadingState<EditProfile, Error>
 
+protocol EditProfileViewOutput {
+  var nameUpdateTap: ControlEvent<Void> { get }
+  
+  var lastNameUpdateTap: ControlEvent<Void> { get }
+    
+  var emailUpdateTap: ControlEvent<Void> { get }
+  
+//  var retryButtonTap: ControlEvent<Void> { get }
+}
 

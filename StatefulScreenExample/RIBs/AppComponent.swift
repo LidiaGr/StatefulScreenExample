@@ -10,6 +10,7 @@ import RIBs
 
 final class AppComponent: Component<EmptyDependency>, RootDependency {
   let profileService: ProfileService = ProfileServiceImp()
+  let editProfileService: EditProfileService = EditProfileServiceImp()
   
   init() {
     super.init(dependency: EmptyComponent())

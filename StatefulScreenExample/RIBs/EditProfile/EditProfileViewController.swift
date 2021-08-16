@@ -8,6 +8,7 @@
 
 import RIBs
 import RxSwift
+import RxCocoa
 import UIKit
 
 //protocol EditProfilePresentableListener: AnyObject {
@@ -17,8 +18,8 @@ import UIKit
 //}
 
 final class EditProfileViewController: UIViewController, EditProfileViewControllable {
-//    weak var listener: EditProfilePresentableListener?
-
+    //    weak var listener: EditProfilePresentableListener?
+    
     private var stackView: UIStackView = {
         let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
@@ -34,18 +35,25 @@ final class EditProfileViewController: UIViewController, EditProfileViewControll
     
     private let saveButton = GreenButton()
     
+    // MARK: View Events
+    
+    private let viewOutput = ViewOutput()
+    
+    private let disposeBag = DisposeBag()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         
         initialSetup()
+//        tapGesturesInitialSetup()
     }
 }
 
 extension EditProfileViewController {
     private func initialSetup() {
         title = "Редактировать"
-
+        
         
         // StackView ContactFields
         view.addSubview(stackView)
@@ -73,5 +81,36 @@ extension EditProfileViewController {
         saveButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
         saveButton.heightAnchor.constraint(equalToConstant: 56).isActive = true
     }
+    
+//    private func tapGesturesInitialSetup() {
+//        do {
+//            let tapGesture = UITapGestureRecognizer()
+//            firstNameView.addGestureRecognizer(tapGesture)
+//            tapGesture.rx.event.mapAsVoid().bind(to: viewOutput.$nameUpdateTap).disposed(by: disposeBag)
+//        }
+//
+//        do {
+//            let tapGesture = UITapGestureRecognizer()
+//            lastNameView.addGestureRecognizer(tapGesture)
+//            tapGesture.rx.event.mapAsVoid().bind(to: viewOutput.$lastNameUpdateTap).disposed(by: disposeBag)
+//        }
+//
+//        do {
+//            let tapGesture = UITapGestureRecognizer()
+//            emailView.addGestureRecognizer(tapGesture)
+//            tapGesture.rx.event.mapAsVoid().bind(to: viewOutput.$emailUpdateTap).disposed(by: disposeBag)
+//        }
+//    }
 }
 
+// MARK: - View Output
+
+extension EditProfileViewController {
+    private struct ViewOutput: EditProfileViewOutput {
+        @PublishControlEvent var nameUpdateTap: ControlEvent<Void>
+        
+        @PublishControlEvent var lastNameUpdateTap: ControlEvent<Void>
+        
+        @PublishControlEvent var emailUpdateTap: ControlEvent<Void>
+    }
+}

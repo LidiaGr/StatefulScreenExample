@@ -8,6 +8,7 @@
 
 import RIBs
 
-protocol RootDependency: Dependency, EditProfileDependency {
+protocol RootDependency: Dependency {
   var profileService: ProfileService { get }
+  var editProfileService: EditProfileService { get }
 }

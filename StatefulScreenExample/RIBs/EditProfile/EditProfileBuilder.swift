@@ -10,17 +10,17 @@ import RIBs
 
 // MARK: - Builder
 
-final class EditProfileBuilder: Builder<EditProfileDependency>, EditProfileBuildable {
+final class EditProfileBuilder: Builder<RootDependency>, EditProfileBuildable {
 
-    override init(dependency: EditProfileDependency) {
-        super.init(dependency: dependency)
-    }
+//    override init(dependency: EditProfileDependency) {
+//        super.init(dependency: dependency)
+//    }
 
     func build() -> EditProfileRouting {
-        let component = EditProfileComponent(dependency: dependency)
+//        let component = EditProfileComponent(dependency: dependency)
         let viewController = EditProfileViewController()
         let presenter = EditProfilePresenter()
-        let interactor = EditProfileInteractor(presenter: presenter)
+        let interactor = EditProfileInteractor(presenter: presenter, editProfileService: dependency.editProfileService)
         return EditProfileRouter(interactor: interactor, viewController: viewController)
     }
 }

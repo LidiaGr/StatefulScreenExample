@@ -16,7 +16,7 @@ final class EditProfileInteractor: PresentableInteractor<EditProfilePresentable>
     
     weak var router: EditProfileRouting?
 //    weak var listener: EditProfileListener?
-    private let profileModelservice: ProfileModelService
+    private let editProfileService: EditProfileService
 
     // MARK: Internals
    
@@ -28,8 +28,8 @@ final class EditProfileInteractor: PresentableInteractor<EditProfilePresentable>
     
     
     init(presenter: EditProfilePresentable,
-                  profileModelservice: ProfileModelService) {
-        self.profileModelservice = profileModelservice
+         editProfileService: EditProfileService) {
+        self.editProfileService = editProfileService
         super.init(presenter: presenter)
 //        presenter.listener = self
     }

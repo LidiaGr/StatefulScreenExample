@@ -1,5 +1,5 @@
 //
-//  ProfileModelImp.swift
+//  EditProfileServiceImp.swift
 //  StatefulScreenExample
 //
 //  Created by L.Grigoreva on 13.08.2021.
@@ -12,13 +12,13 @@ struct NetworkError: LocalizedError {
     var errorDescription: String? { "Произошла сетевая ошибка" }
 }
 
-final class ProfileModelImp: ProfileModelService {
+final class EditProfileServiceImp: EditProfileService {
     
     private var profileRequestsCount: Int = 0
-    private var mockedProfile = ProfileModel(firstName: "Иван", lastName: nil, email: nil, phone: "79991235467")
+    private var mockedProfile = EditProfile(firstName: "Иван", lastName: nil, email: nil, phone: "79991235467")
     
-    func profile(_ completion: @escaping (Result<ProfileModel, Error>) -> Void) {
-        let result: Result<ProfileModel, Error>
+    func profile(_ completion: @escaping (Result<EditProfile, Error>) -> Void) {
+        let result: Result<EditProfile, Error>
         if profileRequestsCount == 1 {
           // При втором запросе на загрузку профиля имитируем ошибку в целях демонстрации
           result = .failure(ApiError.badNetwork)
@@ -34,7 +34,7 @@ final class ProfileModelImp: ProfileModelService {
         }
     }
     
-    func updateProfile(_ profile: ProfileModel, completion: @escaping (Result<Void, Error>) -> Void) {
+    func updateProfile(_ profile: EditProfile, completion: @escaping (Result<Void, Error>) -> Void) {
         DispatchQueue.global(qos: .default).asyncAfter(deadline: .now() + .random(in: 0.5...2)) { [weak self] in
             let isSuccess = Bool.random()
             let result: Result<Void, Error>
