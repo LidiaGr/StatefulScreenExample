@@ -8,15 +8,28 @@
 
 import RIBs
 import RxSwift
+import RxCocoa
 
 final class EditProfileInteractor: PresentableInteractor<EditProfilePresentable>, EditProfileInteractable {
 
+    // MARK: Dependencies
+    
     weak var router: EditProfileRouting?
-    weak var listener: EditProfileListener?
+//    weak var listener: EditProfileListener?
+    private let profileModelservice: ProfileModelService
 
-    // TODO: Add additional dependencies to constructor. Do not perform any logic
-    // in constructor.
-    override init(presenter: EditProfilePresentable) {
+    // MARK: Internals
+   
+    private let _state = BehaviorRelay<ProfileInteractorStates>(value: .isEditing)
+    
+//    private let responses = Responses()
+    
+    private let disposeBag = DisposeBag()
+    
+    
+    init(presenter: EditProfilePresentable,
+                  profileModelservice: ProfileModelService) {
+        self.profileModelservice = profileModelservice
         super.init(presenter: presenter)
 //        presenter.listener = self
     }

@@ -55,5 +55,6 @@ protocol EditProfileListener: AnyObject {
 
 // MARK: Outputs
 
+typealias ProfileInteractorStates = interactorLoadingState<ProfileModel, Error>
 
 

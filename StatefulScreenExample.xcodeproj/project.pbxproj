@@ -15,6 +15,8 @@
 		595FE93126C69E7800D55EAF /* EditProfilePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 595FE93026C69E7800D55EAF /* EditProfilePresenter.swift */; };
 		598153FD26C6A97100B0583A /* ProfileField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598153FC26C6A97100B0583A /* ProfileField.swift */; };
 		598153FF26C6A9B100B0583A /* GreenButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598153FE26C6A9B100B0583A /* GreenButton.swift */; };
+		5981540226C6BA5900B0583A /* ProfileModelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5981540126C6BA5900B0583A /* ProfileModelService.swift */; };
+		5981540426C6BB0C00B0583A /* ProfileModelImp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5981540326C6BB0C00B0583A /* ProfileModelImp.swift */; };
 		8E5925D724812927002623FB /* PublishObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5925D624812927002623FB /* PublishObservable.swift */; };
 		8E5925D924812D75002623FB /* Observable+LoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5925D824812D75002623FB /* Observable+LoadingIndicator.swift */; };
 		8E5925DB24812DD5002623FB /* LoadingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5925DA24812DD5002623FB /* LoadingState.swift */; };
@@ -101,6 +103,8 @@
 		595FE93026C69E7800D55EAF /* EditProfilePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfilePresenter.swift; sourceTree = "<group>"; };
 		598153FC26C6A97100B0583A /* ProfileField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileField.swift; sourceTree = "<group>"; };
 		598153FE26C6A9B100B0583A /* GreenButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreenButton.swift; sourceTree = "<group>"; };
+		5981540126C6BA5900B0583A /* ProfileModelService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModelService.swift; sourceTree = "<group>"; };
+		5981540326C6BB0C00B0583A /* ProfileModelImp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModelImp.swift; sourceTree = "<group>"; };
 		8E5925D624812927002623FB /* PublishObservable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishObservable.swift; sourceTree = "<group>"; };
 		8E5925D824812D75002623FB /* Observable+LoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Observable+LoadingIndicator.swift"; sourceTree = "<group>"; };
 		8E5925DA24812DD5002623FB /* LoadingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingState.swift; sourceTree = "<group>"; };
@@ -204,6 +208,7 @@
 		595FE92526C6950400D55EAF /* EditProfile */ = {
 			isa = PBXGroup;
 			children = (
+				5981540026C6BA4300B0583A /* Model */,
 				598153FB26C6A93000B0583A /* Views */,
 				595FE92626C6952300D55EAF /* EditProfileRouter.swift */,
 				595FE92726C6952300D55EAF /* EditProfileViewController.swift */,
@@ -222,6 +227,15 @@
 				598153FE26C6A9B100B0583A /* GreenButton.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		5981540026C6BA4300B0583A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				5981540126C6BA5900B0583A /* ProfileModelService.swift */,
+				5981540326C6BB0C00B0583A /* ProfileModelImp.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		8E71C12E23999E920051C45E = {
@@ -597,8 +611,10 @@
 				8E5925DD248130BA002623FB /* StateTransformTrait.swift in Sources */,
 				8EFD7C27239BF7D1002EBA60 /* StoryboardInstantiatable.swift in Sources */,
 				8EFD7C0D239BF000002EBA60 /* ProfilePresenter.swift in Sources */,
+				5981540226C6BA5900B0583A /* ProfileModelService.swift in Sources */,
 				8E73C8E7239C64D9000A7F8A /* MainScreenProtocols.swift in Sources */,
 				8E73C898239C4482000A7F8A /* UITableViewXibContainerCell.swift in Sources */,
+				5981540426C6BB0C00B0583A /* ProfileModelImp.swift in Sources */,
 				8E73C8CA239C5B01000A7F8A /* RootNavigationProtocols.swift in Sources */,
 				8E73C8E6239C64D9000A7F8A /* MainScreenViewController.swift in Sources */,
 				8E73C8F1239C6D13000A7F8A /* Router+Detach.swift in Sources */,
