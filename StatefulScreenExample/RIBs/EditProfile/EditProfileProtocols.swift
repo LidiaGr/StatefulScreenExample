@@ -56,7 +56,7 @@ protocol EditProfileListener: AnyObject {
 
 // MARK: Outputs
 
-typealias EditProfileInteractorStates = EditProfileState<EditProfile, Error>
+typealias EditProfileInteractorState = EditProfileState<ProfileData, Error>
 
 protocol EditProfileViewOutput {
   var nameUpdateTap: ControlEvent<Void> { get }
@@ -67,4 +67,18 @@ protocol EditProfileViewOutput {
   
 //  var retryButtonTap: ControlEvent<Void> { get }
 }
+
+// MARK: - EditProfileState
+
+/// L - Loading, D  - Data, E - Error
+public enum EditProfileState<D, E> {
+  case isEditing
+  case upLoading
+  case dataLoaded(D)
+  case loadingError(E)
+}
+
+extension EditProfileState: Equatable where D: Equatable, E: Equatable {}
+
+extension EditProfileState: Hashable where D: Hashable, E: Hashable {}
 

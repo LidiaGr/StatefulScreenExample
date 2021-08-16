@@ -15,10 +15,10 @@ struct NetworkError: LocalizedError {
 final class EditProfileServiceImp: EditProfileService {
     
     private var profileRequestsCount: Int = 0
-    private var mockedProfile = EditProfile(firstName: "Иван", lastName: nil, email: nil, phone: "79991235467")
+    private var mockedProfile = ProfileData(firstName: "Иван", lastName: nil, email: nil, phone: "79991235467")
     
-    func profile(_ completion: @escaping (Result<EditProfile, Error>) -> Void) {
-        let result: Result<EditProfile, Error>
+    func profile(_ completion: @escaping (Result<ProfileData, Error>) -> Void) {
+        let result: Result<ProfileData, Error>
         if profileRequestsCount == 1 {
           // При втором запросе на загрузку профиля имитируем ошибку в целях демонстрации
           result = .failure(ApiError.badNetwork)
@@ -34,7 +34,7 @@ final class EditProfileServiceImp: EditProfileService {
         }
     }
     
-    func updateProfile(_ profile: EditProfile, completion: @escaping (Result<Void, Error>) -> Void) {
+    func updateProfile(_ profile: ProfileData, completion: @escaping (Result<Void, Error>) -> Void) {
         DispatchQueue.global(qos: .default).asyncAfter(deadline: .now() + .random(in: 0.5...2)) { [weak self] in
             let isSuccess = Bool.random()
             let result: Result<Void, Error>

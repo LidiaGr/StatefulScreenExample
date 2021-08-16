@@ -7,15 +7,15 @@
 //
 
 protocol EditProfileService: AnyObject {
-    func profile(_ completion: @escaping (Result<EditProfile, Error>) -> Void)
-    func updateProfile(_ profile: EditProfile, completion: @escaping (Result<Void, Error>) -> Void)
+    func profile(_ completion: @escaping (Result<ProfileData, Error>) -> Void)
+    func updateProfile(_ profile: ProfileData, completion: @escaping (Result<Void, Error>) -> Void)
 }
 
-struct EditProfile {
+struct ProfileData {
     var firstName: String?
     var lastName: String?
     var email: String?
     let phone: String
 }
 
-extension EditProfile: Decodable {}
+extension ProfileData: Decodable {}

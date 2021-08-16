@@ -140,18 +140,3 @@ extension LoadingState: LoadingIndicatableState {
     return true
   }
 }
-
-
-// MARK: - EditProfileState
-
-/// L - Loading, D  - Data, E - Error
-public enum EditProfileState<D, E> {
-  case isEditing
-  case isLoading
-  case dataLoaded(D)
-  case loadingError(E)
-}
-
-extension EditProfileState: Equatable where D: Equatable, E: Equatable {}
-
-extension EditProfileState: Hashable where D: Hashable, E: Hashable {}
