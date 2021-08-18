@@ -107,10 +107,15 @@ extension EditProfileViewController {
 
 extension EditProfileViewController {
     private struct ViewOutput: EditProfileViewOutput {
+        
         @PublishControlEvent var nameUpdateTap: ControlEvent<Void>
         
         @PublishControlEvent var lastNameUpdateTap: ControlEvent<Void>
         
         @PublishControlEvent var emailUpdateTap: ControlEvent<Void>
+        
+        @PublishControlEvent var saveButtonTap: ControlEvent<Void>
+        
+        @PublishControlEvent var retryButtonTap: ControlEvent<Void>
     }
 }

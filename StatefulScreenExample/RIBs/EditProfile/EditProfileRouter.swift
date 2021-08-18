@@ -15,4 +15,17 @@ final class EditProfileRouter: ViewableRouter<EditProfileInteractable, EditProfi
         super.init(interactor: interactor, viewController: viewController)
         interactor.router = self
     }
+    
+    func routeToPrev() {
+        showStubAlert(title: "Профиль успешно обновлён")
+    }
+    
+    private func showStubAlert(title: String) {
+      let message = "Вместо этого сообщения в боевом проекте производится роутинг на нужный экран"
+      
+      let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+      alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+      
+      viewController.uiviewController.present(alert, animated: true, completion: nil)
+    }
 }

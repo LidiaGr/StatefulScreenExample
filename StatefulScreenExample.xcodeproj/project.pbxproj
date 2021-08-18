@@ -210,12 +210,12 @@
 			children = (
 				5981540026C6BA4300B0583A /* Model */,
 				598153FB26C6A93000B0583A /* Views */,
-				595FE92626C6952300D55EAF /* EditProfileRouter.swift */,
-				595FE92726C6952300D55EAF /* EditProfileViewController.swift */,
-				595FE92826C6952300D55EAF /* EditProfileBuilder.swift */,
-				595FE92926C6952300D55EAF /* EditProfileInteractor.swift */,
 				595FE92E26C69AB100D55EAF /* EditProfileProtocols.swift */,
+				595FE92826C6952300D55EAF /* EditProfileBuilder.swift */,
+				595FE92626C6952300D55EAF /* EditProfileRouter.swift */,
+				595FE92926C6952300D55EAF /* EditProfileInteractor.swift */,
 				595FE93026C69E7800D55EAF /* EditProfilePresenter.swift */,
+				595FE92726C6952300D55EAF /* EditProfileViewController.swift */,
 			);
 			path = EditProfile;
 			sourceTree = "<group>";

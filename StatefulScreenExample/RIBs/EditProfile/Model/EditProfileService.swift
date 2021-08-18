@@ -7,7 +7,8 @@
 //
 
 protocol EditProfileService: AnyObject {
-    func profile(_ completion: @escaping (Result<ProfileData, Error>) -> Void)
+    var profile: ProfileData { get }
+    
     func updateProfile(_ profile: ProfileData, completion: @escaping (Result<Void, Error>) -> Void)
 }
 

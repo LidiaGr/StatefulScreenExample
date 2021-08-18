@@ -12,17 +12,6 @@ import RxSwift
 
 // MARK: - Builder
 
-//protocol EditProfileDependency: Dependency {
-//    // TODO: Declare the set of dependencies required by this RIB, but cannot be
-//    // created by this RIB.
-//    
-//}
-//
-//final class EditProfileComponent: Component<EditProfileDependency> {
-//
-//    // TODO: Declare 'fileprivate' dependencies that are only used by this RIB.
-//}
-
 protocol EditProfileBuildable: Buildable {
 //    func build(withListener listener: EditProfileListener) -> EditProfileRouting
     func build() -> EditProfileRouting
@@ -43,6 +32,7 @@ protocol EditProfileViewControllable: ViewControllable {
 
 protocol EditProfileRouting: ViewableRouting {
     // TODO: Declare methods the interactor can invoke to manage sub-tree via the router.
+    func routeToPrev()
 }
 
 protocol EditProfilePresentable: Presentable {
@@ -50,13 +40,20 @@ protocol EditProfilePresentable: Presentable {
     // TODO: Declare methods the interactor can invoke the presenter to present data.
 }
 
-protocol EditProfileListener: AnyObject {
-    // TODO: Declare methods the interactor can invoke to communicate with other RIBs.
-}
-
 // MARK: Outputs
 
-typealias EditProfileInteractorState = EditProfileState<ProfileData, Error>
+typealias EditProfileInteractorState = EditProfileState<Error>
+
+struct EditProfilePresenterOutput {
+  let viewModel: Driver<ProfileViewModel>
+  let isContentViewVisible: Driver<Bool>
+  
+  let initialLoadingIndicatorVisible: Driver<Bool>
+  let hideRefreshControl: Signal<Void>
+  
+  /// nil означает что нужно спрятать сообщение об ошибке
+  let showError: Signal<ErrorMessageViewModel?>
+}
 
 protocol EditProfileViewOutput {
   var nameUpdateTap: ControlEvent<Void> { get }
@@ -64,21 +61,47 @@ protocol EditProfileViewOutput {
   var lastNameUpdateTap: ControlEvent<Void> { get }
     
   var emailUpdateTap: ControlEvent<Void> { get }
+    
+  var saveButtonTap: ControlEvent<Void> { get }
+    
+  var retryButtonTap: ControlEvent<Void> { get }
   
-//  var retryButtonTap: ControlEvent<Void> { get }
+}
+
+struct EditProfileViewModel: Equatable {
+    let firstName: TitledText
+    let lastName: TitledText
+    
+    let email: TitledOptionalText
+    let phone: TitledOptionalText
+}
+
+struct EditProfileScreenDataModel {
+    var firstName: String?
+    var lastName: String?
+    
+    var email: String?
+    let phone: String
+    
+    init(with profile: ProfileData) {
+        firstName = profile.firstName
+        lastName = profile.lastName
+        email = profile.email
+        phone = profile.phone
+    }
+//    var isEmailValid: Bool 
 }
 
 // MARK: - EditProfileState
 
 /// L - Loading, D  - Data, E - Error
-public enum EditProfileState<D, E> {
+public enum EditProfileState<E> {
   case isEditing
-  case upLoading
-  case dataLoaded(D)
-  case loadingError(E)
+  case isUpdatingProfile
+  case updatingError(E)
 }
 
-extension EditProfileState: Equatable where D: Equatable, E: Equatable {}
+extension EditProfileState: Equatable where E: Equatable {}
 
-extension EditProfileState: Hashable where D: Hashable, E: Hashable {}
+extension EditProfileState: Hashable where E: Hashable {}
 
