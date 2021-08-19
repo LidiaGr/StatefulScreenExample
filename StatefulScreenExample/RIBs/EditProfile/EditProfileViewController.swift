@@ -11,14 +11,7 @@ import RxSwift
 import RxCocoa
 import UIKit
 
-//protocol EditProfilePresentableListener: AnyObject {
-//    // TODO: Declare properties and methods that the view controller can invoke to perform
-//    // business logic, such as signIn(). This protocol is implemented by the corresponding
-//    // interactor class.
-//}
-
 final class EditProfileViewController: UIViewController, EditProfileViewControllable {
-    //    weak var listener: EditProfilePresentableListener?
     
     private var stackView: UIStackView = {
         let stack = UIStackView()
@@ -46,7 +39,7 @@ final class EditProfileViewController: UIViewController, EditProfileViewControll
         view.backgroundColor = .systemBackground
         
         initialSetup()
-//        tapGesturesInitialSetup()
+        tapGesturesInitialSetup()
     }
 }
 
@@ -82,25 +75,25 @@ extension EditProfileViewController {
         saveButton.heightAnchor.constraint(equalToConstant: 56).isActive = true
     }
     
-//    private func tapGesturesInitialSetup() {
-//        do {
-//            let tapGesture = UITapGestureRecognizer()
-//            firstNameView.addGestureRecognizer(tapGesture)
-//            tapGesture.rx.event.mapAsVoid().bind(to: viewOutput.$nameUpdateTap).disposed(by: disposeBag)
-//        }
-//
-//        do {
-//            let tapGesture = UITapGestureRecognizer()
-//            lastNameView.addGestureRecognizer(tapGesture)
-//            tapGesture.rx.event.mapAsVoid().bind(to: viewOutput.$lastNameUpdateTap).disposed(by: disposeBag)
-//        }
-//
-//        do {
-//            let tapGesture = UITapGestureRecognizer()
-//            emailView.addGestureRecognizer(tapGesture)
-//            tapGesture.rx.event.mapAsVoid().bind(to: viewOutput.$emailUpdateTap).disposed(by: disposeBag)
-//        }
-//    }
+    private func tapGesturesInitialSetup() {
+        do {
+            let tapGesture = UITapGestureRecognizer()
+            firstNameView.addGestureRecognizer(tapGesture)
+            tapGesture.rx.event.mapAsVoid().bind(to: viewOutput.$nameUpdateTap).disposed(by: disposeBag)
+        }
+
+        do {
+            let tapGesture = UITapGestureRecognizer()
+            lastNameView.addGestureRecognizer(tapGesture)
+            tapGesture.rx.event.mapAsVoid().bind(to: viewOutput.$lastNameUpdateTap).disposed(by: disposeBag)
+        }
+
+        do {
+            let tapGesture = UITapGestureRecognizer()
+            emailView.addGestureRecognizer(tapGesture)
+            tapGesture.rx.event.mapAsVoid().bind(to: viewOutput.$emailUpdateTap).disposed(by: disposeBag)
+        }
+    }
 }
 
 // MARK: - BindableView
@@ -112,7 +105,25 @@ extension EditProfileViewController: BindableView {
     }
     
     func bindWith(_ input: EditProfilePresenterOutput) {
+        bindViewModel(input.viewModel)
+    }
+    
+    private func bindViewModel(_ profileViewModel: Driver<EditProfileViewModel>) {
+        profileViewModel.map { $0.firstName }.drive(onNext: { [unowned self] viewModel in
+            firstNameView.setTitle(viewModel.title, text: viewModel.maybeText, editable: true)
+        }).disposed(by: disposeBag)
         
+        profileViewModel.map { $0.lastName }.drive(onNext: { [unowned self] viewModel in
+            lastNameView.setTitle(viewModel.title, text: viewModel.maybeText, editable: true)
+        }).disposed(by: disposeBag)
+        
+        profileViewModel.map { $0.email }.drive(onNext: { [unowned self] viewModel in
+            emailView.setTitle(viewModel.title, text: viewModel.maybeText, editable: true)
+        }).disposed(by: disposeBag)
+        
+        profileViewModel.map { $0.phone }.drive(onNext: { [unowned self] viewModel in
+            phoneView.setTitle(viewModel.title, text: viewModel.text, editable: false)
+        }).disposed(by: disposeBag)
     }
 }
 
