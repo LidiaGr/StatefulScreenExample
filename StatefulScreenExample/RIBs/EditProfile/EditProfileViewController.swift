@@ -61,10 +61,10 @@ extension EditProfileViewController {
         stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
         stackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
         
-        firstNameView.design(placeholder: "Имя", editable: true)
-        lastNameView.design(placeholder: "Фамилия", editable: true)
-        phoneView.design(placeholder: "Телефон", editable: false)
-        emailView.design(placeholder: "E-mail", editable: true)
+        firstNameView.design()
+        lastNameView.design()
+        phoneView.design()
+        emailView.design()
         
         stackView.addArrangedSubviews([
             firstNameView,
@@ -101,6 +101,19 @@ extension EditProfileViewController {
 //            tapGesture.rx.event.mapAsVoid().bind(to: viewOutput.$emailUpdateTap).disposed(by: disposeBag)
 //        }
 //    }
+}
+
+// MARK: - BindableView
+
+extension EditProfileViewController: BindableView {
+
+    func getOutput() -> EditProfileViewOutput {
+      viewOutput
+    }
+    
+    func bindWith(_ input: EditProfilePresenterOutput) {
+        
+    }
 }
 
 // MARK: - View Output

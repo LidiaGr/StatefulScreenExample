@@ -8,10 +8,6 @@
 
 import UIKit
 
-struct NetworkError: LocalizedError {
-    var errorDescription: String? { "Произошла сетевая ошибка" }
-}
-
 final class EditProfileServiceImp: EditProfileService {
     
     private(set) var profile = ProfileData(firstName: "Иван", lastName: nil, email: nil, phone: "79991235467")

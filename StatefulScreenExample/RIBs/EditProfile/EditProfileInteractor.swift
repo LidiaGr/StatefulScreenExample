@@ -51,19 +51,16 @@ final class EditProfileInteractor: PresentableInteractor<EditProfilePresentable>
 
 extension EditProfileInteractor: IOTransformer {
     
-    func transform(input viewOutput: EditProfileViewOutput) -> Observable<EditProfileInteractorState> {
+    func transform(input viewOutput: EditProfileViewOutput) -> EditProfileInteractorOutput {
         let trait = StateTransformTrait(_state: _state, disposeBag: disposeBag)
         
-//        let requests = makeRequests()
-        let updateProfile: (ProfileData) -> Void = { [weak self] profile in
-            self?.updateProfile(profile: profile)
-        }
+        let requests = makeRequests()
         
-        StateTransform.transform(trait: trait, viewOutput: viewOutput, screenDataModel: _screenDataModel.asObservable(), responses: responses, updateProfileRequests: updateProfile)
+        StateTransform.transform(trait: trait, viewOutput: viewOutput, screenDataModel: _screenDataModel.asObservable(), responses: responses, requests: requests)
         
         bindStatefulRouting(responses, trait: trait)
         
-        return trait.readOnlyState
+        return EditProfileInteractorOutput(state: trait.readOnlyState, screenDataModel: _screenDataModel.asObservable())
     }
     
     private func bindStatefulRouting(_ responses: Responses, trait: StateTransformTrait<State>) {
@@ -98,7 +95,7 @@ extension EditProfileInteractor {
                                       viewOutput: EditProfileViewOutput,
                                       screenDataModel: Observable<EditProfileScreenDataModel>,
                                       responses: Responses,
-                                      updateProfileRequests: @escaping (ProfileData) -> Void) {
+                                      requests: Requests) {
             StateTransform.transitions {
                 /// isEditing => isUpdatingProfile
                 viewOutput.saveButtonTap
@@ -106,13 +103,14 @@ extension EditProfileInteractor {
                     .withLatestFrom(screenDataModel)
                     .do(afterNext: { screenDataModel in
                         let profileData = ProfileData(firstName: screenDataModel.firstName , lastName: screenDataModel.lastName, email: screenDataModel.email, phone: screenDataModel.phone)
-                        updateProfileRequests(profileData)
+                        
+                            requests.loadProfile(profileData)
                     } )
                     .map { _ in State.isUpdatingProfile }
                 
                 /// isUpdatingProfile  => updatingError
                 responses.updatingProfileError.filteredByState(trait.readOnlyState, filter: byIsUpdatingProfileState)
-                    .map { error in State.updatingError(error) }
+                    .map { error in State.updatingError(error as! NetworkError) }
                 
                 /// updatingError => isUpdatingProfile
                 viewOutput.retryButtonTap
@@ -121,7 +119,8 @@ extension EditProfileInteractor {
                     .withLatestFrom(screenDataModel)
                     .do(afterNext: { screenDataModel in
                         let profileData = ProfileData(firstName: screenDataModel.firstName , lastName: screenDataModel.lastName, email: screenDataModel.email, phone: screenDataModel.phone)
-                        updateProfileRequests(profileData)
+                        
+                            requests.loadProfile(profileData)
                     })
                     .map  { _ in State.isUpdatingProfile }
             }.bindToAndDisposedBy(trait: trait)
@@ -131,11 +130,12 @@ extension EditProfileInteractor {
 
 // MARK: - Help Methods
 
-//extension EditProfileInteractor {
-//    private func makeRequests() -> Requests {
-//        Requests(loadProfile: { [weak self] in self?.loadEditProfile() })
-//    }
-//}
+extension EditProfileInteractor {
+    private func makeRequests() -> Requests {
+        Requests(loadProfile: { [weak self] profile in
+            self?.updateProfile(profile: profile)})
+    }
+}
 
 // MARK: - Nested Types
 
@@ -145,7 +145,7 @@ extension EditProfileInteractor {
         @PublishObservable var updatingProfileError: Observable<Error>
     }
     
-//    private struct Requests {
-//        let loadProfile: (ProfileData) -> Void
-//    }
+    private struct Requests {
+        let loadProfile: (ProfileData) -> Void
+    }
 }

@@ -42,17 +42,21 @@ protocol EditProfilePresentable: Presentable {
 
 // MARK: Outputs
 
-typealias EditProfileInteractorState = EditProfileState<Error>
+
+struct EditProfileInteractorOutput {
+    let state: Observable<EditProfileInteractorState>
+    let screenDataModel: Observable<EditProfileScreenDataModel>
+}
 
 struct EditProfilePresenterOutput {
-  let viewModel: Driver<ProfileViewModel>
-  let isContentViewVisible: Driver<Bool>
-  
-  let initialLoadingIndicatorVisible: Driver<Bool>
-  let hideRefreshControl: Signal<Void>
-  
-  /// nil означает что нужно спрятать сообщение об ошибке
-  let showError: Signal<ErrorMessageViewModel?>
+  let viewModel: Driver<EditProfileViewModel>
+//  let isContentViewVisible: Driver<Bool>
+//  
+//  let initialLoadingIndicatorVisible: Driver<Bool>
+//  let hideRefreshControl: Signal<Void>
+//  
+//  /// nil означает что нужно спрятать сообщение об ошибке
+//  let showError: Signal<ErrorMessageViewModel?>
 }
 
 protocol EditProfileViewOutput {
@@ -69,11 +73,11 @@ protocol EditProfileViewOutput {
 }
 
 struct EditProfileViewModel: Equatable {
-    let firstName: TitledText
-    let lastName: TitledText
+    let firstName: TitledOptionalText
+    let lastName: TitledOptionalText
     
     let email: TitledOptionalText
-    let phone: TitledOptionalText
+    let phone: TitledText
 }
 
 struct EditProfileScreenDataModel {
@@ -92,16 +96,15 @@ struct EditProfileScreenDataModel {
 //    var isEmailValid: Bool 
 }
 
-// MARK: - EditProfileState
+// MARK: - EditProfileInteractorState
 
 /// L - Loading, D  - Data, E - Error
-public enum EditProfileState<E> {
+enum EditProfileInteractorState {
   case isEditing
   case isUpdatingProfile
-  case updatingError(E)
+  case updatingError(NetworkError)
 }
 
-extension EditProfileState: Equatable where E: Equatable {}
-
-extension EditProfileState: Hashable where E: Hashable {}
-
+struct NetworkError: LocalizedError {
+    var errorDescription: String? { "Произошла сетевая ошибка" }
+}

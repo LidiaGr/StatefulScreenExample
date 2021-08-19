@@ -24,9 +24,9 @@ final class ProfileField: UITextField {
         return bounds.inset(by: padding)
     }
     
-    func design(placeholder: String, editable: Bool) {
-        self.attributedPlaceholder = NSAttributedString(string: placeholder,
-                                                        attributes: [NSAttributedString.Key.foregroundColor: UIColor.black.withAlphaComponent(0.3)])
+    func design() {
+//        self.attributedPlaceholder = NSAttributedString(string: placeholder,
+//                                                        attributes: [NSAttributedString.Key.foregroundColor: UIColor.black.withAlphaComponent(0.3)])
         self.textAlignment = .left
         self.backgroundColor = UIColor(hexString: "#F7F7F7")
         self.font = UIFont.systemFont(ofSize: 17)
@@ -38,7 +38,7 @@ final class ProfileField: UITextField {
         self.returnKeyType = UIReturnKeyType.done
         self.clearButtonMode = UITextField.ViewMode.whileEditing
         self.contentVerticalAlignment = UIControl.ContentVerticalAlignment.center
-        self.isUserInteractionEnabled = editable
+//        self.isUserInteractionEnabled = editable
         
         if let clearButton = self.value(forKeyPath: "_clearButton") as? UIButton {
             clearButton.setImage(UIImage(named: "close"), for: .normal)
@@ -49,12 +49,11 @@ final class ProfileField: UITextField {
         
         //    textField.addTarget(self, action: #selector(buttonPressed), for: .editingDidEndOnExit)
         
-        if !editable {
-            self.layer.borderWidth = 1
-            self.layer.borderColor = UIColor(hexString: "#CBC9D1").cgColor
-            self.textColor = UIColor(hexString: "#ACAAB2")
-        }
-        
+//        if !editable {
+//            self.layer.borderWidth = 1
+//            self.layer.borderColor = UIColor(hexString: "#CBC9D1").cgColor
+//            self.textColor = UIColor(hexString: "#ACAAB2")
+//        }
     }
 }
 

@@ -14,34 +14,19 @@ final class EditProfilePresenter: EditProfilePresentable {}
 
 // MARK: - IOTransformer
 
-//extension EditProfilePresenter: IOTransformer {
-//    /// Метод отвечает за преобразование состояния во ViewModel'и и сигналы (команды)
-//    func transform(input state: Observable<EditProfileInteractorState>) -> EditProfilePresenterOutput {
-//        let viewModel = Helper.viewModel(state)
-//    }
-//    return EditProfilePresenterOutput(viewModel: viewModel,
-//                                  isContentViewVisible: isContentViewVisible,
-//                                  initialLoadingIndicatorVisible: initialLoadingIndicatorVisible,
-//                                  hideRefreshControl: hideRefreshControl,
-//                                  showError: showError)
-//}
-//
-//extension EditProfilePresenter {
-//    private enum Helper: Namespace {
-//        static func viewModel(_ state: Observable<EditProfileInteractorState>) -> Driver<EditProfileViewModel> {
-//            return state.compactMap { state -> EditProfileViewModel? in
-//                switch state {
-//                case .isEditing:
-//                    return EditProfileViewModel(firstName: TitledText(title: "Имя", text: "Иван"),
-//                     lastName: TitledText(title: "Фамилия", text: "Иванов"),
-//                     email: TitledOptionalText(title: "E-mail", maybeText: nil),
-//                     phone: TitledOptionalText(title: "Телефон", maybeText: "79377777777"))
-//                case .isUpdatingProfile, .dataLoaded(_), .updatingError(_):
-//                    return nil
-//                }
-//            }
-//            .distinctUntilChanged()
-//            .asDriverIgnoringError()
-//        }
-//    }
-//}
+extension EditProfilePresenter: IOTransformer {
+    /// Метод отвечает за преобразование состояния во ViewModel'и и сигналы (команды)
+    func transform(input: EditProfileInteractorOutput) -> EditProfilePresenterOutput {
+
+        let viewModel = input.screenDataModel.map { model -> EditProfileViewModel in
+            return EditProfileViewModel(
+                firstName: TitledOptionalText(title: "Имя", maybeText: model.firstName),
+                lastName: TitledOptionalText(title: "Фамилия", maybeText: model.lastName),
+                email: TitledOptionalText(title: "E-mail", maybeText: model.email),
+                phone: TitledText(title: "Телефон", text: model.phone))
+        }.asDriverIgnoringError()
+        
+        return EditProfilePresenterOutput(viewModel: viewModel)
+    }
+}
+
