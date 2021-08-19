@@ -17,6 +17,8 @@ final class EditProfileRouter: ViewableRouter<EditProfileInteractable, EditProfi
     }
     
     func routeToPrev() {
+        print("routeToPrev")
+        
         showStubAlert(title: "Профиль успешно обновлён")
     }
     

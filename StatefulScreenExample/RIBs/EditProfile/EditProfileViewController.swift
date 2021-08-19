@@ -21,10 +21,10 @@ final class EditProfileViewController: UIViewController, EditProfileViewControll
         stack.spacing = 16
         return stack
     }()
-    private let firstNameView = ProfileField()
-    private let lastNameView = ProfileField()
-    private let phoneView = ProfileField()
-    private let emailView = ProfileField()
+    private let firstNameField = EditProfileField()
+    private let lastNameField = EditProfileField()
+    private let phoneField = EditProfileField()
+    private let emailField = EditProfileField()
     
     private let saveButton = GreenButton()
     
@@ -39,7 +39,7 @@ final class EditProfileViewController: UIViewController, EditProfileViewControll
         view.backgroundColor = .systemBackground
         
         initialSetup()
-        tapGesturesInitialSetup()
+//        tapGesturesInitialSetup()
     }
 }
 
@@ -54,16 +54,16 @@ extension EditProfileViewController {
         stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
         stackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
         
-        firstNameView.design()
-        lastNameView.design()
-        phoneView.design()
-        emailView.design()
+        firstNameField.design()
+        lastNameField.design()
+        phoneField.design()
+        emailField.design()
         
         stackView.addArrangedSubviews([
-            firstNameView,
-            lastNameView,
-            phoneView,
-            emailView
+            firstNameField,
+            lastNameField,
+            phoneField,
+            emailField
         ])
         
         //Button
@@ -75,56 +75,63 @@ extension EditProfileViewController {
         saveButton.heightAnchor.constraint(equalToConstant: 56).isActive = true
     }
     
-    private func tapGesturesInitialSetup() {
-        do {
-            let tapGesture = UITapGestureRecognizer()
-            firstNameView.addGestureRecognizer(tapGesture)
-            tapGesture.rx.event.mapAsVoid().bind(to: viewOutput.$nameUpdateTap).disposed(by: disposeBag)
-        }
-
-        do {
-            let tapGesture = UITapGestureRecognizer()
-            lastNameView.addGestureRecognizer(tapGesture)
-            tapGesture.rx.event.mapAsVoid().bind(to: viewOutput.$lastNameUpdateTap).disposed(by: disposeBag)
-        }
-
-        do {
-            let tapGesture = UITapGestureRecognizer()
-            emailView.addGestureRecognizer(tapGesture)
-            tapGesture.rx.event.mapAsVoid().bind(to: viewOutput.$emailUpdateTap).disposed(by: disposeBag)
-        }
-    }
+//    private func tapGesturesInitialSetup() {
+//        do {
+//            let tapGesture = UITapGestureRecognizer()
+//            firstNameField.addGestureRecognizer(tapGesture)
+//            tapGesture.rx.event.mapAsVoid().bind(to: viewOutput.$nameUpdateTap).disposed(by: disposeBag)
+//        }
+//
+//        do {
+//            let tapGesture = UITapGestureRecognizer()
+//            lastNameField.addGestureRecognizer(tapGesture)
+//            tapGesture.rx.event.mapAsVoid().bind(to: viewOutput.$lastNameUpdateTap).disposed(by: disposeBag)
+//        }
+//
+//        do {
+//            let tapGesture = UITapGestureRecognizer()
+//            emailField.addGestureRecognizer(tapGesture)
+//            tapGesture.rx.event.mapAsVoid().bind(to: viewOutput.$emailUpdateTap).disposed(by: disposeBag)
+//        }
+//
+//        do {
+//            let tapGesture = UITapGestureRecognizer()
+//            saveButton.addGestureRecognizer(tapGesture)
+//            tapGesture.rx.event.mapAsVoid().bind(to: viewOutput.$saveButtonTap).disposed(by: disposeBag)
+//        }
+//    }
 }
 
 // MARK: - BindableView
 
 extension EditProfileViewController: BindableView {
 
-    func getOutput() -> EditProfileViewOutput {
-      viewOutput
-    }
+    func getOutput() -> EditProfileViewOutput { viewOutput }
     
     func bindWith(_ input: EditProfilePresenterOutput) {
-        bindViewModel(input.viewModel)
+//        bindViewModel(input.viewModel)
+        
+        
+        disposeBag.insert {
+            
+            input.viewModel.drive(onNext: { [weak self] model in
+                self?.firstNameField.setTitle(model.firstName.title, text: model.firstName.maybeText, editable: true)
+                
+                self?.lastNameField.setTitle(model.lastName.title, text: model.lastName.maybeText, editable: true)
+                
+                self?.emailField.setTitle(model.email.title, text: model.email.maybeText, editable: true)
+                
+                self?.phoneField.setTitle(model.phone.title, text: model.phone.text.formatPhoneNumber(with: "+X XXX XXX XX XX"), editable: false)
+            })
+            
+            firstNameField.rx.text.orEmpty.bind(to: viewOutput.$firstNameUpdateTap)
+            lastNameField.rx.text.orEmpty.bind(to: viewOutput.$lastNameUpdateTap)
+            emailField.rx.text.orEmpty.bind(to: viewOutput.$emailUpdateTap)
+            
+            saveButton.rx.controlEvent(.touchUpInside).bind(to: viewOutput.$saveButtonTap)
+        }
     }
-    
-    private func bindViewModel(_ profileViewModel: Driver<EditProfileViewModel>) {
-        profileViewModel.map { $0.firstName }.drive(onNext: { [unowned self] viewModel in
-            firstNameView.setTitle(viewModel.title, text: viewModel.maybeText, editable: true)
-        }).disposed(by: disposeBag)
-        
-        profileViewModel.map { $0.lastName }.drive(onNext: { [unowned self] viewModel in
-            lastNameView.setTitle(viewModel.title, text: viewModel.maybeText, editable: true)
-        }).disposed(by: disposeBag)
-        
-        profileViewModel.map { $0.email }.drive(onNext: { [unowned self] viewModel in
-            emailView.setTitle(viewModel.title, text: viewModel.maybeText, editable: true)
-        }).disposed(by: disposeBag)
-        
-        profileViewModel.map { $0.phone }.drive(onNext: { [unowned self] viewModel in
-            phoneView.setTitle(viewModel.title, text: viewModel.text, editable: false)
-        }).disposed(by: disposeBag)
-    }
+
 }
 
 // MARK: - View Output
@@ -132,11 +139,11 @@ extension EditProfileViewController: BindableView {
 extension EditProfileViewController {
     private struct ViewOutput: EditProfileViewOutput {
         
-        @PublishControlEvent var nameUpdateTap: ControlEvent<Void>
+        @PublishControlEvent var firstNameUpdateTap: ControlEvent<String?>
         
-        @PublishControlEvent var lastNameUpdateTap: ControlEvent<Void>
+        @PublishControlEvent var lastNameUpdateTap: ControlEvent<String?>
         
-        @PublishControlEvent var emailUpdateTap: ControlEvent<Void>
+        @PublishControlEvent var emailUpdateTap: ControlEvent<String?>
         
         @PublishControlEvent var saveButtonTap: ControlEvent<Void>
         

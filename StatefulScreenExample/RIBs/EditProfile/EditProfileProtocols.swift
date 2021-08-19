@@ -60,11 +60,11 @@ struct EditProfilePresenterOutput {
 }
 
 protocol EditProfileViewOutput {
-  var nameUpdateTap: ControlEvent<Void> { get }
+  var firstNameUpdateTap: ControlEvent<String?> { get }
   
-  var lastNameUpdateTap: ControlEvent<Void> { get }
+  var lastNameUpdateTap: ControlEvent<String?> { get }
     
-  var emailUpdateTap: ControlEvent<Void> { get }
+  var emailUpdateTap: ControlEvent<String?> { get }
     
   var saveButtonTap: ControlEvent<Void> { get }
     
@@ -80,6 +80,13 @@ struct EditProfileViewModel: Equatable {
     let phone: TitledText
 }
 
+
+//protocol FieldsValidation {
+//    var isFirstNameValid: Bool { get set }
+//    var isLastNameValid: Bool { get set }
+//    var isEmailValid: Bool { get set }
+//}
+
 struct EditProfileScreenDataModel {
     var firstName: String?
     var lastName: String?
@@ -87,13 +94,22 @@ struct EditProfileScreenDataModel {
     var email: String?
     let phone: String
     
+//    var isFirstNameValid: Bool
+//    var isLastNameValid: Bool
+//    var isEmailValid: Bool
+    
     init(with profile: ProfileData) {
         firstName = profile.firstName
         lastName = profile.lastName
         email = profile.email
         phone = profile.phone
     }
-//    var isEmailValid: Bool 
+    
+//    init(flags isFirstNameValid: Bool, isLastNameValid: Bool, isEmailValid: Bool ) {
+//        self.isFirstNameValid = isFirstNameValid
+//        self.isLastNameValid = isLastNameValid
+//        self.isEmailValid = isEmailValid
+//    }
 }
 
 // MARK: - EditProfileInteractorState
@@ -103,6 +119,7 @@ enum EditProfileInteractorState {
   case isEditing
   case isUpdatingProfile
   case updatingError(NetworkError)
+  case terminating
 }
 
 struct NetworkError: LocalizedError {

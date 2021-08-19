@@ -54,24 +54,88 @@ extension EditProfileInteractor: IOTransformer {
     func transform(input viewOutput: EditProfileViewOutput) -> EditProfileInteractorOutput {
         let trait = StateTransformTrait(_state: _state, disposeBag: disposeBag)
         
+        removingInvalidSymbols(viewOutput: viewOutput)
+        
+        viewOutput.saveButtonTap.asObservable().subscribe(onNext: {
+            print("SaveButtonTapped")
+//            if validateInput() == false {
+//                
+//            }
+        })
+        
+//        func validateInput() -> Bool {
+//
+//            if _screenDataModel.value.firstName?.isEmpty == true { _screenDataModel.value.isFirstNameValid = false }
+//            if _screenDataModel.value.lastName?.isEmpty == true { return false }
+//            if _screenDataModel.value.email?.contains("@") == true {
+//                return true
+//            } else {
+//                return false
+//            }
+//        }
+        
         let requests = makeRequests()
+        let close : VoidClosure = { [weak self] in
+            self?.router?.routeToPrev()
+        }
         
-        StateTransform.transform(trait: trait, viewOutput: viewOutput, screenDataModel: _screenDataModel.asObservable(), responses: responses, requests: requests)
+        StateTransform.transform(trait: trait, viewOutput: viewOutput, screenDataModel: _screenDataModel.asObservable(), responses: responses, requests: requests, close: close)
         
-        bindStatefulRouting(responses, trait: trait)
+//        bindStatefulRouting(responses, trait: trait)
         
         return EditProfileInteractorOutput(state: trait.readOnlyState, screenDataModel: _screenDataModel.asObservable())
     }
     
-    private func bindStatefulRouting(_ responses: Responses, trait: StateTransformTrait<State>) {
+    private func removingInvalidSymbols(viewOutput: EditProfileViewOutput) {
+        viewOutput.firstNameUpdateTap.asObservable()
+            .skip(1)
+            .map { name in
+                name?.removingCharacters(in: .whitespacesAndNewlines).removingCharacters(except: .letters)
+            }
+//            .distinctUntilChanged()
+            .subscribe(onNext: { text in
+                let profileData = ProfileData(firstName: text, lastName: self._screenDataModel.value.lastName, email: self._screenDataModel.value.email, phone: self._screenDataModel.value.phone)
+                let newModel = EditProfileScreenDataModel(with: profileData)
+                self._screenDataModel.accept(newModel)
+//                print(text)
+            }).disposed(by: disposeBag)
         
-        responses.updatingProfileSuccess.filteredByState(trait.readOnlyState, filter: StateTransform.byIsUpdatingProfileState)
-            //do after next замыкание к закрытию экрана
-            .subscribe(onNext: { [weak self] in
-                self?.router?.routeToPrev()
-            })
-            .disposed(by: trait.disposeBag)
+        viewOutput.lastNameUpdateTap.asObservable()
+            .skip(1)
+            .map { name in
+                name?.removingCharacters(in: .whitespacesAndNewlines).removingCharacters(except: .letters)
+            }
+//            .distinctUntilChanged()
+            .subscribe(onNext: { text in
+                let profileData = ProfileData(firstName: self._screenDataModel.value.firstName, lastName: text, email: self._screenDataModel.value.email, phone: self._screenDataModel.value.phone)
+                let newModel = EditProfileScreenDataModel(with: profileData)
+                self._screenDataModel.accept(newModel)
+//                print(text)
+            }).disposed(by: disposeBag)
+        
+        viewOutput.emailUpdateTap.asObservable()
+            .skip(1)
+            .map { name in
+                name?.removingCharacters(in: .whitespacesAndNewlines)
+            }
+            .distinctUntilChanged()
+            .subscribe(onNext: { text in
+                let profileData = ProfileData(firstName: self._screenDataModel.value.firstName, lastName: self._screenDataModel.value.lastName, email: text, phone: self._screenDataModel.value.phone)
+                let newModel = EditProfileScreenDataModel(with: profileData)
+                self._screenDataModel.accept(newModel)
+//                print(text)
+            }).disposed(by: disposeBag)
     }
+    
+//    private func bindStatefulRouting(_ responses: Responses, trait: StateTransformTrait<State>) {
+//
+//        responses.updatingProfileSuccess.filteredByState(trait.readOnlyState, filter: StateTransform.byIsUpdatingProfileState)
+//            //do after next замыкание к закрытию экрана
+//            .subscribe(onNext: { [weak self] in
+//                self?.router?.routeToPrev()
+//            })
+//            .disposed(by: trait.disposeBag)
+//    }
 }
 
 extension EditProfileInteractor {
@@ -95,7 +159,8 @@ extension EditProfileInteractor {
                                       viewOutput: EditProfileViewOutput,
                                       screenDataModel: Observable<EditProfileScreenDataModel>,
                                       responses: Responses,
-                                      requests: Requests) {
+                                      requests: Requests,
+                                      close: @escaping VoidClosure) {
             StateTransform.transitions {
                 /// isEditing => isUpdatingProfile
                 viewOutput.saveButtonTap
@@ -107,6 +172,11 @@ extension EditProfileInteractor {
                             requests.loadProfile(profileData)
                     } )
                     .map { _ in State.isUpdatingProfile }
+                
+                /// isUpdatingProfile  => terminate
+                responses.updatingProfileSuccess.filteredByState(trait.readOnlyState, filter: byIsUpdatingProfileState)
+                    .do (afterNext: { _ in close() })
+                    .map { _ in State.terminating }
                 
                 /// isUpdatingProfile  => updatingError
                 responses.updatingProfileError.filteredByState(trait.readOnlyState, filter: byIsUpdatingProfileState)
@@ -132,8 +202,8 @@ extension EditProfileInteractor {
 
 extension EditProfileInteractor {
     private func makeRequests() -> Requests {
-        Requests(loadProfile: { [weak self] profile in
-            self?.updateProfile(profile: profile)})
+        Requests(loadProfile: { [weak self] profile in self?.updateProfile(profile: profile) })
+                // closeEditProfile: { [weak self] in self?.router?.routeToPrev() })
     }
 }
 
@@ -147,5 +217,29 @@ extension EditProfileInteractor {
     
     private struct Requests {
         let loadProfile: (ProfileData) -> Void
+//        let closeEditProfile: VoidClosure
     }
 }
+
+
+// MARK: - CharacterSet
+extension CharacterSet {
+  /// "0123456789"
+  public static let arabicNumerals = CharacterSet(charactersIn: "0123456789")
+}
+
+extension String {
+  /// Удалятся все символы (Unicode Scalar'ы) кроме символов из указанного CharacterSet. Например все кроме цифр
+  public func removingCharacters(except characterSet: CharacterSet) -> String {
+    let scalars = unicodeScalars.filter(characterSet.contains(_:))
+    return String(scalars)
+  }
+  
+  /// Удалятся все символы (Unicode Scalar'ы), которые соответствуют указанному CharacterSet.
+  /// Например все точки и запятые
+  public func removingCharacters(in characterSet: CharacterSet) -> String {
+    let scalars = unicodeScalars.filter { !characterSet.contains($0) }
+    return String(scalars)
+  }
+}
+

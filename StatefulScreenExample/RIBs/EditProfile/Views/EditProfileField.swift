@@ -1,5 +1,5 @@
 //
-//  ProfileField.swift
+//  EditProfileField.swift
 //  StatefulScreenExample
 //
 //  Created by L.Grigoreva on 13.08.2021.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class ProfileField: UITextField {
+final class EditProfileField: UITextField {
     
     let padding = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 40)
 
@@ -79,5 +79,29 @@ extension UIColor {
             (a, r, g, b) = (255, 0, 0, 0)
         }
         self.init(red: CGFloat(r) / 255, green: CGFloat(g) / 255, blue: CGFloat(b) / 255, alpha: CGFloat(a) / 255)
+    }
+}
+
+extension String {
+    /// mask example: `+X (XXX) XXX-XXXX`
+    func formatPhoneNumber(with mask: String) -> String {
+        let numbers = self.replacingOccurrences(of: "[^0-9]", with: "", options: .regularExpression)
+        var result = ""
+        var index = numbers.startIndex // numbers iterator
+
+        // iterate over the mask characters until the iterator of numbers ends
+        for ch in mask where index < numbers.endIndex {
+            if ch == "X" {
+                // mask requires a number in this place, so take the next one
+                result.append(numbers[index])
+
+                // move numbers iterator to the next index
+                index = numbers.index(after: index)
+
+            } else {
+                result.append(ch) // just append a mask character
+            }
+        }
+        return result
     }
 }
