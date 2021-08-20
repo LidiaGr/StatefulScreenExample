@@ -51,12 +51,13 @@ struct EditProfileInteractorOutput {
 struct EditProfilePresenterOutput {
   let viewModel: Driver<EditProfileViewModel>
 //  let isContentViewVisible: Driver<Bool>
-//  
-//  let initialLoadingIndicatorVisible: Driver<Bool>
-//  let hideRefreshControl: Signal<Void>
-//  
-//  /// nil означает что нужно спрятать сообщение об ошибке
-//  let showError: Signal<ErrorMessageViewModel?>
+
+  let isButtonActive: Driver<Bool>
+    
+//  let loadingIndicatorVisible: Driver<Bool>
+    
+  /// nil означает что нужно спрятать сообщение об ошибке
+  let showError: Signal<ErrorMessageViewModel?>
 }
 
 protocol EditProfileViewOutput {
@@ -81,35 +82,33 @@ struct EditProfileViewModel: Equatable {
 }
 
 
-//protocol FieldsValidation {
-//    var isFirstNameValid: Bool { get set }
-//    var isLastNameValid: Bool { get set }
-//    var isEmailValid: Bool { get set }
-//}
+protocol FieldsValidation {
+    var isFirstNameValid: Bool { get set }
+    var isLastNameValid: Bool { get set }
+    var isEmailValid: Bool { get set }
+}
 
-struct EditProfileScreenDataModel {
-    var firstName: String?
-    var lastName: String?
+struct EditProfileScreenDataModel: FieldsValidation {
+    let firstName: String?
+    let lastName: String?
     
-    var email: String?
+    let email: String?
     let phone: String
     
-//    var isFirstNameValid: Bool
-//    var isLastNameValid: Bool
-//    var isEmailValid: Bool
+    var isFirstNameValid: Bool
+    var isLastNameValid: Bool
+    var isEmailValid: Bool
     
-    init(with profile: ProfileData) {
+    init(with profile: ProfileData, isFirstNameValid: Bool = true, isLastNameValid: Bool = true, isEmailValid: Bool = true) {
         firstName = profile.firstName
         lastName = profile.lastName
         email = profile.email
         phone = profile.phone
+        
+        self.isFirstNameValid = isFirstNameValid
+        self.isLastNameValid = isLastNameValid
+        self.isEmailValid = isEmailValid
     }
-    
-//    init(flags isFirstNameValid: Bool, isLastNameValid: Bool, isEmailValid: Bool ) {
-//        self.isFirstNameValid = isFirstNameValid
-//        self.isLastNameValid = isLastNameValid
-//        self.isEmailValid = isEmailValid
-//    }
 }
 
 // MARK: - EditProfileInteractorState
@@ -119,7 +118,6 @@ enum EditProfileInteractorState {
   case isEditing
   case isUpdatingProfile
   case updatingError(NetworkError)
-  case terminating
 }
 
 struct NetworkError: LocalizedError {

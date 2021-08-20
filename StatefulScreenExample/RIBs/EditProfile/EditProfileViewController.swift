@@ -21,12 +21,24 @@ final class EditProfileViewController: UIViewController, EditProfileViewControll
         stack.spacing = 16
         return stack
     }()
+    
+//    var spinner: UIActivityIndicatorView! = {
+//        let loginSpinner = UIActivityIndicatorView(style: .medium)
+//        loginSpinner.color = .black
+//        loginSpinner.translatesAutoresizingMaskIntoConstraints = false
+//        loginSpinner.hidesWhenStopped = true
+//        return loginSpinner
+//    }()
+    
     private let firstNameField = EditProfileField()
     private let lastNameField = EditProfileField()
     private let phoneField = EditProfileField()
     private let emailField = EditProfileField()
     
     private let saveButton = GreenButton()
+    
+    // Service Views
+    private let errorMessageView = ErrorMessageView()
     
     // MARK: View Events
     
@@ -47,8 +59,10 @@ extension EditProfileViewController {
     private func initialSetup() {
         title = "Редактировать"
         
+        errorMessageView.isVisible = true
+        view.addStretchedToBounds(subview: errorMessageView)
         
-        // StackView ContactFields
+        /// StackView ContactFields
         view.addSubview(stackView)
         stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16).isActive = true
         stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
@@ -66,7 +80,7 @@ extension EditProfileViewController {
             emailField
         ])
         
-        //Button
+        ///Button
         saveButton.design()
         view.addSubview(saveButton)
         saveButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8).isActive = true
@@ -114,6 +128,10 @@ extension EditProfileViewController: BindableView {
         
         disposeBag.insert {
             
+//            input.isContentViewVisible.drive(stackView.rx.isVisible)
+            
+            input.isButtonActive.drive(saveButton.rx.isVisible)
+            
             input.viewModel.drive(onNext: { [weak self] model in
                 self?.firstNameField.setTitle(model.firstName.title, text: model.firstName.maybeText, editable: true)
                 
@@ -122,6 +140,20 @@ extension EditProfileViewController: BindableView {
                 self?.emailField.setTitle(model.email.title, text: model.email.maybeText, editable: true)
                 
                 self?.phoneField.setTitle(model.phone.title, text: model.phone.text.formatPhoneNumber(with: "+X XXX XXX XX XX"), editable: false)
+            })
+            
+            input.showError.emit(onNext: { [unowned self] maybeViewModel in
+                self.errorMessageView.isVisible = (maybeViewModel != nil)
+                
+                if let viewModel = maybeViewModel {
+//                    self.saveButton.isHidden = true
+//                    self.stackView.isHidden = true
+                    self.errorMessageView.resetToEmptyState()
+                    
+                    self.errorMessageView.setTitle(viewModel.title, buttonTitle: viewModel.buttonTitle, action: {
+                        self.viewOutput.$retryButtonTap.accept(Void())
+                    })
+                }
             })
             
             firstNameField.rx.text.orEmpty.bind(to: viewOutput.$firstNameUpdateTap)

@@ -18,6 +18,8 @@ extension EditProfilePresenter: IOTransformer {
     /// Метод отвечает за преобразование состояния во ViewModel'и и сигналы (команды)
     func transform(input: EditProfileInteractorOutput) -> EditProfilePresenterOutput {
 
+//        let viewModel = Helper.viewModel(input)
+        
         let viewModel = input.screenDataModel.map { model -> EditProfileViewModel in
             return EditProfileViewModel(
                 firstName: TitledOptionalText(title: "Имя", maybeText: model.firstName),
@@ -26,7 +28,36 @@ extension EditProfilePresenter: IOTransformer {
                 phone: TitledText(title: "Телефон", text: model.phone))
         }.asDriverIgnoringError()
         
-        return EditProfilePresenterOutput(viewModel: viewModel)
+//        let isContentViewVisible = input.state.compactMap { state -> Void? in
+//          // После загрузки 1-й порции данных контент всегда виден
+//          switch state {
+//          case .isEditing : return Void()
+//          case .isUpdatingProfile, .updatingError: return nil
+//          }
+//        }
+//        .map { true }
+//        .startWith(false)
+//        .asDriverIgnoringError()
+        
+        let isButtomActive = input.state.compactMap { state -> Void? in
+            switch state {
+            case .isEditing: return Void()
+            case .isUpdatingProfile, .updatingError: return nil
+            }
+        }
+        .map { true }
+        .startWith(false)
+        .asDriverIgnoringError()
+        
+        let showError = input.state.map { state -> ErrorMessageViewModel? in
+          switch state {
+          case .updatingError(let error):
+            return ErrorMessageViewModel(title: error.localizedDescription, buttonTitle: "Повторить")
+          case .isEditing, .isUpdatingProfile:
+            return nil
+          }
+        }.asSignal(onErrorJustReturn: nil)
+        
+        return EditProfilePresenterOutput(viewModel: viewModel, isButtonActive: isButtomActive, showError: showError)
     }
 }
-
