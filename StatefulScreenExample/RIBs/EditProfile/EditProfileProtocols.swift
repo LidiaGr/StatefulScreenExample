@@ -50,14 +50,15 @@ struct EditProfileInteractorOutput {
 
 struct EditProfilePresenterOutput {
   let viewModel: Driver<EditProfileViewModel>
-  let isContentViewVisible: Driver<Bool>
-
-  let isButtonActive: Driver<Bool>
+//  let isContentViewVisible: Driver<Bool>
+//
+//  let isButtonActive: Driver<Bool>
     
-//  let loadingIndicatorVisible: Driver<Bool>
+  let loadingIndicator: Signal<Bool?>
     
   /// nil означает что нужно спрятать сообщение об ошибке
   let showError: Signal<ErrorMessageViewModel?>
+  let showAlert: Signal<Bool?>
 }
 
 protocol EditProfileViewOutput {
@@ -121,6 +122,7 @@ enum EditProfileInteractorState {
   case isEditing
   case isUpdatingProfile
   case updatingError(NetworkError)
+  case terminating
 }
 
 struct NetworkError: LocalizedError {

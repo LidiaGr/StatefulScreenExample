@@ -95,13 +95,13 @@ extension EditProfileInteractor: IOTransformer {
         removingInvalidSymbols(viewOutput: viewOutput)
         
         let requests = makeRequests()
-//        let close : VoidClosure = { [weak self] in
-//            self?.router?.routeToPrev()
-//        }
+        let close : VoidClosure = { [weak self] in
+            self?.router?.routeToPrev()
+        }
         
-        StateTransform.transform(trait: trait, viewOutput: viewOutput, screenDataModel: _screenDataModel.asObservable(), responses: responses, requests: requests, validation: validateData)
+        StateTransform.transform(trait: trait, viewOutput: viewOutput, screenDataModel: _screenDataModel.asObservable(), responses: responses, requests: requests, validation: validateData, close: close)
         
-        bindStatefulRouting(responses, trait: trait)
+//        bindStatefulRouting(responses, trait: trait)
         
         return EditProfileInteractorOutput(state: trait.readOnlyState, screenDataModel: _screenDataModel.asObservable())
     }
@@ -146,15 +146,16 @@ extension EditProfileInteractor: IOTransformer {
             }).disposed(by: disposeBag)
     }
     
-    private func bindStatefulRouting(_ responses: Responses, trait: StateTransformTrait<State>) {
-
-        //do after next замыкание к закрытию экрана
-        responses.updatingProfileSuccess.filteredByState(trait.readOnlyState, filter: StateTransform.byIsUpdatingProfileState)
-            .subscribe(onNext: { [weak self] in
-                self?.router?.routeToPrev()
-            })
-            .disposed(by: trait.disposeBag)
-    }
+//    private func bindStatefulRouting(_ responses: Responses, trait: StateTransformTrait<State>) {
+//
+//        //do after next замыкание к закрытию экрана
+//        responses.updatingProfileSuccess.filteredByState(trait.readOnlyState, filter: StateTransform.byIsUpdatingProfileState)
+//            .subscribe(onNext: { [weak self] in
+//                showStubAlert(title: "Профиль успешно обновлён")
+//                self?.router?.routeToPrev()
+//            })
+//            .disposed(by: trait.disposeBag)
+//    }
 }
 
 extension EditProfileInteractor {
@@ -179,8 +180,8 @@ extension EditProfileInteractor {
                                       screenDataModel: Observable<EditProfileScreenDataModel>,
                                       responses: Responses,
                                       requests: Requests,
-                                      validation: @escaping () -> Bool) {
-                                      //close: @escaping VoidClosure) {
+                                      validation: @escaping () -> Bool,
+                                      close: @escaping VoidClosure) {
             StateTransform.transitions {
                 /// isEditing => isUpdatingProfile
                 viewOutput.saveButtonTap
@@ -189,18 +190,18 @@ extension EditProfileInteractor {
                     .filter { _ in validation() }
                     .do(afterNext: { screenDataModel in
                         let profileData = ProfileData(firstName: screenDataModel.firstName , lastName: screenDataModel.lastName, email: screenDataModel.email, phone: screenDataModel.phone)
-                            print("SaveButtonTapped")
+//                            print("SaveButtonTapped")
                             requests.updateProfile(profileData)
                     } )
                     .map { _ in State.isUpdatingProfile }
                 
                 /// isUpdatingProfile  => terminate
-//                responses.updatingProfileSuccess.filteredByState(trait.readOnlyState, filter: byIsUpdatingProfileState)
-//                    .do (afterNext: { _ in
-//                        print("close")
-//                        close()
-//                    })
-//                    .map { _ in State.terminating }
+                responses.updatingProfileSuccess.filteredByState(trait.readOnlyState, filter: byIsUpdatingProfileState)
+                    .do (afterNext: { _ in
+                        print("close")
+                        close()
+                    })
+                    .map { _ in State.terminating }
                 
                 /// isUpdatingProfile  => updatingError
                 responses.updatingProfileError.filteredByState(trait.readOnlyState, filter: byIsUpdatingProfileState)

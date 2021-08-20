@@ -22,13 +22,13 @@ final class EditProfileViewController: UIViewController, EditProfileViewControll
         return stack
     }()
     
-//    var spinner: UIActivityIndicatorView! = {
-//        let loginSpinner = UIActivityIndicatorView(style: .medium)
-//        loginSpinner.color = .black
-//        loginSpinner.translatesAutoresizingMaskIntoConstraints = false
-//        loginSpinner.hidesWhenStopped = true
-//        return loginSpinner
-//    }()
+    var spinner: UIActivityIndicatorView! = {
+        let loginSpinner = UIActivityIndicatorView(style: .large)
+        loginSpinner.color = UIColor(hexString: "#34BC48")
+        loginSpinner.translatesAutoresizingMaskIntoConstraints = false
+        loginSpinner.hidesWhenStopped = true
+        return loginSpinner
+    }()
     
     private let firstNameField = EditProfileField()
     private let lastNameField = EditProfileField()
@@ -61,6 +61,7 @@ extension EditProfileViewController {
         
 //        errorMessageView.isVisible = true
         view.addStretchedToBounds(subview: errorMessageView)
+        view.addStretchedToBounds(subview: spinner)
         
         /// StackView ContactFields
         view.addSubview(stackView)
@@ -155,6 +156,25 @@ extension EditProfileViewController: BindableView {
                     self.errorMessageView.setTitle(viewModel.title, buttonTitle: viewModel.buttonTitle, action: {
                         self.viewOutput.$retryButtonTap.accept(Void())
                     })
+                } else {
+                    self.saveButton.isVisible = true
+                    self.stackView.isVisible = true
+                }
+            })
+            
+            input.showAlert.emit(onNext: { [unowned self] alert in
+                if alert == true {
+                  let alert = UIAlertController(title: "Профиль успешно обновлён", message: nil, preferredStyle: .alert)
+                  alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+                  
+                  self.present(alert, animated: true, completion: nil)
+                }
+            } )
+            
+            input.loadingIndicator.emit(onNext: { [unowned self] indicator in
+                switch indicator == true {
+                case true: spinner.startAnimating()
+                case false: spinner.stopAnimating()
                 }
             })
             

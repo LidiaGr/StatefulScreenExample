@@ -7,18 +7,21 @@
 //
 
 import RIBs
+import RxSwift
 
 final class EditProfileRouter: ViewableRouter<EditProfileInteractable, EditProfileViewControllable>, EditProfileRouting {
 
+    private let disposeBag = DisposeBag()
+    
     // TODO: Constructor inject child builder protocols to allow building children.
     override init(interactor: EditProfileInteractable, viewController: EditProfileViewControllable) {
         super.init(interactor: interactor, viewController: viewController)
         interactor.router = self
     }
     
+    
     func routeToPrev() {
         print("routeToPrev")
-        
 //        showStubAlert(title: "Профиль успешно обновлён")
     }
     

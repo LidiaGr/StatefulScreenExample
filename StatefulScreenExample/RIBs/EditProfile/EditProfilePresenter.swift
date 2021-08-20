@@ -30,37 +30,53 @@ extension EditProfilePresenter: IOTransformer {
                 isEmailValid: model.isEmailValid)
         }.asDriverIgnoringError()
         
-        let isContentViewVisible = input.state.compactMap { state -> Void? in
-          // После загрузки 1-й порции данных контент всегда виден
-          switch state {
-          case .isEditing : return Void()
-          case .isUpdatingProfile, .updatingError: return nil
-          }
-        }
-        .map { true }
-        .startWith(false)
-        .asDriverIgnoringError()
+//        let isContentViewVisible = input.state.compactMap { state -> Void? in
+//          // После загрузки 1-й порции данных контент всегда виден
+//          switch state {
+//          case .isEditing : return Void()
+//          case .isUpdatingProfile, .updatingError, .terminating: return nil
+//          }
+//        }
+//        .map { true }
+//        .startWith(false)
+//        .asDriverIgnoringError()
         
-        let isButtomActive = input.state.compactMap { state -> Bool? in
-            switch state {
-            case .isEditing: return true
-            case .isUpdatingProfile, .updatingError: return nil
-            }
-        }.asDriverIgnoringError()
+//        let isButtomActive = input.state.compactMap { state -> Bool? in
+//            switch state {
+//            case .isEditing: return true
+//            case .isUpdatingProfile, .updatingError, .terminating: return nil
+//            }
+//        }.asDriverIgnoringError()
         
         let showError = input.state.map { state -> ErrorMessageViewModel? in
           switch state {
           case .updatingError(let error):
             return ErrorMessageViewModel(title: error.localizedDescription, buttonTitle: "Повторить")
-          case .isEditing, .isUpdatingProfile:
+          case .isEditing, .isUpdatingProfile, .terminating:
             return nil
           }
         }.asSignal(onErrorJustReturn: nil)
         
+        let showAlert = input.state.compactMap { state -> Bool in
+            switch state {
+            case .terminating : return true
+            case .isUpdatingProfile, .updatingError, .isEditing : return false
+            }
+        }.asSignal(onErrorJustReturn: nil)
+        
+        let loadngIndicator = input.state.compactMap { state -> Bool in
+            switch state {
+            case .isUpdatingProfile : return true
+            case .terminating, .updatingError, .isEditing : return false
+            }
+        }.asSignal(onErrorJustReturn: nil)
+        
         return EditProfilePresenterOutput(viewModel: viewModel,
-                                          isContentViewVisible: isContentViewVisible,
-                                          isButtonActive: isButtomActive,
-                                          showError: showError)
+//                                          isContentViewVisible: isContentViewVisible,
+//                                          isButtonActive: isButtomActive,
+                                          loadingIndicator: loadngIndicator,
+                                          showError: showError,
+                                          showAlert: showAlert)
     }
 }
 
