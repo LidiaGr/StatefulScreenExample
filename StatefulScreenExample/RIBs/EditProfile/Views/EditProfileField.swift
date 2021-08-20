@@ -30,12 +30,16 @@ final class EditProfileField: UITextField {
         self.font = UIFont.systemFont(ofSize: 17)
         self.layer.cornerRadius = 12
         self.textColor = UIColor(hexString: "#4F4E57")
+        self.tintColor = UIColor(hexString: "#34BC48")
 //        self.borderStyle = .roundedRect
         self.autocorrectionType = UITextAutocorrectionType.no
         self.keyboardType = UIKeyboardType.default
         self.returnKeyType = UIReturnKeyType.done
         self.clearButtonMode = UITextField.ViewMode.whileEditing
         self.contentVerticalAlignment = UIControl.ContentVerticalAlignment.center
+        
+        self.layer.borderWidth = 0
+        self.layer.borderColor = .none
         
         if let clearButton = self.value(forKeyPath: "_clearButton") as? UIButton {
             clearButton.setImage(UIImage(named: "close"), for: .normal)
@@ -48,11 +52,19 @@ final class EditProfileField: UITextField {
         
     }
     
-    func setTitle(_ title: String, text: String?, editable: Bool) {
+    func setTitle(_ title: String, text: String?, editable: Bool, valid: Bool?) {
         self.attributedPlaceholder = NSAttributedString(string: title,
                                                         attributes: [NSAttributedString.Key.foregroundColor: UIColor.black.withAlphaComponent(0.3)])
         self.text = text
         self.isUserInteractionEnabled = editable
+        
+        if valid == false {
+            self.layer.borderWidth = 1
+            self.layer.borderColor = UIColor(hexString: "#FFE0E0").cgColor
+            self.textColor = UIColor(hexString: "#FF6464")
+        } else {
+            design()
+        }
         
         if !editable {
             self.layer.borderWidth = 1
@@ -104,4 +116,28 @@ extension String {
         }
         return result
     }
+}
+
+
+// MARK: - CharacterSet
+extension CharacterSet {
+  /// "0123456789"
+  public static let arabicNumerals = CharacterSet(charactersIn: "0123456789")
+    
+  public static let russianLetters = CharacterSet(charactersIn: "абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ")
+}
+
+extension String {
+  /// Удалятся все символы (Unicode Scalar'ы) кроме символов из указанного CharacterSet. Например все кроме цифр
+  public func removingCharacters(except characterSet: CharacterSet) -> String {
+    let scalars = unicodeScalars.filter(characterSet.contains(_:))
+    return String(scalars)
+  }
+  
+  /// Удалятся все символы (Unicode Scalar'ы), которые соответствуют указанному CharacterSet.
+  /// Например все точки и запятые
+  public func removingCharacters(in characterSet: CharacterSet) -> String {
+    let scalars = unicodeScalars.filter { !characterSet.contains($0) }
+    return String(scalars)
+  }
 }

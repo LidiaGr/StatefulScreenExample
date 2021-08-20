@@ -25,29 +25,28 @@ extension EditProfilePresenter: IOTransformer {
                 firstName: TitledOptionalText(title: "Имя", maybeText: model.firstName),
                 lastName: TitledOptionalText(title: "Фамилия", maybeText: model.lastName),
                 email: TitledOptionalText(title: "E-mail", maybeText: model.email),
-                phone: TitledText(title: "Телефон", text: model.phone))
+                phone: TitledText(title: "Телефон", text: model.phone),
+                isFirstNameValid: model.isFirstNameValid,
+                isEmailValid: model.isEmailValid)
         }.asDriverIgnoringError()
         
-//        let isContentViewVisible = input.state.compactMap { state -> Void? in
-//          // После загрузки 1-й порции данных контент всегда виден
-//          switch state {
-//          case .isEditing : return Void()
-//          case .isUpdatingProfile, .updatingError: return nil
-//          }
-//        }
-//        .map { true }
-//        .startWith(false)
-//        .asDriverIgnoringError()
-        
-        let isButtomActive = input.state.compactMap { state -> Void? in
-            switch state {
-            case .isEditing: return Void()
-            case .isUpdatingProfile, .updatingError: return nil
-            }
+        let isContentViewVisible = input.state.compactMap { state -> Void? in
+          // После загрузки 1-й порции данных контент всегда виден
+          switch state {
+          case .isEditing : return Void()
+          case .isUpdatingProfile, .updatingError: return nil
+          }
         }
         .map { true }
         .startWith(false)
         .asDriverIgnoringError()
+        
+        let isButtomActive = input.state.compactMap { state -> Bool? in
+            switch state {
+            case .isEditing: return true
+            case .isUpdatingProfile, .updatingError: return nil
+            }
+        }.asDriverIgnoringError()
         
         let showError = input.state.map { state -> ErrorMessageViewModel? in
           switch state {
@@ -58,6 +57,35 @@ extension EditProfilePresenter: IOTransformer {
           }
         }.asSignal(onErrorJustReturn: nil)
         
-        return EditProfilePresenterOutput(viewModel: viewModel, isButtonActive: isButtomActive, showError: showError)
+        return EditProfilePresenterOutput(viewModel: viewModel,
+                                          isContentViewVisible: isContentViewVisible,
+                                          isButtonActive: isButtomActive,
+                                          showError: showError)
     }
 }
+
+//extension EditProfilePresenter {
+//    private enum Helper: Namespace {
+//        static func viewModel(_ input: EditProfileInteractorOutput) -> Driver<EditProfileViewModel> {
+//            return input.state.compactMap { state -> EditProfileViewModel? in
+//                switch state {
+//                case .isEditing:
+//                    let viewModel = input.screenDataModel.map { model -> EditProfileViewModel in
+//                        return EditProfileViewModel(
+//                            firstName: TitledOptionalText(title: "Имя", maybeText: model.firstName),
+//                            lastName: TitledOptionalText(title: "Фамилия", maybeText: model.lastName),
+//                            email: TitledOptionalText(title: "E-mail", maybeText: model.email),
+//                            phone: TitledText(title: "Телефон", text: model.phone),
+//                            isFirstNameValid: model.isFirstNameValid,
+//                            isEmailValid: model.isEmailValid)
+//                    }
+//                    return viewModel
+//                case .isUpdatingProfile, .updatingError:
+//                    return nil
+//                }
+//            }
+//            .distinctUntilChanged()
+//            .asDriverIgnoringError()
+//        }
+//    }
+//}

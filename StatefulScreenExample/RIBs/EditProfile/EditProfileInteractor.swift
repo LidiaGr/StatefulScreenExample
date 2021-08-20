@@ -76,7 +76,10 @@ final class EditProfileInteractor: PresentableInteractor<EditProfilePresentable>
         switch data.isFirstNameValid && data.isLastNameValid && data.isEmailValid {
         case true: return true
         case false:
+//            print("FirstName valid: \(data.isFirstNameValid)")
+//            print("Email valid: \(data.isEmailValid)")
             print("InvalidData")
+            _screenDataModel.accept(data)
             return false
         }
     }
@@ -132,15 +135,14 @@ extension EditProfileInteractor: IOTransformer {
         
         viewOutput.emailUpdateTap.asObservable()
             .skip(1)
-            .map { name in
-                name?.removingCharacters(in: .whitespacesAndNewlines)
+            .map { email in
+                email?.removingCharacters(in: .whitespacesAndNewlines).removingCharacters(in: .russianLetters)
             }
-            .distinctUntilChanged()
+//            .distinctUntilChanged()
             .subscribe(onNext: { text in
                 let profileData = ProfileData(firstName: self._screenDataModel.value.firstName, lastName: self._screenDataModel.value.lastName, email: text, phone: self._screenDataModel.value.phone)
                 let newModel = EditProfileScreenDataModel(with: profileData)
                 self._screenDataModel.accept(newModel)
-//                print(text)
             }).disposed(by: disposeBag)
     }
     
@@ -241,27 +243,5 @@ extension EditProfileInteractor {
         let updateProfile: (ProfileData) -> Void
 //        let closeEditProfile: VoidClosure
     }
-}
-
-
-// MARK: - CharacterSet
-extension CharacterSet {
-  /// "0123456789"
-  public static let arabicNumerals = CharacterSet(charactersIn: "0123456789")
-}
-
-extension String {
-  /// Удалятся все символы (Unicode Scalar'ы) кроме символов из указанного CharacterSet. Например все кроме цифр
-  public func removingCharacters(except characterSet: CharacterSet) -> String {
-    let scalars = unicodeScalars.filter(characterSet.contains(_:))
-    return String(scalars)
-  }
-  
-  /// Удалятся все символы (Unicode Scalar'ы), которые соответствуют указанному CharacterSet.
-  /// Например все точки и запятые
-  public func removingCharacters(in characterSet: CharacterSet) -> String {
-    let scalars = unicodeScalars.filter { !characterSet.contains($0) }
-    return String(scalars)
-  }
 }
 

@@ -59,7 +59,7 @@ extension EditProfileViewController {
     private func initialSetup() {
         title = "Редактировать"
         
-        errorMessageView.isVisible = true
+//        errorMessageView.isVisible = true
         view.addStretchedToBounds(subview: errorMessageView)
         
         /// StackView ContactFields
@@ -130,24 +130,26 @@ extension EditProfileViewController: BindableView {
             
 //            input.isContentViewVisible.drive(stackView.rx.isVisible)
             
-            input.isButtonActive.drive(saveButton.rx.isVisible)
+//            input.isButtonActive.drive(saveButton.rx.isVisible)
             
             input.viewModel.drive(onNext: { [weak self] model in
-                self?.firstNameField.setTitle(model.firstName.title, text: model.firstName.maybeText, editable: true)
+//                print("IsEmailValid \(model.isEmailValid)")
+                self?.firstNameField.setTitle(model.firstName.title, text: model.firstName.maybeText, editable: true, valid: model.isFirstNameValid)
+        
+                self?.lastNameField.setTitle(model.lastName.title, text: model.lastName.maybeText, editable: true, valid: nil)
                 
-                self?.lastNameField.setTitle(model.lastName.title, text: model.lastName.maybeText, editable: true)
+                self?.emailField.setTitle(model.email.title, text: model.email.maybeText, editable: true, valid: model.isEmailValid)
                 
-                self?.emailField.setTitle(model.email.title, text: model.email.maybeText, editable: true)
-                
-                self?.phoneField.setTitle(model.phone.title, text: model.phone.text.formatPhoneNumber(with: "+X XXX XXX XX XX"), editable: false)
+                self?.phoneField.setTitle(model.phone.title, text: model.phone.text.formatPhoneNumber(with: "+X XXX XXX XX XX"), editable: false, valid: nil)
             })
             
             input.showError.emit(onNext: { [unowned self] maybeViewModel in
                 self.errorMessageView.isVisible = (maybeViewModel != nil)
                 
                 if let viewModel = maybeViewModel {
-//                    self.saveButton.isHidden = true
-//                    self.stackView.isHidden = true
+                    self.saveButton.isHidden = true
+                    self.stackView.isHidden = true
+                    
                     self.errorMessageView.resetToEmptyState()
                     
                     self.errorMessageView.setTitle(viewModel.title, buttonTitle: viewModel.buttonTitle, action: {

@@ -50,7 +50,7 @@ struct EditProfileInteractorOutput {
 
 struct EditProfilePresenterOutput {
   let viewModel: Driver<EditProfileViewModel>
-//  let isContentViewVisible: Driver<Bool>
+  let isContentViewVisible: Driver<Bool>
 
   let isButtonActive: Driver<Bool>
     
@@ -79,6 +79,9 @@ struct EditProfileViewModel: Equatable {
     
     let email: TitledOptionalText
     let phone: TitledText
+    
+    var isFirstNameValid: Bool
+    var isEmailValid: Bool
 }
 
 
