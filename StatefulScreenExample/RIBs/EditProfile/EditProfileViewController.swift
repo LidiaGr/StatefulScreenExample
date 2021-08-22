@@ -165,7 +165,7 @@ extension EditProfileViewController: BindableView {
             input.showAlert.emit(onNext: { [unowned self] alert in
                 if alert == true {
                   let alert = UIAlertController(title: "Профиль успешно обновлён", message: nil, preferredStyle: .alert)
-                  alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+                    alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { _ in navigationController?.popViewController(animated: false) }))
                   
                   self.present(alert, animated: true, completion: nil)
                 }

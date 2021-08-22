@@ -47,7 +47,6 @@ final class EditProfileInteractor: PresentableInteractor<EditProfilePresentable>
     }
     
     private func validateData() -> Bool {
-        print("validatingData")
         
         var data = _screenDataModel.value
         
@@ -76,8 +75,6 @@ final class EditProfileInteractor: PresentableInteractor<EditProfilePresentable>
         switch data.isFirstNameValid && data.isLastNameValid && data.isEmailValid {
         case true: return true
         case false:
-//            print("FirstName valid: \(data.isFirstNameValid)")
-//            print("Email valid: \(data.isEmailValid)")
             print("InvalidData")
             _screenDataModel.accept(data)
             return false
@@ -197,10 +194,7 @@ extension EditProfileInteractor {
                 
                 /// isUpdatingProfile  => terminate
                 responses.updatingProfileSuccess.filteredByState(trait.readOnlyState, filter: byIsUpdatingProfileState)
-                    .do (afterNext: { _ in
-                        print("close")
-                        close()
-                    })
+                    .do (afterNext: { _ in close() })
                     .map { _ in State.terminating }
                 
                 /// isUpdatingProfile  => updatingError
