@@ -45,41 +45,6 @@ final class EditProfileInteractor: PresentableInteractor<EditProfilePresentable>
             }
         }
     }
-    
-    private func validateData() -> Bool {
-        
-        var data = _screenDataModel.value
-        
-        let validateEmail: (String) -> Void = { email in
-            switch email.contains("@") {
-            case true: data.isEmailValid = true
-            case false: data.isEmailValid = false
-            }
-        }
-        
-        switch data.firstName {
-        case "", nil: data.isFirstNameValid = false
-        default: data.isFirstNameValid = true
-        }
-        
-        switch data.lastName {
-//        case "": data.isLastNameValid = false
-        default: data.isLastNameValid = true
-        }
-        
-        switch data.email {
-        case "", nil: data.isEmailValid = true
-        default: validateEmail(data.email!)
-        }
-        
-        switch data.isFirstNameValid && data.isLastNameValid && data.isEmailValid {
-        case true: return true
-        case false:
-            print("InvalidData")
-            _screenDataModel.accept(data)
-            return false
-        }
-    }
 }
 
 // MARK: - IOTransformer
@@ -92,15 +57,13 @@ extension EditProfileInteractor: IOTransformer {
         removingInvalidSymbols(viewOutput: viewOutput)
         
         let requests = makeRequests()
-        let close : VoidClosure = { [weak self] in
-            self?.router?.routeToPrev()
-        }
+//        let close : VoidClosure = { [weak self] in
+//            self?.router?.routeToPrev()
+//        }
         
-        StateTransform.transform(trait: trait, viewOutput: viewOutput, screenDataModel: _screenDataModel.asObservable(), responses: responses, requests: requests, validation: validateData, close: close)
+        let output = StateTransform.transform(trait: trait, viewOutput: viewOutput, screenDataModel: _screenDataModel.asObservable(), responses: responses, requests: requests)
         
-//        bindStatefulRouting(responses, trait: trait)
-        
-        return EditProfileInteractorOutput(state: trait.readOnlyState, screenDataModel: _screenDataModel.asObservable())
+        return EditProfileInteractorOutput(state: trait.readOnlyState, screenDataModel: _screenDataModel.asObservable(), updatedSuccessfully: output.updatedSuccessfully)
     }
     
     private func removingInvalidSymbols(viewOutput: EditProfileViewOutput) {
@@ -109,12 +72,10 @@ extension EditProfileInteractor: IOTransformer {
             .map { name in
                 name?.removingCharacters(in: .whitespacesAndNewlines).removingCharacters(except: .letters)
             }
-//            .distinctUntilChanged()
             .subscribe(onNext: { text in
                 let profileData = ProfileData(firstName: text, lastName: self._screenDataModel.value.lastName, email: self._screenDataModel.value.email, phone: self._screenDataModel.value.phone)
                 let newModel = EditProfileScreenDataModel(with: profileData)
                 self._screenDataModel.accept(newModel)
-//                print(text)
             }).disposed(by: disposeBag)
         
         viewOutput.lastNameUpdateTap.asObservable()
@@ -122,12 +83,10 @@ extension EditProfileInteractor: IOTransformer {
             .map { name in
                 name?.removingCharacters(in: .whitespacesAndNewlines).removingCharacters(except: .letters)
             }
-//            .distinctUntilChanged()
             .subscribe(onNext: { text in
                 let profileData = ProfileData(firstName: self._screenDataModel.value.firstName, lastName: text, email: self._screenDataModel.value.email, phone: self._screenDataModel.value.phone)
                 let newModel = EditProfileScreenDataModel(with: profileData)
                 self._screenDataModel.accept(newModel)
-//                print(text)
             }).disposed(by: disposeBag)
         
         viewOutput.emailUpdateTap.asObservable()
@@ -135,24 +94,12 @@ extension EditProfileInteractor: IOTransformer {
             .map { email in
                 email?.removingCharacters(in: .whitespacesAndNewlines).removingCharacters(in: .russianLetters)
             }
-//            .distinctUntilChanged()
             .subscribe(onNext: { text in
                 let profileData = ProfileData(firstName: self._screenDataModel.value.firstName, lastName: self._screenDataModel.value.lastName, email: text, phone: self._screenDataModel.value.phone)
                 let newModel = EditProfileScreenDataModel(with: profileData)
                 self._screenDataModel.accept(newModel)
             }).disposed(by: disposeBag)
     }
-    
-//    private func bindStatefulRouting(_ responses: Responses, trait: StateTransformTrait<State>) {
-//
-//        //do after next замыкание к закрытию экрана
-//        responses.updatingProfileSuccess.filteredByState(trait.readOnlyState, filter: StateTransform.byIsUpdatingProfileState)
-//            .subscribe(onNext: { [weak self] in
-//                showStubAlert(title: "Профиль успешно обновлён")
-//                self?.router?.routeToPrev()
-//            })
-//            .disposed(by: trait.disposeBag)
-//    }
 }
 
 extension EditProfileInteractor {
@@ -172,30 +119,29 @@ extension EditProfileInteractor {
             guard case .isUpdatingProfile = state else { return false }; return true
         }
         
+        struct Output {
+            let updatedSuccessfully: Observable<Void>
+        }
+        
         static func transform(trait: StateTransformTrait<State>,
                                       viewOutput: EditProfileViewOutput,
                                       screenDataModel: Observable<EditProfileScreenDataModel>,
                                       responses: Responses,
-                                      requests: Requests,
-                                      validation: @escaping () -> Bool,
-                                      close: @escaping VoidClosure) {
+                                      requests: Requests) -> Output {
+            
+            let updatedSuccessfully = responses.updatingProfileSuccess.filteredByState(trait.readOnlyState, filter: byIsUpdatingProfileState)
+            
             StateTransform.transitions {
                 /// isEditing => isUpdatingProfile
                 viewOutput.saveButtonTap
                     .filteredByState(trait.readOnlyState, filter: byIsEditingState)
                     .withLatestFrom(screenDataModel)
-                    .filter { _ in validation() }
+                    .filter { screenDataModel in screenDataModel.isModelValid}
                     .do(afterNext: { screenDataModel in
                         let profileData = ProfileData(firstName: screenDataModel.firstName , lastName: screenDataModel.lastName, email: screenDataModel.email, phone: screenDataModel.phone)
-//                            print("SaveButtonTapped")
                             requests.updateProfile(profileData)
                     } )
                     .map { _ in State.isUpdatingProfile }
-                
-                /// isUpdatingProfile  => terminate
-                responses.updatingProfileSuccess.filteredByState(trait.readOnlyState, filter: byIsUpdatingProfileState)
-                    .do (afterNext: { _ in close() })
-                    .map { _ in State.terminating }
                 
                 /// isUpdatingProfile  => updatingError
                 responses.updatingProfileError.filteredByState(trait.readOnlyState, filter: byIsUpdatingProfileState)
@@ -213,6 +159,7 @@ extension EditProfileInteractor {
                     })
                     .map  { _ in State.isUpdatingProfile }
             }.bindToAndDisposedBy(trait: trait)
+            return Output(updatedSuccessfully: updatedSuccessfully)
         }
     }
 }
@@ -222,7 +169,6 @@ extension EditProfileInteractor {
 extension EditProfileInteractor {
     private func makeRequests() -> Requests {
         Requests(updateProfile: { [weak self] profile in self?.updateProfile(profile: profile) })
-                // closeEditProfile: { [weak self] in self?.router?.routeToPrev() })
     }
 }
 
@@ -236,7 +182,6 @@ extension EditProfileInteractor {
     
     private struct Requests {
         let updateProfile: (ProfileData) -> Void
-//        let closeEditProfile: VoidClosure
     }
 }
 

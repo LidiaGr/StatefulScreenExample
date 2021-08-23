@@ -30,50 +30,33 @@ extension EditProfilePresenter: IOTransformer {
                 isEmailValid: model.isEmailValid)
         }.asDriverIgnoringError()
         
-//        let isContentViewVisible = input.state.compactMap { state -> Void? in
-//          // После загрузки 1-й порции данных контент всегда виден
-//          switch state {
-//          case .isEditing : return Void()
-//          case .isUpdatingProfile, .updatingError, .terminating: return nil
-//          }
-//        }
-//        .map { true }
-//        .startWith(false)
-//        .asDriverIgnoringError()
+        let isContentVisible = input.state.map { state -> Bool in
+            switch state {
+            case .isEditing, .isUpdatingProfile: return true
+            case .updatingError: return false
+            }
+        }.asDriverIgnoringError()
         
-//        let isButtomActive = input.state.compactMap { state -> Bool? in
-//            switch state {
-//            case .isEditing: return true
-//            case .isUpdatingProfile, .updatingError, .terminating: return nil
-//            }
-//        }.asDriverIgnoringError()
+        let loadngIndicator = input.state.map { state -> Bool in
+            switch state {
+            case .isUpdatingProfile : return true
+            case .updatingError, .isEditing : return false
+            }
+        }.asSignalIgnoringError()
         
         let showError = input.state.map { state -> ErrorMessageViewModel? in
           switch state {
           case .updatingError(let error):
             return ErrorMessageViewModel(title: error.localizedDescription, buttonTitle: "Повторить")
-          case .isEditing, .isUpdatingProfile, .terminating:
+          case .isEditing, .isUpdatingProfile:
             return nil
           }
         }.asSignal(onErrorJustReturn: nil)
         
-        let showAlert = input.state.compactMap { state -> Bool in
-            switch state {
-            case .terminating : return true
-            case .isUpdatingProfile, .updatingError, .isEditing : return false
-            }
-        }.asSignal(onErrorJustReturn: nil)
-        
-        let loadngIndicator = input.state.compactMap { state -> Bool in
-            switch state {
-            case .isUpdatingProfile : return true
-            case .terminating, .updatingError, .isEditing : return false
-            }
-        }.asSignal(onErrorJustReturn: nil)
+        let showAlert = input.updatedSuccessfully.asSignalIgnoringError()
         
         return EditProfilePresenterOutput(viewModel: viewModel,
-//                                          isContentViewVisible: isContentViewVisible,
-//                                          isButtonActive: isButtomActive,
+                                          isContentVisible: isContentVisible,
                                           loadingIndicator: loadngIndicator,
                                           showError: showError,
                                           showAlert: showAlert)
@@ -83,19 +66,18 @@ extension EditProfilePresenter: IOTransformer {
 //extension EditProfilePresenter {
 //    private enum Helper: Namespace {
 //        static func viewModel(_ input: EditProfileInteractorOutput) -> Driver<EditProfileViewModel> {
-//            return input.state.compactMap { state -> EditProfileViewModel? in
+//            return input.state
+//                .withLatestFrom(input.screenDataModel, resultSelector: { ($0, $1) })
+//                .compactMap { state, model -> EditProfileViewModel? in
 //                switch state {
 //                case .isEditing:
-//                    let viewModel = input.screenDataModel.map { model -> EditProfileViewModel in
-//                        return EditProfileViewModel(
-//                            firstName: TitledOptionalText(title: "Имя", maybeText: model.firstName),
-//                            lastName: TitledOptionalText(title: "Фамилия", maybeText: model.lastName),
-//                            email: TitledOptionalText(title: "E-mail", maybeText: model.email),
-//                            phone: TitledText(title: "Телефон", text: model.phone),
-//                            isFirstNameValid: model.isFirstNameValid,
-//                            isEmailValid: model.isEmailValid)
-//                    }
-//                    return viewModel
+//                    return EditProfileViewModel(
+//                        firstName: TitledOptionalText(title: "Имя", maybeText: model.firstName),
+//                        lastName: TitledOptionalText(title: "Фамилия", maybeText: model.lastName),
+//                        email: TitledOptionalText(title: "E-mail", maybeText: model.email),
+//                        phone: TitledText(title: "Телефон", text: model.phone),
+//                        isFirstNameValid: model.isFirstNameValid,
+//                        isEmailValid: model.isEmailValid)
 //                case .isUpdatingProfile, .updatingError:
 //                    return nil
 //                }

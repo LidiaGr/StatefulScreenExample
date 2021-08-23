@@ -59,7 +59,6 @@ extension EditProfileViewController {
     private func initialSetup() {
         title = "Редактировать"
         
-//        errorMessageView.isVisible = true
         view.addStretchedToBounds(subview: errorMessageView)
         view.addStretchedToBounds(subview: spinner)
         
@@ -89,32 +88,6 @@ extension EditProfileViewController {
         saveButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
         saveButton.heightAnchor.constraint(equalToConstant: 56).isActive = true
     }
-    
-//    private func tapGesturesInitialSetup() {
-//        do {
-//            let tapGesture = UITapGestureRecognizer()
-//            firstNameField.addGestureRecognizer(tapGesture)
-//            tapGesture.rx.event.mapAsVoid().bind(to: viewOutput.$nameUpdateTap).disposed(by: disposeBag)
-//        }
-//
-//        do {
-//            let tapGesture = UITapGestureRecognizer()
-//            lastNameField.addGestureRecognizer(tapGesture)
-//            tapGesture.rx.event.mapAsVoid().bind(to: viewOutput.$lastNameUpdateTap).disposed(by: disposeBag)
-//        }
-//
-//        do {
-//            let tapGesture = UITapGestureRecognizer()
-//            emailField.addGestureRecognizer(tapGesture)
-//            tapGesture.rx.event.mapAsVoid().bind(to: viewOutput.$emailUpdateTap).disposed(by: disposeBag)
-//        }
-//
-//        do {
-//            let tapGesture = UITapGestureRecognizer()
-//            saveButton.addGestureRecognizer(tapGesture)
-//            tapGesture.rx.event.mapAsVoid().bind(to: viewOutput.$saveButtonTap).disposed(by: disposeBag)
-//        }
-//    }
 }
 
 // MARK: - BindableView
@@ -124,17 +97,12 @@ extension EditProfileViewController: BindableView {
     func getOutput() -> EditProfileViewOutput { viewOutput }
     
     func bindWith(_ input: EditProfilePresenterOutput) {
-//        bindViewModel(input.viewModel)
-        
-        
         disposeBag.insert {
             
-//            input.isContentViewVisible.drive(stackView.rx.isVisible)
-            
-//            input.isButtonActive.drive(saveButton.rx.isVisible)
+            input.isContentVisible.drive(stackView.rx.isVisible)
+            input.isContentVisible.drive(saveButton.rx.isVisible)
             
             input.viewModel.drive(onNext: { [weak self] model in
-//                print("IsEmailValid \(model.isEmailValid)")
                 self?.firstNameField.setTitle(model.firstName.title, text: model.firstName.maybeText, editable: true, valid: model.isFirstNameValid)
         
                 self?.lastNameField.setTitle(model.lastName.title, text: model.lastName.maybeText, editable: true, valid: nil)
@@ -148,27 +116,19 @@ extension EditProfileViewController: BindableView {
                 self.errorMessageView.isVisible = (maybeViewModel != nil)
                 
                 if let viewModel = maybeViewModel {
-                    self.saveButton.isHidden = true
-                    self.stackView.isHidden = true
-                    
                     self.errorMessageView.resetToEmptyState()
                     
                     self.errorMessageView.setTitle(viewModel.title, buttonTitle: viewModel.buttonTitle, action: {
                         self.viewOutput.$retryButtonTap.accept(Void())
                     })
-                } else {
-                    self.saveButton.isVisible = true
-                    self.stackView.isVisible = true
                 }
             })
             
-            input.showAlert.emit(onNext: { [unowned self] alert in
-                if alert == true {
+            input.showAlert.emit(onNext: { [unowned self] _ in
                   let alert = UIAlertController(title: "Профиль успешно обновлён", message: nil, preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { _ in navigationController?.popViewController(animated: false) }))
                   
                   self.present(alert, animated: true, completion: nil)
-                }
             } )
             
             input.loadingIndicator.emit(onNext: { [unowned self] indicator in
