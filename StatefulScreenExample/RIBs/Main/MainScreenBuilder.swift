@@ -17,6 +17,8 @@ final class MainScreenBuilder: Builder<RootDependency>, MainScreenBuildable {
 
     return MainScreenRouter(interactor: interactor,
                             viewController: viewController,
-                            profileBuilder: ProfileBuilder(dependency: dependency))
+                            profileBuilder: ProfileBuilder(dependency: dependency),
+                            editProfileBuilder: EditProfileBuilder(dependency: dependency),
+                            authorizationBuilder: AuthorizationBuilder(dependency: dependency))
   }
 }

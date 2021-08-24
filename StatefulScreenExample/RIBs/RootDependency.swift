@@ -10,4 +10,6 @@ import RIBs
 
 protocol RootDependency: Dependency {
   var profileService: ProfileService { get }
+  var editProfileService: EditProfileService { get }
+  var authorizationService: AuthorizationService { get }
 }

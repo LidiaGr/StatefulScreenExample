@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="vKn-9P-Ny8">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Authorization View Controller-->
+        <scene sceneID="GzV-lN-fg7">
+            <objects>
+                <viewController storyboardIdentifier="AuthorizationViewController" id="vKn-9P-Ny8" customClass="AuthorizationViewController" customModule="StatefulScreenExample" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="BNZ-bO-rhc">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Будем звонить только, если не дойдут уведомления или смс" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LYH-YM-dR7">
+                                <rect key="frame" x="35" y="43" width="305" height="36"/>
+                                <accessibility key="accessibilityConfiguration">
+                                    <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
+                                </accessibility>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="36" id="0Rt-i6-zdI"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                <color key="highlightedColor" red="0.67450980392156867" green="0.66666666666666663" blue="0.69803921568627447" alpha="1" colorSpace="calibratedRGB"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="nh4-Zt-xUZ">
+                                <rect key="frame" x="16" y="95" width="343" height="46"/>
+                                <color key="backgroundColor" red="0.96862745098039216" green="0.96862745098039216" blue="0.96862745098039216" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="46" id="Bdt-u9-eAU"/>
+                                    <constraint firstAttribute="height" constant="46" id="EVQ-uf-jhi"/>
+                                </constraints>
+                                <color key="textColor" red="0.30980392156862746" green="0.30588235294117649" blue="0.3411764705882353" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="12"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </textField>
+                            <button opaque="NO" clipsSubviews="YES" contentMode="bottom" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g7V-aE-5Pa">
+                                <rect key="frame" x="8" y="569" width="359" height="56"/>
+                                <color key="backgroundColor" red="0.20392156862745098" green="0.73725490196078436" blue="0.28235294117647058" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="56" id="CCV-mQ-2iB"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <state key="normal" title="Получить код">
+                                    <color key="titleColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="12"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Введите номер телефона" textAlignment="center" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vj0-aF-5uO">
+                                <rect key="frame" x="60" y="8" width="255" height="27"/>
+                                <accessibility key="accessibilityConfiguration">
+                                    <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
+                                </accessibility>
+                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                <nil key="textColor"/>
+                                <color key="highlightedColor" red="0.070588235294117646" green="0.070588235294117646" blue="0.078431372549019607" alpha="1" colorSpace="calibratedRGB"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="HgA-Aw-ocO"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="HgA-Aw-ocO" firstAttribute="trailing" secondItem="nh4-Zt-xUZ" secondAttribute="trailing" constant="16" id="5uw-AL-1R6"/>
+                            <constraint firstItem="nh4-Zt-xUZ" firstAttribute="top" secondItem="LYH-YM-dR7" secondAttribute="bottom" constant="16" id="DTI-sk-eUM"/>
+                            <constraint firstItem="Vj0-aF-5uO" firstAttribute="centerX" secondItem="LYH-YM-dR7" secondAttribute="centerX" id="E9c-JS-U6Q"/>
+                            <constraint firstItem="LYH-YM-dR7" firstAttribute="top" secondItem="Vj0-aF-5uO" secondAttribute="bottom" constant="8" id="Fie-Bo-r0a"/>
+                            <constraint firstAttribute="bottom" secondItem="g7V-aE-5Pa" secondAttribute="bottom" constant="42" id="Rcp-sO-T2Z"/>
+                            <constraint firstItem="g7V-aE-5Pa" firstAttribute="leading" secondItem="HgA-Aw-ocO" secondAttribute="leading" constant="8" id="TO0-3l-d13"/>
+                            <constraint firstItem="LYH-YM-dR7" firstAttribute="leading" secondItem="BNZ-bO-rhc" secondAttribute="leading" constant="35" id="TSC-br-Dlm"/>
+                            <constraint firstItem="nh4-Zt-xUZ" firstAttribute="leading" secondItem="HgA-Aw-ocO" secondAttribute="leading" constant="16" id="XgX-QD-P7l"/>
+                            <constraint firstItem="Vj0-aF-5uO" firstAttribute="top" secondItem="HgA-Aw-ocO" secondAttribute="top" constant="8" id="a1e-zS-lG7"/>
+                            <constraint firstItem="nh4-Zt-xUZ" firstAttribute="centerX" secondItem="LYH-YM-dR7" secondAttribute="centerX" id="qO0-X3-sjJ"/>
+                            <constraint firstItem="HgA-Aw-ocO" firstAttribute="trailing" secondItem="g7V-aE-5Pa" secondAttribute="trailing" constant="8" id="xOe-4u-ZeW"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="phoneNumberField" destination="nh4-Zt-xUZ" id="EFr-cF-Uwz"/>
+                        <outlet property="sendCodeButton" destination="g7V-aE-5Pa" id="UnA-wJ-xn3"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="k0X-am-vwV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="244" y="204.64767616191907"/>
+        </scene>
+    </scenes>
+</document>
