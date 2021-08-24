@@ -11,6 +11,7 @@ import RIBs
 final class AppComponent: Component<EmptyDependency>, RootDependency {
   let profileService: ProfileService = ProfileServiceImp()
   let editProfileService: EditProfileService = EditProfileServiceImp()
+  let authorizationService: AuthorizationService =  AuthorizationServiceImp()
   
   init() {
     super.init(dependency: EmptyComponent())

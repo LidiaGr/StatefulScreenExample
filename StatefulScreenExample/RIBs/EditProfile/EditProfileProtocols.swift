@@ -118,7 +118,7 @@ struct EditProfileScreenDataModel {
         isFirstNameValid && isEmailValid
     }
     
-    init(with profile: ProfileData, isFirstNameValid: Bool = true, isLastNameValid: Bool = true, isEmailValid: Bool = true) {
+    init(with profile: ProfileData) {
         firstName = profile.firstName
         lastName = profile.lastName
         email = profile.email
@@ -128,7 +128,6 @@ struct EditProfileScreenDataModel {
 
 // MARK: - EditProfileInteractorState
 
-/// L - Loading, D  - Data, E - Error
 enum EditProfileInteractorState {
   case isEditing
   case isUpdatingProfile

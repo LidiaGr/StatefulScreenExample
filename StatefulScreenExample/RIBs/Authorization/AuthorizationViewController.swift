@@ -8,30 +8,57 @@
 
 import RIBs
 import RxSwift
+import RxCocoa
 import UIKit
 
-protocol AuthorizationPresentableListener: AnyObject {
-    // TODO: Declare properties and methods that the view controller can invoke to perform
-    // business logic, such as signIn(). This protocol is implemented by the corresponding
-    // interactor class.
-}
-
 final class AuthorizationViewController: UIViewController, AuthorizationViewControllable {
-
-    weak var listener: AuthorizationPresentableListener?
     
     @IBOutlet private weak var phoneNumberField: AuthorizationField!
     @IBOutlet private weak var sendCodeButton: UIButton!
     
+    // MARK: View Events
+    
+    private let viewOutput = ViewOutput()
+    
+    private let disposeBag = DisposeBag()
+    
     override func viewDidLoad() {
-      super.viewDidLoad()
-      initialSetup()
+        super.viewDidLoad()
+        view.backgroundColor = .systemBackground
+        
+        initialSetup()
+//        tapGesturesInitialSetup()
     }
 }
 
 extension AuthorizationViewController {
     private func initialSetup() {
         phoneNumberField.design()
+    }
+}
+
+// MARK: - BindableView
+
+extension AuthorizationViewController: BindableView {
+    
+    func getOutput() -> AuthorizationViewOutput { viewOutput }
+    
+    func bindWith(_ input: AuthorizationPresenterOutput) {
+        
+    }
+}
+
+// MARK: - View Output
+
+extension AuthorizationViewController {
+    private struct ViewOutput: AuthorizationViewOutput {
+        
+        @PublishControlEvent var phoneNumberUpdateTap: ControlEvent<String?>
+        
+        @PublishControlEvent var sendCodeButtonTap: ControlEvent<Void>
+        
+        @PublishControlEvent var retryButtonTap: ControlEvent<Void>
+        
     }
 }
 

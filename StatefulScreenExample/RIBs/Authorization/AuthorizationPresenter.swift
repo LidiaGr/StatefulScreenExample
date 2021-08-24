@@ -10,6 +10,10 @@ import RIBs
 import RxCocoa
 import RxSwift
 
-final class AuthorizationPresenter: AuthorizationPresentable {
-    var listener: AuthorizationPresentableListener?
+final class AuthorizationPresenter: AuthorizationPresentable { }
+
+extension AuthorizationPresenter: IOTransformer {
+    func transform(input: AuthorizationInteractorOutput) -> AuthorizationPresenterOutput {
+        return AuthorizationPresenterOutput()
+    }
 }

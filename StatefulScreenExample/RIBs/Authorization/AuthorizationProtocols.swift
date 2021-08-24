@@ -6,4 +6,82 @@
 //  Copyright © 2021 IgnatyevProd. All rights reserved.
 //
 
-import Foundation
+import RIBs
+import RxCocoa
+import RxSwift
+
+// MARK: - Builder
+
+protocol AuthorizationDependency: Dependency {
+    // TODO: Declare the set of dependencies required by this RIB, but cannot be
+    // created by this RIB.
+}
+
+final class AuthorizationComponent: Component<AuthorizationDependency> {
+
+    // TODO: Declare 'fileprivate' dependencies that are only used by this RIB.
+}
+
+protocol AuthorizationBuildable: Buildable {
+    func build() -> AuthorizationRouting
+}
+
+// MARK: - Router
+
+protocol AuthorizationInteractable: Interactable {
+    var router: AuthorizationRouting? { get set }
+}
+
+protocol AuthorizationViewControllable: ViewControllable {
+    // TODO: Declare methods the router invokes to manipulate the view hierarchy.
+}
+
+// MARK: - Interactor
+
+protocol AuthorizationRouting: ViewableRouting {
+    // TODO: Declare methods the interactor can invoke to manage sub-tree via the router.
+}
+
+protocol AuthorizationPresentable: Presentable {
+    // TODO: Declare methods the interactor can invoke the presenter to present data.
+}
+
+// MARK: Outputs
+
+struct AuthorizationInteractorOutput {
+    let state: Observable<AuthorizationInteractorState>
+//    let screenDataModel: Observable<EditProfileScreenDataModel>
+//    let phone: Observable<String?>
+//    let codeReceived: Observable<Void>
+}
+
+struct AuthorizationPresenterOutput {
+//  let viewModel: Driver<EditProfileViewModel>
+
+//  let isButtonActive: Driver<Bool>
+    
+//  let loadingIndicator: Signal<Bool>
+    
+  /// nil означает что нужно спрятать сообщение об ошибке
+//  let showError: Signal<ErrorMessageViewModel?>
+}
+
+protocol AuthorizationViewOutput {
+  var phoneNumberUpdateTap: ControlEvent<String?> { get }
+    
+  var sendCodeButtonTap: ControlEvent<Void> { get }
+    
+  var retryButtonTap: ControlEvent<Void> { get }
+}
+
+//struct AuthorizationScreenDataModel {
+//    let phone: String
+//}
+
+// MARK: - AuthorizationInteractorState
+
+enum AuthorizationInteractorState {
+  case userInput
+  case isWaitingForCode
+  case receivingCodeError(NetworkError)
+}

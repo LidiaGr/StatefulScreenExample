@@ -8,15 +8,6 @@
 
 import RIBs
 
-protocol AuthorizationInteractable: Interactable {
-    var router: AuthorizationRouting? { get set }
-    var listener: AuthorizationListener? { get set }
-}
-
-protocol AuthorizationViewControllable: ViewControllable {
-    // TODO: Declare methods the router invokes to manipulate the view hierarchy.
-}
-
 final class AuthorizationRouter: ViewableRouter<AuthorizationInteractable, AuthorizationViewControllable>, AuthorizationRouting {
 
     // TODO: Constructor inject child builder protocols to allow building children.

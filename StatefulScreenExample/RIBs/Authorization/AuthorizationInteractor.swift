@@ -8,39 +8,67 @@
 
 import RIBs
 import RxSwift
+import RxCocoa
 
-protocol AuthorizationRouting: ViewableRouting {
-    // TODO: Declare methods the interactor can invoke to manage sub-tree via the router.
-}
+final class AuthorizationInteractor: PresentableInteractor<AuthorizationPresentable>, AuthorizationInteractable {
 
-protocol AuthorizationPresentable: Presentable {
-    var listener: AuthorizationPresentableListener? { get set }
-    // TODO: Declare methods the interactor can invoke the presenter to present data.
-}
-
-protocol AuthorizationListener: AnyObject {
-    // TODO: Declare methods the interactor can invoke to communicate with other RIBs.
-}
-
-final class AuthorizationInteractor: PresentableInteractor<AuthorizationPresentable>, AuthorizationInteractable, AuthorizationPresentableListener {
-
+    // MARK: Dependencies
+    
     weak var router: AuthorizationRouting?
-    weak var listener: AuthorizationListener?
-
-    // TODO: Add additional dependencies to constructor. Do not perform any logic
-    // in constructor.
-    override init(presenter: AuthorizationPresentable) {
+    private let authorizationService: AuthorizationService
+    
+    // MARK: Internals
+    
+    private let _state = BehaviorRelay<AuthorizationInteractorState>(value: .userInput)
+    
+//    private let _screenDataModel: BehaviorRelay<EditProfileScreenDataModel>
+    
+    private let responses = Responses()
+    
+    private let disposeBag = DisposeBag()
+    
+    init(presenter: AuthorizationPresentable, authorizationService: AuthorizationService) {
+        self.authorizationService = authorizationService
         super.init(presenter: presenter)
-        presenter.listener = self
     }
 
-    override func didBecomeActive() {
-        super.didBecomeActive()
-        // TODO: Implement business logic here.
+    private func sendSMSCode() {
+        authorizationService.sendSMSCode() { [weak self] result in
+            switch result {
+            case .success: self?.responses.$codeReceivedSuccessfully.accept(Void())
+            case .failure(let error): self?.responses.$codeReceivingError.accept(error)
+            }
+        }
     }
+}
 
-    override func willResignActive() {
-        super.willResignActive()
-        // TODO: Pause any business logic.
+// MARK: - IOTransformer
+
+extension AuthorizationInteractor: IOTransformer {
+    func transform(input viewOutput: AuthorizationViewOutput) -> AuthorizationInteractorOutput {
+        let trait = StateTransformTrait(_state: _state, disposeBag: disposeBag)
+        
+        return AuthorizationInteractorOutput(state: trait.readOnlyState)
+    }
+}
+
+// MARK: - Help Methods
+
+extension AuthorizationInteractor {
+    private func makeRequests() -> Requests {
+        Requests(sendSMSCode: { [weak self] in self?.sendSMSCode() })
+    }
+}
+
+// MARK: - Nested Types
+
+extension AuthorizationInteractor {
+    private struct Responses {
+        @PublishObservable var codeReceivedSuccessfully: Observable<Void>
+        @PublishObservable var codeReceivingError: Observable<Error>
+    }
+    
+    private struct Requests {
+        let sendSMSCode: () -> Void
     }
 }

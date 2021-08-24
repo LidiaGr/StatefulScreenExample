@@ -25,6 +25,8 @@
 		59DEFDD926D4E6BB0010933E /* AuthorizationProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59DEFDD826D4E6BB0010933E /* AuthorizationProtocols.swift */; };
 		59DEFDDB26D4E6DF0010933E /* AuthorizationPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59DEFDDA26D4E6DF0010933E /* AuthorizationPresenter.swift */; };
 		59DEFDDE26D506A20010933E /* AuthorizationField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59DEFDDD26D506A20010933E /* AuthorizationField.swift */; };
+		59DEFDE026D5359D0010933E /* AuthorizationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59DEFDDF26D5359D0010933E /* AuthorizationService.swift */; };
+		59DEFDE226D535B00010933E /* AuthorizationServiceImp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59DEFDE126D535B00010933E /* AuthorizationServiceImp.swift */; };
 		8E5925D724812927002623FB /* PublishObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5925D624812927002623FB /* PublishObservable.swift */; };
 		8E5925D924812D75002623FB /* Observable+LoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5925D824812D75002623FB /* Observable+LoadingIndicator.swift */; };
 		8E5925DB24812DD5002623FB /* LoadingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5925DA24812DD5002623FB /* LoadingState.swift */; };
@@ -121,6 +123,8 @@
 		59DEFDD826D4E6BB0010933E /* AuthorizationProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationProtocols.swift; sourceTree = "<group>"; };
 		59DEFDDA26D4E6DF0010933E /* AuthorizationPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationPresenter.swift; sourceTree = "<group>"; };
 		59DEFDDD26D506A20010933E /* AuthorizationField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationField.swift; sourceTree = "<group>"; };
+		59DEFDDF26D5359D0010933E /* AuthorizationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationService.swift; sourceTree = "<group>"; };
+		59DEFDE126D535B00010933E /* AuthorizationServiceImp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationServiceImp.swift; sourceTree = "<group>"; };
 		8E5925D624812927002623FB /* PublishObservable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishObservable.swift; sourceTree = "<group>"; };
 		8E5925D824812D75002623FB /* Observable+LoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Observable+LoadingIndicator.swift"; sourceTree = "<group>"; };
 		8E5925DA24812DD5002623FB /* LoadingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingState.swift; sourceTree = "<group>"; };
@@ -224,7 +228,7 @@
 		595FE92526C6950400D55EAF /* EditProfile */ = {
 			isa = PBXGroup;
 			children = (
-				5981540026C6BA4300B0583A /* Model */,
+				5981540026C6BA4300B0583A /* Service */,
 				598153FB26C6A93000B0583A /* Views */,
 				595FE92E26C69AB100D55EAF /* EditProfileProtocols.swift */,
 				595FE92826C6952300D55EAF /* EditProfileBuilder.swift */,
@@ -245,13 +249,13 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		5981540026C6BA4300B0583A /* Model */ = {
+		5981540026C6BA4300B0583A /* Service */ = {
 			isa = PBXGroup;
 			children = (
 				5981540126C6BA5900B0583A /* EditProfileService.swift */,
 				5981540326C6BB0C00B0583A /* EditProfileServiceImp.swift */,
 			);
-			path = Model;
+			path = Service;
 			sourceTree = "<group>";
 		};
 		59DEFDCD26D4E6480010933E /* Authorization */ = {
@@ -441,6 +445,8 @@
 			children = (
 				8EFD7C19239BF0A1002EBA60 /* ProfileService.swift */,
 				8EFD7C1B239BF15C002EBA60 /* ProfileServiceImp.swift */,
+				59DEFDDF26D5359D0010933E /* AuthorizationService.swift */,
+				59DEFDE126D535B00010933E /* AuthorizationServiceImp.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -643,6 +649,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				59DEFDE226D535B00010933E /* AuthorizationServiceImp.swift in Sources */,
 				59DEFDD526D4E6780010933E /* AuthorizationViewController.swift in Sources */,
 				595FE92B26C6952300D55EAF /* EditProfileViewController.swift in Sources */,
 				8EFD7C10239BF000002EBA60 /* ProfileStackViewController.swift in Sources */,
@@ -694,6 +701,7 @@
 				8EFD7C1E239BF582002EBA60 /* Tooling.swift in Sources */,
 				8E73C8C7239C5B01000A7F8A /* RootNavigationRouter.swift in Sources */,
 				8E5925E324813924002623FB /* DenestifyTuple.swift in Sources */,
+				59DEFDE026D5359D0010933E /* AuthorizationService.swift in Sources */,
 				8E73C8A5239C45AE000A7F8A /* ContactFieldView.swift in Sources */,
 				8EFD7C13239BF000002EBA60 /* ProfileInteractor.swift in Sources */,
 				8E73C8CB239C5B01000A7F8A /* RootNavigationBuilder.swift in Sources */,

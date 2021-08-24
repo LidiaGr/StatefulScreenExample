@@ -8,22 +8,6 @@
 
 import RIBs
 
-protocol AuthorizationDependency: Dependency {
-    // TODO: Declare the set of dependencies required by this RIB, but cannot be
-    // created by this RIB.
-}
-
-final class AuthorizationComponent: Component<AuthorizationDependency> {
-
-    // TODO: Declare 'fileprivate' dependencies that are only used by this RIB.
-}
-
-// MARK: - Builder
-
-protocol AuthorizationBuildable: Buildable {
-    func build() -> AuthorizationRouting
-}
-
 final class AuthorizationBuilder: Builder<RootDependency>, AuthorizationBuildable {
 
 
@@ -32,7 +16,9 @@ final class AuthorizationBuilder: Builder<RootDependency>, AuthorizationBuildabl
         let viewController = AuthorizationViewController.instantiateFromStoryboard()
         
         let presenter = AuthorizationPresenter()
-        let interactor = AuthorizationInteractor(presenter: presenter)
+        let interactor = AuthorizationInteractor(presenter: presenter, authorizationService: dependency.authorizationService)
+        
+        VIPBinder.bind(view: viewController, interactor: interactor, presenter: presenter)
         
         return AuthorizationRouter(interactor: interactor, viewController: viewController)
     }
