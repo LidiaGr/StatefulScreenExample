@@ -6,4 +6,10 @@
 //  Copyright © 2021 IgnatyevProd. All rights reserved.
 //
 
-import Foundation
+import RIBs
+import RxCocoa
+import RxSwift
+
+final class AuthorizationPresenter: AuthorizationPresentable {
+    var listener: AuthorizationPresentableListener?
+}

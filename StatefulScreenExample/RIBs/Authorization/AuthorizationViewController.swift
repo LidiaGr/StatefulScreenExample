@@ -16,7 +16,25 @@ protocol AuthorizationPresentableListener: AnyObject {
     // interactor class.
 }
 
-final class AuthorizationViewController: UIViewController, AuthorizationPresentable, AuthorizationViewControllable {
+final class AuthorizationViewController: UIViewController, AuthorizationViewControllable {
 
     weak var listener: AuthorizationPresentableListener?
+    
+    @IBOutlet private weak var phoneNumberField: AuthorizationField!
+    @IBOutlet private weak var sendCodeButton: UIButton!
+    
+    override func viewDidLoad() {
+      super.viewDidLoad()
+      initialSetup()
+    }
 }
+
+extension AuthorizationViewController {
+    private func initialSetup() {
+        phoneNumberField.design()
+    }
+}
+
+// MARK: - RibStoryboardInstantiatable
+
+extension AuthorizationViewController: RibStoryboardInstantiatable {}

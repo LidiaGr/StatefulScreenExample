@@ -24,6 +24,7 @@
 		59DEFDD726D4E6780010933E /* AuthorizationInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59DEFDD226D4E6780010933E /* AuthorizationInteractor.swift */; };
 		59DEFDD926D4E6BB0010933E /* AuthorizationProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59DEFDD826D4E6BB0010933E /* AuthorizationProtocols.swift */; };
 		59DEFDDB26D4E6DF0010933E /* AuthorizationPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59DEFDDA26D4E6DF0010933E /* AuthorizationPresenter.swift */; };
+		59DEFDDE26D506A20010933E /* AuthorizationField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59DEFDDD26D506A20010933E /* AuthorizationField.swift */; };
 		8E5925D724812927002623FB /* PublishObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5925D624812927002623FB /* PublishObservable.swift */; };
 		8E5925D924812D75002623FB /* Observable+LoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5925D824812D75002623FB /* Observable+LoadingIndicator.swift */; };
 		8E5925DB24812DD5002623FB /* LoadingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5925DA24812DD5002623FB /* LoadingState.swift */; };
@@ -119,6 +120,7 @@
 		59DEFDD226D4E6780010933E /* AuthorizationInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationInteractor.swift; sourceTree = "<group>"; };
 		59DEFDD826D4E6BB0010933E /* AuthorizationProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationProtocols.swift; sourceTree = "<group>"; };
 		59DEFDDA26D4E6DF0010933E /* AuthorizationPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationPresenter.swift; sourceTree = "<group>"; };
+		59DEFDDD26D506A20010933E /* AuthorizationField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationField.swift; sourceTree = "<group>"; };
 		8E5925D624812927002623FB /* PublishObservable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishObservable.swift; sourceTree = "<group>"; };
 		8E5925D824812D75002623FB /* Observable+LoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Observable+LoadingIndicator.swift"; sourceTree = "<group>"; };
 		8E5925DA24812DD5002623FB /* LoadingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingState.swift; sourceTree = "<group>"; };
@@ -158,7 +160,7 @@
 		8E73C8DD239C64D9000A7F8A /* MainScreenRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenRouter.swift; sourceTree = "<group>"; };
 		8E73C8DE239C64D9000A7F8A /* MainScreenViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MainScreenViewController.storyboard; sourceTree = "<group>"; };
 		8E73C8DF239C64D9000A7F8A /* MainScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenViewController.swift; sourceTree = "<group>"; };
-		8E73C8E0239C64D9000A7F8A /* MainScreenProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenProtocols.swift; sourceTree = "<group>"; };
+		8E73C8E0239C64D9000A7F8A /* MainScreenProtocols.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = MainScreenProtocols.swift; sourceTree = "<group>"; tabWidth = 2; };
 		8E73C8E1239C64D9000A7F8A /* MainScreenBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenBuilder.swift; sourceTree = "<group>"; };
 		8E73C8E2239C64D9000A7F8A /* MainScreenInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenInteractor.swift; sourceTree = "<group>"; };
 		8E73C8F0239C6D13000A7F8A /* Router+Detach.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Router+Detach.swift"; sourceTree = "<group>"; };
@@ -255,6 +257,7 @@
 		59DEFDCD26D4E6480010933E /* Authorization */ = {
 			isa = PBXGroup;
 			children = (
+				59DEFDDC26D506810010933E /* Views */,
 				59DEFDD826D4E6BB0010933E /* AuthorizationProtocols.swift */,
 				59DEFDD126D4E6780010933E /* AuthorizationBuilder.swift */,
 				59DEFDCE26D4E6780010933E /* AuthorizationRouter.swift */,
@@ -264,6 +267,14 @@
 				59DEFDCF26D4E6780010933E /* AuthorizationViewController.storyboard */,
 			);
 			path = Authorization;
+			sourceTree = "<group>";
+		};
+		59DEFDDC26D506810010933E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				59DEFDDD26D506A20010933E /* AuthorizationField.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		8E71C12E23999E920051C45E = {
@@ -658,6 +669,7 @@
 				8E73C8BF239C5A46000A7F8A /* AppComponent.swift in Sources */,
 				8EFD7C25239BF77A002EBA60 /* VIPBinder.swift in Sources */,
 				59DEFDD326D4E6780010933E /* AuthorizationRouter.swift in Sources */,
+				59DEFDDE26D506A20010933E /* AuthorizationField.swift in Sources */,
 				595FE93126C69E7800D55EAF /* EditProfilePresenter.swift in Sources */,
 				8E5925DB24812DD5002623FB /* LoadingState.swift in Sources */,
 				8E73C8E9239C64D9000A7F8A /* MainScreenInteractor.swift in Sources */,

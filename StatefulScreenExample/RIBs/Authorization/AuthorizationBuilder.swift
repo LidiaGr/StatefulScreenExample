@@ -21,20 +21,19 @@ final class AuthorizationComponent: Component<AuthorizationDependency> {
 // MARK: - Builder
 
 protocol AuthorizationBuildable: Buildable {
-    func build(withListener listener: AuthorizationListener) -> AuthorizationRouting
+    func build() -> AuthorizationRouting
 }
 
-final class AuthorizationBuilder: Builder<AuthorizationDependency>, AuthorizationBuildable {
+final class AuthorizationBuilder: Builder<RootDependency>, AuthorizationBuildable {
 
-    override init(dependency: AuthorizationDependency) {
-        super.init(dependency: dependency)
-    }
 
-    func build(withListener listener: AuthorizationListener) -> AuthorizationRouting {
-        let component = AuthorizationComponent(dependency: dependency)
-        let viewController = AuthorizationViewController()
-        let interactor = AuthorizationInteractor(presenter: viewController)
-        interactor.listener = listener
+    func build() -> AuthorizationRouting {
+//        let component = AuthorizationComponent(dependency: dependency)
+        let viewController = AuthorizationViewController.instantiateFromStoryboard()
+        
+        let presenter = AuthorizationPresenter()
+        let interactor = AuthorizationInteractor(presenter: presenter)
+        
         return AuthorizationRouter(interactor: interactor, viewController: viewController)
     }
 }

@@ -54,14 +54,6 @@ final class EditProfileField: UITextField {
         self.text = text
         self.isUserInteractionEnabled = editable
         
-//        if valid == false {
-//            self.layer.borderWidth = 1
-//            self.layer.borderColor = UIColor(hexString: "#FFE0E0").cgColor
-//            self.textColor = UIColor(hexString: "#FF6464")
-//        } else {
-//            design()
-//        }
-        
         if !editable {
             self.layer.borderWidth = 1
             self.layer.borderColor = UIColor(hexString: "#CBC9D1").cgColor
