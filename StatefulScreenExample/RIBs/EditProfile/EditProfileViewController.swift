@@ -102,14 +102,21 @@ extension EditProfileViewController: BindableView {
             input.isContentVisible.drive(stackView.rx.isVisible)
             input.isContentVisible.drive(saveButton.rx.isVisible)
             
+            input.showFirstNameError.emit(onNext: { _ in self.firstNameField.showErrorField() })
+            input.hideFirstNameError.emit(onNext: { _ in self.firstNameField.design() })
+            
+            input.showEmailError.emit(onNext: { _ in self.emailField.showErrorField() })
+            input.hideEmailError.emit(onNext: { _ in self.emailField.design() })
+
+            
             input.viewModel.drive(onNext: { [weak self] model in
-                self?.firstNameField.setTitle(model.firstName.title, text: model.firstName.maybeText, editable: true, valid: model.isFirstNameValid)
+                self?.firstNameField.setTitle(model.firstName.title, text: model.firstName.maybeText, editable: true)
         
-                self?.lastNameField.setTitle(model.lastName.title, text: model.lastName.maybeText, editable: true, valid: nil)
+                self?.lastNameField.setTitle(model.lastName.title, text: model.lastName.maybeText, editable: true)
                 
-                self?.emailField.setTitle(model.email.title, text: model.email.maybeText, editable: true, valid: model.isEmailValid)
+                self?.emailField.setTitle(model.email.title, text: model.email.maybeText, editable: true)
                 
-                self?.phoneField.setTitle(model.phone.title, text: model.phone.text.formatPhoneNumber(with: "+X XXX XXX XX XX"), editable: false, valid: nil)
+                self?.phoneField.setTitle(model.phone.title, text: model.phone.text.formatPhoneNumber(with: "+X XXX XXX XX XX"), editable: false)
             })
             
             input.showError.emit(onNext: { [unowned self] maybeViewModel in
@@ -126,7 +133,7 @@ extension EditProfileViewController: BindableView {
             
             input.showAlert.emit(onNext: { [unowned self] _ in
                   let alert = UIAlertController(title: "Профиль успешно обновлён", message: nil, preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { _ in navigationController?.popViewController(animated: false) }))
+                  alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { _ in navigationController?.popViewController(animated: false) }))
                   
                   self.present(alert, animated: true, completion: nil)
             } )

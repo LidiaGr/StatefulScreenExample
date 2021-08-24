@@ -45,6 +45,9 @@ struct EditProfileInteractorOutput {
     let state: Observable<EditProfileInteractorState>
     let screenDataModel: Observable<EditProfileScreenDataModel>
     let updatedSuccessfully: Observable<Void>
+    var saveButtonTap: Observable<Void>
+    var firstNameUpdateTap: Observable<String?>
+    var emailUpdateTap: Observable<String?>
 }
 
 struct EditProfilePresenterOutput {
@@ -58,6 +61,12 @@ struct EditProfilePresenterOutput {
   let showError: Signal<ErrorMessageViewModel?>
   
   let showAlert: Signal<Void>
+    
+  let showFirstNameError: Signal<Void>
+  let hideFirstNameError: Signal<Void>
+    
+  let showEmailError: Signal<Void>
+  let hideEmailError: Signal<Void>
 }
 
 protocol EditProfileViewOutput {

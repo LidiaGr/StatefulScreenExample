@@ -63,7 +63,12 @@ extension EditProfileInteractor: IOTransformer {
         
         let output = StateTransform.transform(trait: trait, viewOutput: viewOutput, screenDataModel: _screenDataModel.asObservable(), responses: responses, requests: requests)
         
-        return EditProfileInteractorOutput(state: trait.readOnlyState, screenDataModel: _screenDataModel.asObservable(), updatedSuccessfully: output.updatedSuccessfully)
+        return EditProfileInteractorOutput(state: trait.readOnlyState,
+                                           screenDataModel: _screenDataModel.asObservable(),
+                                           updatedSuccessfully: output.updatedSuccessfully,
+                                           saveButtonTap: viewOutput.saveButtonTap.asObservable(),
+                                           firstNameUpdateTap: viewOutput.firstNameUpdateTap.asObservable(),
+                                           emailUpdateTap: viewOutput.emailUpdateTap.asObservable())
     }
     
     private func removingInvalidSymbols(viewOutput: EditProfileViewOutput) {
@@ -144,7 +149,8 @@ extension EditProfileInteractor {
                     .map { _ in State.isUpdatingProfile }
                 
                 /// isUpdatingProfile  => updatingError
-                responses.updatingProfileError.filteredByState(trait.readOnlyState, filter: byIsUpdatingProfileState)
+                responses.updatingProfileError
+                    .filteredByState(trait.readOnlyState, filter: byIsUpdatingProfileState)
                     .map { error in State.updatingError(error as! NetworkError) }
                 
                 /// updatingError => isUpdatingProfile

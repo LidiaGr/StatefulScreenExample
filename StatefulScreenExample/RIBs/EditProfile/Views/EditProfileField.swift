@@ -46,31 +46,33 @@ final class EditProfileField: UITextField {
         }
         
         self.heightAnchor.constraint(equalToConstant: 46).isActive = true
-        //    self.delegate = self
-        
-        //    textField.addTarget(self, action: #selector(buttonPressed), for: .editingDidEndOnExit)
-        
     }
     
-    func setTitle(_ title: String, text: String?, editable: Bool, valid: Bool?) {
+    func setTitle(_ title: String, text: String?, editable: Bool) {
         self.attributedPlaceholder = NSAttributedString(string: title,
                                                         attributes: [NSAttributedString.Key.foregroundColor: UIColor.black.withAlphaComponent(0.3)])
         self.text = text
         self.isUserInteractionEnabled = editable
         
-        if valid == false {
-            self.layer.borderWidth = 1
-            self.layer.borderColor = UIColor(hexString: "#FFE0E0").cgColor
-            self.textColor = UIColor(hexString: "#FF6464")
-        } else {
-            design()
-        }
+//        if valid == false {
+//            self.layer.borderWidth = 1
+//            self.layer.borderColor = UIColor(hexString: "#FFE0E0").cgColor
+//            self.textColor = UIColor(hexString: "#FF6464")
+//        } else {
+//            design()
+//        }
         
         if !editable {
             self.layer.borderWidth = 1
             self.layer.borderColor = UIColor(hexString: "#CBC9D1").cgColor
             self.textColor = UIColor(hexString: "#ACAAB2")
         }
+    }
+    
+    func showErrorField() {
+        self.layer.borderWidth = 1
+        self.layer.borderColor = UIColor(hexString: "#FFE0E0").cgColor
+        self.textColor = UIColor(hexString: "#FF6464")
     }
 }
 

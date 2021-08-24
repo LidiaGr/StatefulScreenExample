@@ -55,11 +55,34 @@ extension EditProfilePresenter: IOTransformer {
         
         let showAlert = input.updatedSuccessfully.asSignalIgnoringError()
         
+        let showFirstNameError = input.saveButtonTap.withLatestFrom(input.screenDataModel)
+            .filter{ !$0.isFirstNameValid }
+            .mapAsVoid()
+            .asSignalIgnoringError()
+        
+        let hideFirstNameError = input.firstNameUpdateTap
+            .mapAsVoid()
+            .asSignalIgnoringError()
+        
+        let showEmailError = input.saveButtonTap.withLatestFrom(input.screenDataModel)
+            .filter{ !$0.isEmailValid }
+            .mapAsVoid()
+            .asSignalIgnoringError()
+        
+        let hideEmailError = input.emailUpdateTap
+            .mapAsVoid()
+            .asSignalIgnoringError()
+        
+        
         return EditProfilePresenterOutput(viewModel: viewModel,
                                           isContentVisible: isContentVisible,
                                           loadingIndicator: loadngIndicator,
                                           showError: showError,
-                                          showAlert: showAlert)
+                                          showAlert: showAlert,
+                                          showFirstNameError: showFirstNameError,
+                                          hideFirstNameError: hideFirstNameError,
+                                          showEmailError: showEmailError,
+                                          hideEmailError: hideEmailError)
     }
 }
 
