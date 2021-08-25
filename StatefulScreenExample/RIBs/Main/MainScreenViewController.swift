@@ -25,18 +25,20 @@ final class MainScreenViewController: UIViewController, MainScreenViewControllab
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for:.default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
+
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.navigationItem.backBarButtonItem?.tintColor = UIColor(hexString: "#121214")
     }
 }
 
 extension MainScreenViewController {
-  private func initialSetup() {}
+    private func initialSetup() {}
 }
 
 // MARK: - BindableView
 
 extension MainScreenViewController: BindableView {
+
   func getOutput() -> MainScreenViewOutput {
     return MainScreenViewOutput(stackViewButtonTap: stackViewScreenButton.rx.tap,
                                 tableViewButtonTap: tableViewScreenButton.rx.tap,

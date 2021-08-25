@@ -10,7 +10,7 @@ import RIBs
 
 final class ProfileBuilder: Builder<RootDependency>, ProfileBuildable {
   func build() -> ProfileRouting {
-    let viewController = ProfileStackViewController.instantiateFromStoryboard()
+    let viewController = ProfileEditViewController()
 
     return buildWith(viewController: viewController)
   }
