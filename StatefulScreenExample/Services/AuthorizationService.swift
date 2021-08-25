@@ -7,6 +7,7 @@
 //
 
 protocol AuthorizationService: AnyObject {
+//    var phone: String { get }
     func sendSMSCode(_ completion: @escaping (Result<Void, Error>) -> Void)
 }
 

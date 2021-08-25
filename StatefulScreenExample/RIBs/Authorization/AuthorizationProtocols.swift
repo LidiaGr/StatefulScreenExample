@@ -18,7 +18,7 @@ protocol AuthorizationDependency: Dependency {
 }
 
 final class AuthorizationComponent: Component<AuthorizationDependency> {
-
+    
     // TODO: Declare 'fileprivate' dependencies that are only used by this RIB.
 }
 
@@ -50,38 +50,48 @@ protocol AuthorizationPresentable: Presentable {
 
 struct AuthorizationInteractorOutput {
     let state: Observable<AuthorizationInteractorState>
-//    let screenDataModel: Observable<EditProfileScreenDataModel>
-//    let phone: Observable<String?>
-//    let codeReceived: Observable<Void>
+    let screenDataModel: Observable<AuthorizationScreenDataModel>
+    let phoneFieldTap: Observable<String>
 }
 
 struct AuthorizationPresenterOutput {
-//  let viewModel: Driver<EditProfileViewModel>
-
-//  let isButtonActive: Driver<Bool>
+    let phoneField: Driver<String>
+    let isButtonActive: Signal<Bool>
+    let isPhoneFieldActive: Signal<Void>
+    //  let loadingIndicator: Signal<Bool>
     
-//  let loadingIndicator: Signal<Bool>
-    
-  /// nil означает что нужно спрятать сообщение об ошибке
-//  let showError: Signal<ErrorMessageViewModel?>
+    /// nil означает что нужно спрятать сообщение об ошибке
+    let showError: Signal<ErrorMessageViewModel?>
 }
 
 protocol AuthorizationViewOutput {
-  var phoneNumberUpdateTap: ControlEvent<String?> { get }
+    var phoneNumberUpdateTap: ControlEvent<String> { get }
     
-  var sendCodeButtonTap: ControlEvent<Void> { get }
+    var sendCodeButtonTap: ControlEvent<Void> { get }
     
-  var retryButtonTap: ControlEvent<Void> { get }
+    var retryButtonTap: ControlEvent<Void> { get }
 }
 
-//struct AuthorizationScreenDataModel {
-//    let phone: String
+//struct AuthorizaionViewModel: Equatable {
+//    let phone: TitledText
+//    var isPhoneValid: Bool
 //}
+
+struct AuthorizationScreenDataModel {
+    let phone: String
+    
+    var isPhoneValid: Bool {
+        switch phone.count {
+        case 10: return true
+        default: return false
+        }
+    }
+}
 
 // MARK: - AuthorizationInteractorState
 
 enum AuthorizationInteractorState {
-  case userInput
-  case isWaitingForCode
-  case receivingCodeError(NetworkError)
+    case userInput
+    case isWaitingForCode(phoneNumber: String?)
+    case receivingCodeError(error: NetworkError, phoneNumber: String)
 }

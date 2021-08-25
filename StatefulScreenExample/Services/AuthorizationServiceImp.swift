@@ -9,6 +9,7 @@
 import UIKit
 
 final class AuthorizationServiceImp: AuthorizationService {
+//    private(set) var phone = ""
     
     func sendSMSCode(_ completion: @escaping (Result<Void, Error>) -> Void) {
         DispatchQueue.global(qos: .default).asyncAfter(deadline: .now() + .random(in: 0.5...2)) {
