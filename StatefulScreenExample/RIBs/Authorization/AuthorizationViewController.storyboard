@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Будем звонить только, если не дойдут уведомления или смс" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LYH-YM-dR7">
-                                <rect key="frame" x="35" y="43" width="305" height="36"/>
+                                <rect key="frame" x="35" y="89" width="305" height="36"/>
                                 <accessibility key="accessibilityConfiguration">
                                     <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
                                 </accessibility>
@@ -29,7 +29,7 @@
                                 <color key="highlightedColor" red="0.67450980392156867" green="0.66666666666666663" blue="0.69803921568627447" alpha="1" colorSpace="calibratedRGB"/>
                             </label>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="nh4-Zt-xUZ">
-                                <rect key="frame" x="16" y="95" width="343" height="46"/>
+                                <rect key="frame" x="16" y="141" width="343" height="46"/>
                                 <color key="backgroundColor" red="0.96862745098039216" green="0.96862745098039216" blue="0.96862745098039216" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="46" id="Bdt-u9-eAU"/>
@@ -61,7 +61,7 @@
                                 </userDefinedRuntimeAttributes>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Введите номер телефона" textAlignment="center" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vj0-aF-5uO">
-                                <rect key="frame" x="60" y="8" width="255" height="27"/>
+                                <rect key="frame" x="60" y="54" width="255" height="27"/>
                                 <accessibility key="accessibilityConfiguration">
                                     <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
                                 </accessibility>
@@ -81,7 +81,7 @@
                             <constraint firstItem="g7V-aE-5Pa" firstAttribute="leading" secondItem="HgA-Aw-ocO" secondAttribute="leading" constant="8" id="TO0-3l-d13"/>
                             <constraint firstItem="LYH-YM-dR7" firstAttribute="leading" secondItem="BNZ-bO-rhc" secondAttribute="leading" constant="35" id="TSC-br-Dlm"/>
                             <constraint firstItem="nh4-Zt-xUZ" firstAttribute="leading" secondItem="HgA-Aw-ocO" secondAttribute="leading" constant="16" id="XgX-QD-P7l"/>
-                            <constraint firstItem="Vj0-aF-5uO" firstAttribute="top" secondItem="HgA-Aw-ocO" secondAttribute="top" constant="8" id="a1e-zS-lG7"/>
+                            <constraint firstItem="Vj0-aF-5uO" firstAttribute="top" secondItem="HgA-Aw-ocO" secondAttribute="top" constant="54" id="aza-NK-a57"/>
                             <constraint firstItem="nh4-Zt-xUZ" firstAttribute="centerX" secondItem="LYH-YM-dR7" secondAttribute="centerX" id="qO0-X3-sjJ"/>
                             <constraint firstItem="HgA-Aw-ocO" firstAttribute="trailing" secondItem="g7V-aE-5Pa" secondAttribute="trailing" constant="8" id="xOe-4u-ZeW"/>
                         </constraints>
