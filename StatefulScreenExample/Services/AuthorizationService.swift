@@ -6,8 +6,10 @@
 //  Copyright © 2021 IgnatyevProd. All rights reserved.
 //
 
+import Foundation
+
 protocol AuthorizationService: AnyObject {
 //    var phone: String { get }
     func sendSMSCode(_ completion: @escaping (Result<Void, Error>) -> Void)
+    func sendNotification()
 }
-

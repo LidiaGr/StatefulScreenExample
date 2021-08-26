@@ -37,8 +37,11 @@ final class AuthorizationInteractor: PresentableInteractor<AuthorizationPresenta
     private func sendSMSCode() {
         authorizationService.sendSMSCode() { [weak self] result in
             switch result {
-            case .success: print("code received successfully"); self?.responses.$codeReceivedSuccessfully.accept(Void())
-            case .failure(let error): print("code receiving error"); self?.responses.$codeReceivingError.accept(error)
+            case .success:
+                self?.authorizationService.sendNotification()
+                self?.responses.$codeReceivedSuccessfully.accept(Void())
+            case .failure(let error):
+                self?.responses.$codeReceivingError.accept(error)
             }
         }
     }
@@ -62,7 +65,7 @@ extension AuthorizationInteractor: IOTransformer {
         
         StateTransform.transform(trait: trait, viewOutput: viewOutput, screenDataModel: _screenDataModel.asObservable(), responses: responses, requests: requests)
         
-        return AuthorizationInteractorOutput(state: trait.readOnlyState, screenDataModel: _screenDataModel.asObservable())
+        return AuthorizationInteractorOutput(state: trait.readOnlyState, screenDataModel: _screenDataModel.asObservable(), sendButtonTap: viewOutput.sendCodeButtonTap.asObservable())
     }
 }
 
@@ -95,11 +98,12 @@ extension AuthorizationInteractor {
                               responses: Responses,
                               requests: Requests) {
             
-//            let codeReceivedSuccessfully = responses.codeReceivedSuccessfully.filteredByState(trait.readOnlyState, filter: byIsWaitingForCode)
-//                .map { print("route to next screen") }
             
-            let codeReceivedSuccessfully = responses.codeReceivedSuccessfully.filteredByState(trait.readOnlyState, filterMap: byIsWaitingForCode)
-                .subscribe(onNext: { _ in print("route to next screen") })
+            let codeReceivedSuccessfully = responses.codeReceivedSuccessfully
+                .filteredByState(trait.readOnlyState, filterMap: byIsWaitingForCode)
+                .do(afterNext: { _ in
+                    print("route to next screen")
+                })
             
             StateTransform.transitions {
                 /// userInput => isWaitingForCode

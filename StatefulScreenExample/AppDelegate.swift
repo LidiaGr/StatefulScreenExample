@@ -8,6 +8,7 @@
 
 import RIBs
 import UIKit
+import UserNotifications
 
 @UIApplicationMain
 final class AppDelegate: UIResponder, UIApplicationDelegate {

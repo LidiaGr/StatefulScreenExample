@@ -51,16 +51,19 @@ protocol AuthorizationPresentable: Presentable {
 struct AuthorizationInteractorOutput {
     let state: Observable<AuthorizationInteractorState>
     let screenDataModel: Observable<AuthorizationScreenDataModel>
+    let sendButtonTap: Observable<Void>
 }
 
 struct AuthorizationPresenterOutput {
     let phoneField: Driver<String>
     let isButtonActive: Signal<Bool>
-    let isPhoneFieldEditing: Signal<Bool>
-    let loadingIndicator: Signal<Bool>
     
+    let isPhoneFieldEditing: Signal<Bool>
+    
+    let loadingIndicator: Signal<Bool>
     let isContentVisible: Driver<Bool>
     
+    let sendButtonTapped: Signal<Void>
     /// nil означает что нужно спрятать сообщение об ошибке
     let showError: Signal<ErrorMessageViewModel?>
 }

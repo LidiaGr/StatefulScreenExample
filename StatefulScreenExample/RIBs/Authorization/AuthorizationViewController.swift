@@ -99,7 +99,6 @@ extension AuthorizationViewController: BindableView {
                 self.errorMessageView.isVisible = (maybeViewModel != nil)
                 
                 if let viewModel = maybeViewModel {
-                    print("in VC")
                     self.errorMessageView.resetToEmptyState()
                     
                     self.errorMessageView.setTitle(viewModel.title, buttonTitle: viewModel.buttonTitle, action: {
@@ -128,6 +127,16 @@ extension AuthorizationViewController: BindableView {
             input.isContentVisible.drive(textLabel1.rx.isVisible)
             input.isContentVisible.drive(textLabel2.rx.isVisible)
             
+            input.sendButtonTapped.emit(onNext: { _ in
+                let notificationCenter = UNUserNotificationCenter.current()
+                    notificationCenter.requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
+                    if granted {
+                      print("User gave permission for local notifications")
+                    }
+                }
+                notificationCenter.delegate = self
+            })
+            
             phoneNumberField.rx.text.orEmpty.bind(to: viewOutput.$phoneNumberUpdateTap)
             sendCodeButton.rx.controlEvent(.touchUpInside).bind(to: viewOutput.$sendCodeButtonTap)
         }
@@ -151,3 +160,16 @@ extension AuthorizationViewController {
 // MARK: - RibStoryboardInstantiatable
 
 extension AuthorizationViewController: RibStoryboardInstantiatable {}
+
+
+// MARK: - Notification Center
+
+extension AuthorizationViewController: UNUserNotificationCenterDelegate {
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.alert, .sound])
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        // обработка после перехода в приложение по нажатию на уведомление
+    }
+}

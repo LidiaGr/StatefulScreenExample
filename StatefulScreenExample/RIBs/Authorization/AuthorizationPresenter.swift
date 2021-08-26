@@ -51,7 +51,6 @@ extension AuthorizationPresenter: IOTransformer {
         let showError = input.state.map { state -> ErrorMessageViewModel? in
           switch state {
           case .receivingCodeError(let error, _):
-            print("in presenter");
             return ErrorMessageViewModel(title: error.localizedDescription, buttonTitle: "Повторить")
           case .isWaitingForCode, .userInput:
             return nil
@@ -72,6 +71,10 @@ extension AuthorizationPresenter: IOTransformer {
             }
         }.asSignalIgnoringError()
         
-        return AuthorizationPresenterOutput(phoneField: phoneField, isButtonActive: isButtonActive, isPhoneFieldEditing: isPhoneFieldEditing, loadingIndicator: loadngIndicator, isContentVisible: isContentVisible, showError: showError)
+        let buttonTapped = input.sendButtonTap
+            .mapAsVoid()
+            .asSignalIgnoringError()
+        
+        return AuthorizationPresenterOutput(phoneField: phoneField, isButtonActive: isButtonActive, isPhoneFieldEditing: isPhoneFieldEditing, loadingIndicator: loadngIndicator, isContentVisible: isContentVisible, sendButtonTapped: buttonTapped, showError: showError)
     }
 }
