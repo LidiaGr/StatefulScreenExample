@@ -89,6 +89,8 @@
                     <connections>
                         <outlet property="phoneNumberField" destination="nh4-Zt-xUZ" id="EFr-cF-Uwz"/>
                         <outlet property="sendCodeButton" destination="g7V-aE-5Pa" id="UnA-wJ-xn3"/>
+                        <outlet property="textLabel1" destination="Vj0-aF-5uO" id="W3P-rr-gEa"/>
+                        <outlet property="textLabel2" destination="LYH-YM-dR7" id="vXg-C7-8Dk"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="k0X-am-vwV" userLabel="First Responder" sceneMemberID="firstResponder"/>

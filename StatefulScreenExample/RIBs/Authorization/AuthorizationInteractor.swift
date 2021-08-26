@@ -37,8 +37,8 @@ final class AuthorizationInteractor: PresentableInteractor<AuthorizationPresenta
     private func sendSMSCode() {
         authorizationService.sendSMSCode() { [weak self] result in
             switch result {
-            case .success: self?.responses.$codeReceivedSuccessfully.accept(Void())
-            case .failure(let error): self?.responses.$codeReceivingError.accept(error)
+            case .success: print("code received successfully"); self?.responses.$codeReceivedSuccessfully.accept(Void())
+            case .failure(let error): print("code receiving error"); self?.responses.$codeReceivingError.accept(error)
             }
         }
     }
@@ -51,7 +51,7 @@ extension AuthorizationInteractor: IOTransformer {
         let trait = StateTransformTrait(_state: _state, disposeBag: disposeBag)
         
         viewOutput.phoneNumberUpdateTap.asObservable()
-            .map { phoneNumber in phoneNumber.removingCharacters(except: .arabicNumerals) }
+            .map { phoneNumber in String(phoneNumber.removingCharacters(except: .arabicNumerals).prefix(10)) }
             .subscribe(onNext: { number in
                 print(number)
                 let newNumber = AuthorizationScreenDataModel(phone: number)
@@ -62,7 +62,7 @@ extension AuthorizationInteractor: IOTransformer {
         
         StateTransform.transform(trait: trait, viewOutput: viewOutput, screenDataModel: _screenDataModel.asObservable(), responses: responses, requests: requests)
         
-        return AuthorizationInteractorOutput(state: trait.readOnlyState, screenDataModel: _screenDataModel.asObservable(), phoneFieldTap: viewOutput.phoneNumberUpdateTap.asObservable() )
+        return AuthorizationInteractorOutput(state: trait.readOnlyState, screenDataModel: _screenDataModel.asObservable())
     }
 }
 
@@ -99,14 +99,14 @@ extension AuthorizationInteractor {
 //                .map { print("route to next screen") }
             
             let codeReceivedSuccessfully = responses.codeReceivedSuccessfully.filteredByState(trait.readOnlyState, filterMap: byIsWaitingForCode)
-                .map { _ in print("route to next screen") }
+                .subscribe(onNext: { _ in print("route to next screen") })
             
             StateTransform.transitions {
                 /// userInput => isWaitingForCode
                 viewOutput.sendCodeButtonTap
                     .filteredByState(trait.readOnlyState, filter: byUserInputState)
                     .withLatestFrom(screenDataModel)
-                    .filter { model in model.isPhoneValid}
+                    .filter { model in model.isPhoneValid }
                     .do(afterNext: { _ in requests.sendSMSCode() } )
                     .map { model in State.isWaitingForCode(phoneNumber: model.phone) }
                 
@@ -116,7 +116,7 @@ extension AuthorizationInteractor {
                     .map { error, phoneNumber in State.receivingCodeError(error: error as! NetworkError, phoneNumber: phoneNumber) }
                 
                 /// receivingCodeError => isWaitingForCode
-                viewOutput.retryButtonTap
+                viewOutput.retryAuthorizationButtonTap
                     .filteredByState(trait.readOnlyState) { state -> String? in
                         guard case let .receivingCodeError(_, phoneNumber) = state else { return nil }; return phoneNumber
                     }

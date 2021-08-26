@@ -15,9 +15,19 @@ final class AuthorizationViewController: UIViewController, AuthorizationViewCont
     
     @IBOutlet private weak var phoneNumberField: UITextField!
     @IBOutlet private weak var sendCodeButton: UIButton!
+    @IBOutlet private weak var textLabel1: UILabel!
+    @IBOutlet private weak var textLabel2: UILabel!
     
     let plusLabel = UILabel()
     let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 38, height: 46))
+    
+    var spinner: UIActivityIndicatorView! = {
+        let loginSpinner = UIActivityIndicatorView(style: .large)
+        loginSpinner.color = UIColor(hexString: "#34BC48")
+        loginSpinner.translatesAutoresizingMaskIntoConstraints = false
+        loginSpinner.hidesWhenStopped = true
+        return loginSpinner
+    }()
     
     // Service Views
     private let errorMessageView = ErrorMessageView()
@@ -53,10 +63,12 @@ extension AuthorizationViewController {
         
         phoneNumberField.tintColor = UIColor(hexString: "#34BC48")
 
-//        phoneNumberField.delegate = self.phoneNumberField
         
         sendCodeButton.isEnabled = true
         sendCodeButton.alpha = 0.5
+        
+        view.addStretchedToBounds(subview: errorMessageView)
+        view.addStretchedToBounds(subview: spinner)
     }
 }
 
@@ -87,17 +99,34 @@ extension AuthorizationViewController: BindableView {
                 self.errorMessageView.isVisible = (maybeViewModel != nil)
                 
                 if let viewModel = maybeViewModel {
+                    print("in VC")
                     self.errorMessageView.resetToEmptyState()
                     
                     self.errorMessageView.setTitle(viewModel.title, buttonTitle: viewModel.buttonTitle, action: {
-                        self.viewOutput.$retryButtonTap.accept(Void())
+                        self.viewOutput.$retryAuthorizationButtonTap.accept(Void())
                     })
                 }
             })
             
-            input.isPhoneFieldActive.emit(onNext: { _ in
-                self.plusLabel.textColor = UIColor(hexString: "#4F4E57")
+            input.isPhoneFieldEditing.emit(onNext: { value in
+                if value == true {
+                    self.plusLabel.textColor = UIColor(hexString: "#4F4E57")
+                } else {
+                    self.plusLabel.textColor = UIColor(hexString: "#ACAAB2")
+                }
             })
+            
+            input.loadingIndicator.emit(onNext: { [unowned self] indicator in
+                switch indicator == true {
+                case true: spinner.startAnimating()
+                case false: spinner.stopAnimating()
+                }
+            })
+            
+            input.isContentVisible.drive(phoneNumberField.rx.isVisible)
+            input.isContentVisible.drive(sendCodeButton.rx.isVisible)
+            input.isContentVisible.drive(textLabel1.rx.isVisible)
+            input.isContentVisible.drive(textLabel2.rx.isVisible)
             
             phoneNumberField.rx.text.orEmpty.bind(to: viewOutput.$phoneNumberUpdateTap)
             sendCodeButton.rx.controlEvent(.touchUpInside).bind(to: viewOutput.$sendCodeButtonTap)
@@ -114,7 +143,7 @@ extension AuthorizationViewController {
         
         @PublishControlEvent var sendCodeButtonTap: ControlEvent<Void>
         
-        @PublishControlEvent var retryButtonTap: ControlEvent<Void>
+        @PublishControlEvent var retryAuthorizationButtonTap: ControlEvent<Void>
         
     }
 }

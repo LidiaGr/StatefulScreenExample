@@ -16,13 +16,15 @@ extension AuthorizationPresenter: IOTransformer {
     func transform(input: AuthorizationInteractorOutput) -> AuthorizationPresenterOutput {
         
         let phoneField = input.screenDataModel.map { model -> String in
-            var phone = model.phone
-//            phone.insert(" ", at: phone.index(phone.startIndex, offsetBy: 3))
-//            phone.insert(" ", at: phone.index(phone.startIndex, offsetBy: 6))
-//            phone.insert(" ", at: phone.index(phone.startIndex, offsetBy: 8))
-            return phone
+            return model.phone.formatPhoneNumber(with: "XXX XXX XX XX")
         }.asDriverIgnoringError()
-            
+       
+        let isPhoneFieldEditing = input.screenDataModel.map { model -> Bool in
+            switch model.isEditing {
+            case true: return true
+            case false: return false
+            }
+        }.asSignalIgnoringError()
         
        let isButtonActive = input.screenDataModel
             .map { model -> Bool in
@@ -49,24 +51,27 @@ extension AuthorizationPresenter: IOTransformer {
         let showError = input.state.map { state -> ErrorMessageViewModel? in
           switch state {
           case .receivingCodeError(let error, _):
+            print("in presenter");
             return ErrorMessageViewModel(title: error.localizedDescription, buttonTitle: "Повторить")
           case .isWaitingForCode, .userInput:
             return nil
           }
         }.asSignal(onErrorJustReturn: nil)
         
-        let isPhoneFieldActive = input.phoneFieldTap
-            .skip(1)
-            .mapAsVoid()
-            .asSignalIgnoringError()
+        let isContentVisible = input.state.map { state -> Bool in
+            switch state {
+            case .userInput, .isWaitingForCode: return true
+            case .receivingCodeError: return false
+            }
+        }.asDriverIgnoringError()
         
-//        let loadngIndicator = input.state.map { state -> Bool in
-//            switch state {
-//            case .isWaitingForCode : return true
-//            case .userInput, .receivingCodeError : return false
-//            }
-//        }.asSignalIgnoringError()
+        let loadngIndicator = input.state.map { state -> Bool in
+            switch state {
+            case .isWaitingForCode : return true
+            case .userInput, .receivingCodeError : return false
+            }
+        }.asSignalIgnoringError()
         
-        return AuthorizationPresenterOutput(phoneField: phoneField, isButtonActive: isButtonActive, isPhoneFieldActive: isPhoneFieldActive, showError: showError)
+        return AuthorizationPresenterOutput(phoneField: phoneField, isButtonActive: isButtonActive, isPhoneFieldEditing: isPhoneFieldEditing, loadingIndicator: loadngIndicator, isContentVisible: isContentVisible, showError: showError)
     }
 }

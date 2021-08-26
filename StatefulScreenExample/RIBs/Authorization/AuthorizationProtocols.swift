@@ -51,14 +51,15 @@ protocol AuthorizationPresentable: Presentable {
 struct AuthorizationInteractorOutput {
     let state: Observable<AuthorizationInteractorState>
     let screenDataModel: Observable<AuthorizationScreenDataModel>
-    let phoneFieldTap: Observable<String>
 }
 
 struct AuthorizationPresenterOutput {
     let phoneField: Driver<String>
     let isButtonActive: Signal<Bool>
-    let isPhoneFieldActive: Signal<Void>
-    //  let loadingIndicator: Signal<Bool>
+    let isPhoneFieldEditing: Signal<Bool>
+    let loadingIndicator: Signal<Bool>
+    
+    let isContentVisible: Driver<Bool>
     
     /// nil означает что нужно спрятать сообщение об ошибке
     let showError: Signal<ErrorMessageViewModel?>
@@ -69,7 +70,7 @@ protocol AuthorizationViewOutput {
     
     var sendCodeButtonTap: ControlEvent<Void> { get }
     
-    var retryButtonTap: ControlEvent<Void> { get }
+    var retryAuthorizationButtonTap: ControlEvent<Void> { get }
 }
 
 //struct AuthorizaionViewModel: Equatable {
@@ -84,6 +85,13 @@ struct AuthorizationScreenDataModel {
         switch phone.count {
         case 10: return true
         default: return false
+        }
+    }
+    
+    var isEditing: Bool {
+        switch phone.count {
+        case 0: return false
+        default: return true
         }
     }
 }

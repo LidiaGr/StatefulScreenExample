@@ -24,7 +24,6 @@
 		59DEFDD726D4E6780010933E /* AuthorizationInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59DEFDD226D4E6780010933E /* AuthorizationInteractor.swift */; };
 		59DEFDD926D4E6BB0010933E /* AuthorizationProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59DEFDD826D4E6BB0010933E /* AuthorizationProtocols.swift */; };
 		59DEFDDB26D4E6DF0010933E /* AuthorizationPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59DEFDDA26D4E6DF0010933E /* AuthorizationPresenter.swift */; };
-		59DEFDDE26D506A20010933E /* PhoneNumberFieldUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59DEFDDD26D506A20010933E /* PhoneNumberFieldUtils.swift */; };
 		59DEFDE026D5359D0010933E /* AuthorizationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59DEFDDF26D5359D0010933E /* AuthorizationService.swift */; };
 		59DEFDE226D535B00010933E /* AuthorizationServiceImp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59DEFDE126D535B00010933E /* AuthorizationServiceImp.swift */; };
 		8E5925D724812927002623FB /* PublishObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5925D624812927002623FB /* PublishObservable.swift */; };
@@ -122,7 +121,6 @@
 		59DEFDD226D4E6780010933E /* AuthorizationInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationInteractor.swift; sourceTree = "<group>"; };
 		59DEFDD826D4E6BB0010933E /* AuthorizationProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationProtocols.swift; sourceTree = "<group>"; };
 		59DEFDDA26D4E6DF0010933E /* AuthorizationPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationPresenter.swift; sourceTree = "<group>"; };
-		59DEFDDD26D506A20010933E /* PhoneNumberFieldUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberFieldUtils.swift; sourceTree = "<group>"; };
 		59DEFDDF26D5359D0010933E /* AuthorizationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationService.swift; sourceTree = "<group>"; };
 		59DEFDE126D535B00010933E /* AuthorizationServiceImp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationServiceImp.swift; sourceTree = "<group>"; };
 		8E5925D624812927002623FB /* PublishObservable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishObservable.swift; sourceTree = "<group>"; };
@@ -261,7 +259,6 @@
 		59DEFDCD26D4E6480010933E /* Authorization */ = {
 			isa = PBXGroup;
 			children = (
-				59DEFDDC26D506810010933E /* Utils */,
 				59DEFDD826D4E6BB0010933E /* AuthorizationProtocols.swift */,
 				59DEFDD126D4E6780010933E /* AuthorizationBuilder.swift */,
 				59DEFDCE26D4E6780010933E /* AuthorizationRouter.swift */,
@@ -271,14 +268,6 @@
 				59DEFDCF26D4E6780010933E /* AuthorizationViewController.storyboard */,
 			);
 			path = Authorization;
-			sourceTree = "<group>";
-		};
-		59DEFDDC26D506810010933E /* Utils */ = {
-			isa = PBXGroup;
-			children = (
-				59DEFDDD26D506A20010933E /* PhoneNumberFieldUtils.swift */,
-			);
-			path = Utils;
 			sourceTree = "<group>";
 		};
 		8E71C12E23999E920051C45E = {
@@ -676,7 +665,6 @@
 				8E73C8BF239C5A46000A7F8A /* AppComponent.swift in Sources */,
 				8EFD7C25239BF77A002EBA60 /* VIPBinder.swift in Sources */,
 				59DEFDD326D4E6780010933E /* AuthorizationRouter.swift in Sources */,
-				59DEFDDE26D506A20010933E /* PhoneNumberFieldUtils.swift in Sources */,
 				595FE93126C69E7800D55EAF /* EditProfilePresenter.swift in Sources */,
 				8E5925DB24812DD5002623FB /* LoadingState.swift in Sources */,
 				8E73C8E9239C64D9000A7F8A /* MainScreenInteractor.swift in Sources */,
