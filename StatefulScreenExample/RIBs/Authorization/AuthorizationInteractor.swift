@@ -65,7 +65,19 @@ extension AuthorizationInteractor: IOTransformer {
         
         StateTransform.transform(trait: trait, viewOutput: viewOutput, screenDataModel: _screenDataModel.asObservable(), responses: responses, requests: requests)
         
+        bindStatefulRouting(viewOutput, trait: trait)
+        
         return AuthorizationInteractorOutput(state: trait.readOnlyState, screenDataModel: _screenDataModel.asObservable(), sendButtonTap: viewOutput.sendCodeButtonTap.asObservable())
+    }
+    
+    private func bindStatefulRouting(_ viewoutput: AuthorizationViewOutput, trait: StateTransformTrait<State>) {
+        responses.codeReceivedSuccessfully.observe(on: MainScheduler.instance)
+            .filteredByState(trait.readOnlyState) { state -> String? in
+                guard case let .isWaitingForCode(phoneNumber) = state else { return nil }; return phoneNumber
+            }
+            .subscribe(onNext: { [weak self] phone in
+                self?.router?.routeToAuthorizationSecond(phoneNumber: phone)
+            }).disposed(by: disposeBag)
     }
 }
 
@@ -99,11 +111,14 @@ extension AuthorizationInteractor {
                               requests: Requests) {
             
             
-            let codeReceivedSuccessfully = responses.codeReceivedSuccessfully
-                .filteredByState(trait.readOnlyState, filterMap: byIsWaitingForCode)
-                .do(afterNext: { _ in
-                    print("route to next screen")
-                })
+//            let codeReceivedSuccessfully = responses.codeReceivedSuccessfully
+//                .filteredByState(trait.readOnlyState, filterMap: byIsWaitingForCode)
+//                .subscribe(onNext: { _ in
+//                    self?.router?.routeToAuthorizationSecond()
+//                })
+//                .do(afterNext: { _ in
+//                    print("route to next screen")
+//                })
             
             StateTransform.transitions {
                 /// userInput => isWaitingForCode

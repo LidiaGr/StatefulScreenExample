@@ -31,6 +31,8 @@
 		59F57E3826D7D73100C44254 /* AuthorizationSecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59F57E3326D7D73100C44254 /* AuthorizationSecondViewController.swift */; };
 		59F57E3926D7D73100C44254 /* AuthorizationSecondBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59F57E3426D7D73100C44254 /* AuthorizationSecondBuilder.swift */; };
 		59F57E3A26D7D73100C44254 /* AuthorizationSecondInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59F57E3526D7D73100C44254 /* AuthorizationSecondInteractor.swift */; };
+		59F57E3C26D8D82600C44254 /* AuthorizationSecondProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59F57E3B26D8D82600C44254 /* AuthorizationSecondProtocols.swift */; };
+		59F57E3E26D8D83B00C44254 /* AuthorizationSecondPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59F57E3D26D8D83B00C44254 /* AuthorizationSecondPresenter.swift */; };
 		8E5925D724812927002623FB /* PublishObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5925D624812927002623FB /* PublishObservable.swift */; };
 		8E5925D924812D75002623FB /* Observable+LoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5925D824812D75002623FB /* Observable+LoadingIndicator.swift */; };
 		8E5925DB24812DD5002623FB /* LoadingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5925DA24812DD5002623FB /* LoadingState.swift */; };
@@ -133,6 +135,8 @@
 		59F57E3326D7D73100C44254 /* AuthorizationSecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationSecondViewController.swift; sourceTree = "<group>"; };
 		59F57E3426D7D73100C44254 /* AuthorizationSecondBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationSecondBuilder.swift; sourceTree = "<group>"; };
 		59F57E3526D7D73100C44254 /* AuthorizationSecondInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationSecondInteractor.swift; sourceTree = "<group>"; };
+		59F57E3B26D8D82600C44254 /* AuthorizationSecondProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationSecondProtocols.swift; sourceTree = "<group>"; };
+		59F57E3D26D8D83B00C44254 /* AuthorizationSecondPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationSecondPresenter.swift; sourceTree = "<group>"; };
 		8E5925D624812927002623FB /* PublishObservable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishObservable.swift; sourceTree = "<group>"; };
 		8E5925D824812D75002623FB /* Observable+LoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Observable+LoadingIndicator.swift"; sourceTree = "<group>"; };
 		8E5925DA24812DD5002623FB /* LoadingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingState.swift; sourceTree = "<group>"; };
@@ -283,11 +287,13 @@
 		59F57E2F26D7D6FE00C44254 /* AuthorizationSecond */ = {
 			isa = PBXGroup;
 			children = (
-				59F57E3126D7D73100C44254 /* AuthorizationSecondRouter.swift */,
-				59F57E3226D7D73100C44254 /* AuthorizationSecondViewController.storyboard */,
-				59F57E3326D7D73100C44254 /* AuthorizationSecondViewController.swift */,
+				59F57E3B26D8D82600C44254 /* AuthorizationSecondProtocols.swift */,
 				59F57E3426D7D73100C44254 /* AuthorizationSecondBuilder.swift */,
+				59F57E3126D7D73100C44254 /* AuthorizationSecondRouter.swift */,
 				59F57E3526D7D73100C44254 /* AuthorizationSecondInteractor.swift */,
+				59F57E3D26D8D83B00C44254 /* AuthorizationSecondPresenter.swift */,
+				59F57E3326D7D73100C44254 /* AuthorizationSecondViewController.swift */,
+				59F57E3226D7D73100C44254 /* AuthorizationSecondViewController.storyboard */,
 			);
 			path = AuthorizationSecond;
 			sourceTree = "<group>";
@@ -706,11 +712,13 @@
 				598153FD26C6A97100B0583A /* EditProfileField.swift in Sources */,
 				59DEFDD726D4E6780010933E /* AuthorizationInteractor.swift in Sources */,
 				8E5925D724812927002623FB /* PublishObservable.swift in Sources */,
+				59F57E3C26D8D82600C44254 /* AuthorizationSecondProtocols.swift in Sources */,
 				8EFD7C42239C1A04002EBA60 /* UIView+Extensions.swift in Sources */,
 				8E73C893239C4411000A7F8A /* TableViewRegisterable.swift in Sources */,
 				8EFD7C2D239BFB20002EBA60 /* RootDependency.swift in Sources */,
 				8EFD7C11239BF000002EBA60 /* ProfileProtocols.swift in Sources */,
 				8EFD7C3D239C16CB002EBA60 /* ErrorMessageView.swift in Sources */,
+				59F57E3E26D8D83B00C44254 /* AuthorizationSecondPresenter.swift in Sources */,
 				8E73C8E4239C64D9000A7F8A /* MainScreenRouter.swift in Sources */,
 				8E73C8CC239C5B01000A7F8A /* RootNavigationInteractor.swift in Sources */,
 				59DEFDD926D4E6BB0010933E /* AuthorizationProtocols.swift in Sources */,

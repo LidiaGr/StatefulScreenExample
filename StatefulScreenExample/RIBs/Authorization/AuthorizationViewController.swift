@@ -18,7 +18,7 @@ final class AuthorizationViewController: UIViewController, AuthorizationViewCont
     @IBOutlet private weak var textLabel1: UILabel!
     @IBOutlet private weak var textLabel2: UILabel!
     
-    @IBAction func backToATapped(_ sender: Any) {
+    @IBAction func backToMainTapped(_ sender: Any) {
         performSegue(withIdentifier: "toMain", sender: self)
     }
     

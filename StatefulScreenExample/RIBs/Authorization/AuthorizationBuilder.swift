@@ -20,6 +20,8 @@ final class AuthorizationBuilder: Builder<RootDependency>, AuthorizationBuildabl
         
         VIPBinder.bind(view: viewController, interactor: interactor, presenter: presenter)
         
-        return AuthorizationRouter(interactor: interactor, viewController: viewController)
+        return AuthorizationRouter(interactor: interactor,
+                                   viewController: viewController,
+                                   authorizationSecondBuilder: AuthorizationSecondBuilder(dependency: dependency))
     }
 }

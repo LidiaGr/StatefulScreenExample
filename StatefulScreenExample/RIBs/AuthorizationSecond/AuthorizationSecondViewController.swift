@@ -10,13 +10,52 @@ import RIBs
 import RxSwift
 import UIKit
 
-protocol AuthorizationSecondPresentableListener: AnyObject {
-    // TODO: Declare properties and methods that the view controller can invoke to perform
-    // business logic, such as signIn(). This protocol is implemented by the corresponding
-    // interactor class.
+final class AuthorizationSecondViewController: UIViewController, AuthorizationSecondViewControllable {
+
+//    weak var listener: AuthorizationSecondPresentableListener?
+    
+    @IBOutlet private weak var textLabel: UILabel!
+    @IBOutlet private weak var phoneNumberLabel: UILabel!
+    @IBOutlet private weak var codeField: UITextField!
+    
+    // MARK: View Events
+    
+    private let viewOutput = ViewOutput()
+    
+    private let disposeBag = DisposeBag()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .systemBackground
+        
+        initialSetup()
+    }
 }
 
-final class AuthorizationSecondViewController: UIViewController, AuthorizationSecondPresentable, AuthorizationSecondViewControllable {
-
-    weak var listener: AuthorizationSecondPresentableListener?
+extension AuthorizationSecondViewController {
+    private func initialSetup() {
+        codeField.tintColor = UIColor(hexString: "#34BC48")
+        codeField.textAlignment = .center
+    }
 }
+
+// MARK: - BindableView
+
+extension AuthorizationSecondViewController: BindableView {
+    func getOutput() -> AuthorizationSecondViewOutput { viewOutput }
+    
+    func bindWith(_ input: AuthorizationSecondPresenterOutput) {
+    }
+}
+
+// MARK: - View Output
+
+extension AuthorizationSecondViewController {
+    private struct ViewOutput: AuthorizationSecondViewOutput {
+
+    }
+}
+
+// MARK: - RibStoryboardInstantiatable
+
+extension AuthorizationSecondViewController: RibStoryboardInstantiatable {}

@@ -40,6 +40,7 @@ protocol AuthorizationViewControllable: ViewControllable {
 
 protocol AuthorizationRouting: ViewableRouting {
     // TODO: Declare methods the interactor can invoke to manage sub-tree via the router.
+    func routeToAuthorizationSecond(phoneNumber: String)
 }
 
 protocol AuthorizationPresentable: Presentable {

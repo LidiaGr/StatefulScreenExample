@@ -9,29 +9,16 @@
 import RIBs
 import RxSwift
 
-protocol AuthorizationSecondRouting: ViewableRouting {
-    // TODO: Declare methods the interactor can invoke to manage sub-tree via the router.
-}
-
-protocol AuthorizationSecondPresentable: Presentable {
-    var listener: AuthorizationSecondPresentableListener? { get set }
-    // TODO: Declare methods the interactor can invoke the presenter to present data.
-}
-
-protocol AuthorizationSecondListener: AnyObject {
-    // TODO: Declare methods the interactor can invoke to communicate with other RIBs.
-}
-
-final class AuthorizationSecondInteractor: PresentableInteractor<AuthorizationSecondPresentable>, AuthorizationSecondInteractable, AuthorizationSecondPresentableListener {
+final class AuthorizationSecondInteractor: PresentableInteractor<AuthorizationSecondPresentable>, AuthorizationSecondInteractable {
 
     weak var router: AuthorizationSecondRouting?
-    weak var listener: AuthorizationSecondListener?
-
+//    weak var listener: AuthorizationSecondListener?
+    
     // TODO: Add additional dependencies to constructor. Do not perform any logic
     // in constructor.
-    override init(presenter: AuthorizationSecondPresentable) {
+    init(presenter: AuthorizationSecondPresentable, phoneNumber: String) {
         super.init(presenter: presenter)
-        presenter.listener = self
+//        presenter.listener = self
     }
 
     override func didBecomeActive() {
@@ -42,5 +29,14 @@ final class AuthorizationSecondInteractor: PresentableInteractor<AuthorizationSe
     override func willResignActive() {
         super.willResignActive()
         // TODO: Pause any business logic.
+    }
+}
+
+// MARK: - IOTransformer
+
+extension AuthorizationSecondInteractor: IOTransformer {
+    
+    func transform(input viewOutput:  AuthorizationSecondViewOutput) -> AuthorizationSecondInteractorOutput {
+        return AuthorizationSecondInteractorOutput()
     }
 }
