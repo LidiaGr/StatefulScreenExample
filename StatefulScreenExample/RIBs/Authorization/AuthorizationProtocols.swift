@@ -53,6 +53,7 @@ struct AuthorizationInteractorOutput {
     let state: Observable<AuthorizationInteractorState>
     let screenDataModel: Observable<AuthorizationScreenDataModel>
     let sendButtonTap: Observable<Void>
+    let requestSuccess: Observable<Void>
 }
 
 struct AuthorizationPresenterOutput {
@@ -63,6 +64,8 @@ struct AuthorizationPresenterOutput {
     
     let loadingIndicator: Signal<Bool>
     let isContentVisible: Driver<Bool>
+    
+    let successfulRequest: Signal<Void>
     
     let sendButtonTapped: Signal<Void>
     /// nil означает что нужно спрятать сообщение об ошибке
@@ -76,11 +79,6 @@ protocol AuthorizationViewOutput {
     
     var retryAuthorizationButtonTap: ControlEvent<Void> { get }
 }
-
-//struct AuthorizaionViewModel: Equatable {
-//    let phone: TitledText
-//    var isPhoneValid: Bool
-//}
 
 struct AuthorizationScreenDataModel {
     let phone: String

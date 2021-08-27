@@ -75,6 +75,17 @@ extension AuthorizationPresenter: IOTransformer {
             .mapAsVoid()
             .asSignalIgnoringError()
         
-        return AuthorizationPresenterOutput(phoneField: phoneField, isButtonActive: isButtonActive, isPhoneFieldEditing: isPhoneFieldEditing, loadingIndicator: loadngIndicator, isContentVisible: isContentVisible, sendButtonTapped: buttonTapped, showError: showError)
+        let success = input.requestSuccess
+            .mapAsVoid()
+            .asSignalIgnoringError()
+        
+        return AuthorizationPresenterOutput(phoneField: phoneField,
+                                            isButtonActive: isButtonActive,
+                                            isPhoneFieldEditing: isPhoneFieldEditing,
+                                            loadingIndicator: loadngIndicator,
+                                            isContentVisible: isContentVisible,
+                                            successfulRequest: success,
+                                            sendButtonTapped: buttonTapped,
+                                            showError: showError)
     }
 }

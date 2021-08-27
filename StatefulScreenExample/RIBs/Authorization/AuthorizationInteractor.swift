@@ -77,7 +77,8 @@ extension AuthorizationInteractor: IOTransformer {
         
         return AuthorizationInteractorOutput(state: trait.readOnlyState,
                                              screenDataModel: _screenDataModel.asObservable(),
-                                             sendButtonTap: viewOutput.sendCodeButtonTap.asObservable())
+                                             sendButtonTap: viewOutput.sendCodeButtonTap.asObservable(),
+                                             requestSuccess: responses.$codeReceivedSuccessfully.asObservable())
     }
     
     private func bindStatefulRouting(_ viewoutput: AuthorizationViewOutput, trait: StateTransformTrait<State>) {

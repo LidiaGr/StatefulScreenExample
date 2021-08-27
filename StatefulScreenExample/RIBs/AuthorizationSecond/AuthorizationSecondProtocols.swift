@@ -57,12 +57,18 @@ protocol AuthorizationSecondListener: AnyObject {
 struct AuthorizationSecondInteractorOutput {
     let state: Observable<AuthorizationSecondInteractorState>
     let screenDataModel: Observable<AuthorizationSecondScreenDataModel>
+    
+    let requestSuccess: Observable<Void>
+    let requestFailure: Observable<Error>
 }
 
 struct AuthorizationSecondPresenterOutput {
     let phoneLabel: Driver<String>
     let codeField: Driver<String>
     let loadingIndicator: Signal<Bool>
+    
+    let success: Signal<Void>
+    let failure: Signal<Void>
 }
 
 protocol AuthorizationSecondViewOutput {
@@ -86,5 +92,5 @@ struct AuthorizationSecondScreenDataModel {
 enum AuthorizationSecondInteractorState {
     case userInput
     case isCheckingCode(code: String?)
-    case receivingCodeError(error: NetworkError, code: String)
+//    case receivingCodeError(error: NetworkError, code: String)
 }

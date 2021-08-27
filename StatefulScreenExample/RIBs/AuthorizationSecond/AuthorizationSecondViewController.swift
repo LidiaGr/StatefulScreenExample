@@ -77,6 +77,18 @@ extension AuthorizationSecondViewController: BindableView {
                 }
             })
             
+            input.failure.emit(onNext: { _ in
+                self.textLabel.text = "Ошибка"
+                self.textLabel.textColor = UIColor(hexString: "#FF6464")
+                self.codeInputField.text = ""
+                self.spinner.stopAnimating()
+            })
+            
+            input.success.emit(onNext: {
+                self.spinner.stopAnimating()
+                self.performSegue(withIdentifier: "toMain", sender: self)
+            })
+            
             codeInputField.rx.text.orEmpty.bind(to: viewOutput.$codeUpdateTap)
         }
     }

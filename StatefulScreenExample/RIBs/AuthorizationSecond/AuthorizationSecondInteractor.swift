@@ -78,7 +78,10 @@ extension AuthorizationSecondInteractor: IOTransformer {
                                  responses: responses,
                                  requests: requests)
         
-        return AuthorizationSecondInteractorOutput(state: trait.readOnlyState, screenDataModel: _screenDataModel.asObservable())
+        return AuthorizationSecondInteractorOutput(state: trait.readOnlyState,
+                                                   screenDataModel: _screenDataModel.asObservable(),
+                                                   requestSuccess: responses.$authorisdedSuccessfully.asObservable(),
+                                                   requestFailure: responses.$authorizingError.asObservable())
     }
 }
 
@@ -111,6 +114,11 @@ extension AuthorizationSecondInteractor {
                 .filter{ model in model.codeIsValid}
                 .do(afterNext: { model in requests.authorizationRequest(model.code) })
                 .map{ model in State.isCheckingCode(code: model.code) }
+                
+            ///  isCheckingCode (error) => userInput
+                responses.authorizingError
+                    .filteredByState(trait.readOnlyState, filterMap: byIsCheckingCode)
+                    .map { _ in State.userInput }
                 
             }.bindToAndDisposedBy(trait: trait)
         }

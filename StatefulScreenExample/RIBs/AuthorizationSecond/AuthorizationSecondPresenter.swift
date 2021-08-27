@@ -28,10 +28,23 @@ extension AuthorizationSecondPresenter: IOTransformer {
         let loadngIndicator = input.state.map { state -> Bool in
             switch state {
             case .isCheckingCode: return true
-            case .userInput, .receivingCodeError : return false
+//            case .userInput, .receivingCodeError : return false
+            case .userInput : return false
             }
         }.asSignalIgnoringError()
         
-        return AuthorizationSecondPresenterOutput(phoneLabel: phoneLabel, codeField: codeField, loadingIndicator: loadngIndicator)
+        let success = input.requestSuccess
+            .mapAsVoid()
+            .asSignalIgnoringError()
+        
+        let failure = input.requestFailure
+            .mapAsVoid()
+            .asSignalIgnoringError()
+        
+        return AuthorizationSecondPresenterOutput(phoneLabel: phoneLabel,
+                                                  codeField: codeField,
+                                                  loadingIndicator: loadngIndicator,
+                                                  success: success,
+                                                  failure: failure)
     }
 }

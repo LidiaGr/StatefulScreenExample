@@ -147,6 +147,10 @@ extension AuthorizationViewController: BindableView {
                 notificationCenter.delegate = self
             })
             
+            input.successfulRequest.emit(onNext: { _ in
+                self.spinner.stopAnimating()
+            })
+            
             phoneNumberField.rx.text.orEmpty.bind(to: viewOutput.$phoneNumberUpdateTap)
             sendCodeButton.rx.controlEvent(.touchUpInside).bind(to: viewOutput.$sendCodeButtonTap)
         }

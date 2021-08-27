@@ -45,7 +45,17 @@ final class AuthorizationServiceImp: AuthorizationService {
     }
     
     func checkCode(_ code: String, completion: @escaping (Result<Void, Error>) -> Void){
-        
+        DispatchQueue.global(qos: .default).asyncAfter(deadline: .now() + .random(in: 0.5...2)) {
+            let isSuccess = Bool.random()
+            let result: Result<Void, Error>
+            switch isSuccess {
+            case false:
+                result = .failure(NetworkError())
+            case true:
+                result = .success(Void())
+            }
+            completion(result)
+        }
     }
 }
 
