@@ -43,5 +43,9 @@ final class AuthorizationServiceImp: AuthorizationService {
             }
         }
     }
+    
+    func checkCode(_ code: String, completion: @escaping (Result<Void, Error>) -> Void){
+        
+    }
 }
 

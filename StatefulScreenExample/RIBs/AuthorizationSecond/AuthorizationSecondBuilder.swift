@@ -19,7 +19,7 @@ final class AuthorizationSecondBuilder: Builder<RootDependency>, AuthorizationSe
         let viewController = AuthorizationSecondViewController.instantiateFromStoryboard()
         
         let presenter = AuthorizationSecondPresenter()
-        let interactor = AuthorizationSecondInteractor(presenter: presenter, phoneNumber: phoneNumber)
+        let interactor = AuthorizationSecondInteractor(presenter: presenter, phoneNumber: phoneNumber, authorizationService: dependency.authorizationService)
 //        interactor.listener = listener
         
         VIPBinder.bind(view: viewController, interactor: interactor, presenter: presenter)

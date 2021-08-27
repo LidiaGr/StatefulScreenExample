@@ -22,6 +22,9 @@ final class AuthorizationViewController: UIViewController, AuthorizationViewCont
         performSegue(withIdentifier: "toMain", sender: self)
     }
     
+    @IBAction func unwindToAuthorizationScreen( _ seg: UIStoryboardSegue) {
+    }
+    
     let plusLabel = UILabel()
     let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 38, height: 46))
     
@@ -47,6 +50,16 @@ final class AuthorizationViewController: UIViewController, AuthorizationViewCont
         view.backgroundColor = .systemBackground
         
         initialSetup()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        print("lolkek")
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        print("lolkek")
     }
 }
 
@@ -84,6 +97,9 @@ extension AuthorizationViewController: BindableView {
     
     func bindWith(_ input: AuthorizationPresenterOutput) {
         disposeBag.insert {
+            viewWillDisappearEvent.bind { [weak self] in
+                self?.spinner.stopAnimating()
+            }
             
             input.phoneField.drive(onNext: { [weak self] number in
                 self?.phoneNumberField.text = number
@@ -157,7 +173,6 @@ extension AuthorizationViewController {
         @PublishControlEvent var sendCodeButtonTap: ControlEvent<Void>
         
         @PublishControlEvent var retryAuthorizationButtonTap: ControlEvent<Void>
-        
     }
 }
 

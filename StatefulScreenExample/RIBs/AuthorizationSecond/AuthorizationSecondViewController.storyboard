@@ -67,6 +67,9 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <state key="normal" title="Button" image="close"/>
+                                <connections>
+                                    <action selector="backToAuthorizationTapped:" destination="vKn-9P-Ny8" eventType="touchUpInside" id="kEf-Xb-mmy"/>
+                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="HgA-Aw-ocO"/>
@@ -90,9 +93,11 @@
                         <outlet property="codeField" destination="OkY-YX-srt" id="INJ-Y2-9v7"/>
                         <outlet property="phoneNumberLabel" destination="c2W-U2-bDI" id="wrk-o0-qB6"/>
                         <outlet property="textLabel" destination="iue-9O-Ct0" id="8QA-NO-ncG"/>
+                        <segue destination="cRI-0D-aCb" kind="unwind" identifier="toAuthorization" unwindAction="unwindToAuthorizationScreen:" id="Zjh-H7-6Rj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="k0X-am-vwV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="cRI-0D-aCb" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="244" y="205"/>
         </scene>

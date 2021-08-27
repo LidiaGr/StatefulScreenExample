@@ -16,7 +16,7 @@ final class MainScreenViewController: UIViewController, MainScreenViewControllab
   @IBOutlet private weak var editProfileButton: UIButton!
   @IBOutlet private weak var authorizationButton: UIButton!
 
-    @IBAction func unwind( _ seg: UIStoryboardSegue) {
+    @IBAction func unwindToMain( _ seg: UIStoryboardSegue) {
     }
     
   override func viewDidLoad() {

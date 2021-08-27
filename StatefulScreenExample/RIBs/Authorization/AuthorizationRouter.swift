@@ -27,8 +27,10 @@ final class AuthorizationRouter: ViewableRouter<AuthorizationInteractable, Autho
     func routeToAuthorizationSecond(phoneNumber: String) {
         let router = authorizationSecondBuilder.build(with: phoneNumber)
         attachChild(router)
-
-        viewController.uiviewController.present(router.viewControllable.uiviewController, animated: true, completion: nil)
+        
+        viewController.uiviewController.present(router.viewControllable.uiviewController,
+                                                animated: true,
+                                                completion: nil)
         
         detachWhenClosed(child: router, disposedBy: disposeBag)
     }

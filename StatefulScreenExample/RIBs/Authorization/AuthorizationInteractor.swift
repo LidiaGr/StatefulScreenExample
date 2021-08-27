@@ -27,13 +27,18 @@ final class AuthorizationInteractor: PresentableInteractor<AuthorizationPresenta
     
     private let disposeBag = DisposeBag()
     
-    
     init(presenter: AuthorizationPresentable, authorizationService: AuthorizationService) {
         self.authorizationService = authorizationService
         _screenDataModel = BehaviorRelay<AuthorizationScreenDataModel>(value: AuthorizationScreenDataModel(phone: ""))
         super.init(presenter: presenter)
     }
 
+    override func willResignActive() {
+        super.willResignActive()
+        // TODO: Pause any business logic.
+        // Мб здесь как-то  можно сказать презентеру и вьюхе, что надо остановить лоудер?
+    }
+    
     private func sendSMSCode() {
         authorizationService.sendSMSCode() { [weak self] result in
             switch result {
@@ -63,11 +68,17 @@ extension AuthorizationInteractor: IOTransformer {
         
         let requests = makeRequests()
         
-        StateTransform.transform(trait: trait, viewOutput: viewOutput, screenDataModel: _screenDataModel.asObservable(), responses: responses, requests: requests)
+        StateTransform.transform(trait: trait,
+                                 viewOutput: viewOutput,
+                                 screenDataModel: _screenDataModel.asObservable(),
+                                 responses: responses,
+                                 requests: requests)
         
         bindStatefulRouting(viewOutput, trait: trait)
         
-        return AuthorizationInteractorOutput(state: trait.readOnlyState, screenDataModel: _screenDataModel.asObservable(), sendButtonTap: viewOutput.sendCodeButtonTap.asObservable())
+        return AuthorizationInteractorOutput(state: trait.readOnlyState,
+                                             screenDataModel: _screenDataModel.asObservable(),
+                                             sendButtonTap: viewOutput.sendCodeButtonTap.asObservable())
     }
     
     private func bindStatefulRouting(_ viewoutput: AuthorizationViewOutput, trait: StateTransformTrait<State>) {
@@ -109,16 +120,6 @@ extension AuthorizationInteractor {
                               screenDataModel: Observable<AuthorizationScreenDataModel>,
                               responses: Responses,
                               requests: Requests) {
-            
-            
-//            let codeReceivedSuccessfully = responses.codeReceivedSuccessfully
-//                .filteredByState(trait.readOnlyState, filterMap: byIsWaitingForCode)
-//                .subscribe(onNext: { _ in
-//                    self?.router?.routeToAuthorizationSecond()
-//                })
-//                .do(afterNext: { _ in
-//                    print("route to next screen")
-//                })
             
             StateTransform.transitions {
                 /// userInput => isWaitingForCode

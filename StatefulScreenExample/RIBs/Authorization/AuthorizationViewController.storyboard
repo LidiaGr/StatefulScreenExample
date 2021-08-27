@@ -78,7 +78,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <state key="normal" title="Button" image="close"/>
                                 <connections>
-                                    <action selector="backToATapped:" destination="vKn-9P-Ny8" eventType="touchUpInside" id="NKc-Rd-xM8"/>
+                                    <action selector="backToMainTapped:" destination="vKn-9P-Ny8" eventType="touchUpInside" id="NGF-jo-i66"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -105,7 +105,7 @@
                         <outlet property="sendCodeButton" destination="g7V-aE-5Pa" id="UnA-wJ-xn3"/>
                         <outlet property="textLabel1" destination="Vj0-aF-5uO" id="W3P-rr-gEa"/>
                         <outlet property="textLabel2" destination="LYH-YM-dR7" id="vXg-C7-8Dk"/>
-                        <segue destination="hPQ-Xs-xXQ" kind="unwind" identifier="toMain" unwindAction="unwind:" id="D0i-RP-bNf"/>
+                        <segue destination="hPQ-Xs-xXQ" kind="unwind" identifier="toMain" unwindAction="unwindToMain:" id="Kmv-yp-oiM"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="k0X-am-vwV" userLabel="First Responder" sceneMemberID="firstResponder"/>

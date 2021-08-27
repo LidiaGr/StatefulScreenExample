@@ -8,6 +8,7 @@
 
 import RIBs
 import RxSwift
+import RxCocoa
 import UIKit
 
 final class AuthorizationSecondViewController: UIViewController, AuthorizationSecondViewControllable {
@@ -17,6 +18,10 @@ final class AuthorizationSecondViewController: UIViewController, AuthorizationSe
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var phoneNumberLabel: UILabel!
     @IBOutlet private weak var codeField: UITextField!
+    
+    @IBAction func backToAuthorizationTapped(_ sender: Any) {
+        performSegue(withIdentifier: "toAuthorization", sender: self)
+    }
     
     // MARK: View Events
     
@@ -52,7 +57,8 @@ extension AuthorizationSecondViewController: BindableView {
 
 extension AuthorizationSecondViewController {
     private struct ViewOutput: AuthorizationSecondViewOutput {
-
+        @PublishControlEvent var codeUpdateTap: ControlEvent<String>
+        
     }
 }
 

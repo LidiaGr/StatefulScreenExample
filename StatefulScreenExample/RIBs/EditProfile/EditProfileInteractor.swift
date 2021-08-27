@@ -174,7 +174,8 @@ extension EditProfileInteractor {
 
 extension EditProfileInteractor {
     private func makeRequests() -> Requests {
-        Requests(updateProfile: { [weak self] profile in self?.updateProfile(profile: profile) })
+        Requests(updateProfile: { [weak self] profile in
+                    self?.updateProfile(profile: profile) })
     }
 }
 

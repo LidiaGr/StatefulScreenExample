@@ -74,11 +74,7 @@ struct AuthorizationSecondPresenterOutput {
 }
 
 protocol AuthorizationSecondViewOutput {
-//    var phoneNumberUpdateTap: ControlEvent<String> { get }
-//
-//    var sendCodeButtonTap: ControlEvent<Void> { get }
-//
-//    var retryAuthorizationButtonTap: ControlEvent<Void> { get }
+    var codeUpdateTap: ControlEvent<String> { get }
 }
 
 struct AuthorizationSecondScreenDataModel {
@@ -91,4 +87,12 @@ struct AuthorizationSecondScreenDataModel {
         default: return false
         }
     }
+}
+
+// MARK: - AuthorizationSecondInteractorState
+
+enum AuthorizationSecondInteractorState {
+    case userInput
+    case isCheckingCode(code: String?)
+    case receivingCodeError(error: NetworkError, code: String)
 }
