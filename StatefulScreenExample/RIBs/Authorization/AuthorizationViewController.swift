@@ -18,6 +18,10 @@ final class AuthorizationViewController: UIViewController, AuthorizationViewCont
     @IBOutlet private weak var textLabel1: UILabel!
     @IBOutlet private weak var textLabel2: UILabel!
     
+    @IBAction func backToATapped(_ sender: Any) {
+        performSegue(withIdentifier: "toMain", sender: self)
+    }
+    
     let plusLabel = UILabel()
     let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 38, height: 46))
     

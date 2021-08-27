@@ -16,7 +16,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Введите код" textAlignment="center" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JSi-Z3-9Bj">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Введите код" textAlignment="center" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JSi-Z3-9Bj">
                                 <rect key="frame" x="125" y="54" width="125" height="27"/>
                                 <accessibility key="accessibilityConfiguration">
                                     <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
@@ -25,13 +25,13 @@
                                 <nil key="textColor"/>
                                 <color key="highlightedColor" red="0.070588235289999995" green="0.070588235289999995" blue="0.078431372550000003" alpha="1" colorSpace="calibratedRGB"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="number" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c2W-U2-bDI">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="number" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c2W-U2-bDI">
                                 <rect key="frame" x="164" y="107" width="47" height="16"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <color key="textColor" red="0.20392156862745098" green="0.73725490196078436" blue="0.28235294117647058" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="OkY-YX-srt">
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="OkY-YX-srt">
                                 <rect key="frame" x="16" y="139" width="343" height="46"/>
                                 <color key="backgroundColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -47,7 +47,7 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </textField>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Введите код из смс, отправленного на номер" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iue-9O-Ct0">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Введите код из смс, отправленного на номер" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iue-9O-Ct0">
                                 <rect key="frame" x="35" y="89" width="305" height="18"/>
                                 <accessibility key="accessibilityConfiguration">
                                     <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
@@ -59,6 +59,15 @@
                                 <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <color key="highlightedColor" red="0.67450980390000004" green="0.66666666669999997" blue="0.69803921570000005" alpha="1" colorSpace="calibratedRGB"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VWS-t8-BYc">
+                                <rect key="frame" x="8" y="25" width="25" height="25"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="25" id="tbb-i8-CQ5"/>
+                                    <constraint firstAttribute="height" constant="25" id="w3f-gh-R6x"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <state key="normal" title="Button" image="close"/>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="HgA-Aw-ocO"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -66,10 +75,15 @@
                             <constraint firstItem="JSi-Z3-9Bj" firstAttribute="top" secondItem="HgA-Aw-ocO" secondAttribute="top" constant="54" id="0r8-6d-Pnv"/>
                             <constraint firstItem="iue-9O-Ct0" firstAttribute="top" secondItem="JSi-Z3-9Bj" secondAttribute="bottom" constant="8" id="BBB-lD-ozj"/>
                             <constraint firstItem="OkY-YX-srt" firstAttribute="centerX" secondItem="iue-9O-Ct0" secondAttribute="centerX" id="Fy7-eG-GRy"/>
+                            <constraint firstItem="OkY-YX-srt" firstAttribute="trailing" secondItem="BNZ-bO-rhc" secondAttribute="trailingMargin" id="JDI-NK-s7W"/>
+                            <constraint firstItem="iue-9O-Ct0" firstAttribute="leading" secondItem="HgA-Aw-ocO" secondAttribute="leading" constant="35" id="NLA-lw-sp4"/>
+                            <constraint firstItem="VWS-t8-BYc" firstAttribute="top" secondItem="HgA-Aw-ocO" secondAttribute="top" constant="25" id="QWH-Sd-KUG"/>
                             <constraint firstItem="c2W-U2-bDI" firstAttribute="top" secondItem="iue-9O-Ct0" secondAttribute="bottom" id="Yz3-xF-yWA"/>
+                            <constraint firstItem="VWS-t8-BYc" firstAttribute="leading" secondItem="HgA-Aw-ocO" secondAttribute="leading" constant="8" id="f26-NB-C2Y"/>
                             <constraint firstItem="OkY-YX-srt" firstAttribute="top" secondItem="c2W-U2-bDI" secondAttribute="bottom" constant="16" id="h4t-6F-fE0"/>
                             <constraint firstItem="c2W-U2-bDI" firstAttribute="centerX" secondItem="iue-9O-Ct0" secondAttribute="centerX" id="j7J-Cv-7Oo"/>
                             <constraint firstItem="JSi-Z3-9Bj" firstAttribute="centerX" secondItem="iue-9O-Ct0" secondAttribute="centerX" id="jks-Ta-HVD"/>
+                            <constraint firstItem="OkY-YX-srt" firstAttribute="leading" secondItem="BNZ-bO-rhc" secondAttribute="leadingMargin" id="tdn-tP-4h1"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -78,4 +92,7 @@
             <point key="canvasLocation" x="244" y="205"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="close" width="24" height="24"/>
+    </resources>
 </document>
