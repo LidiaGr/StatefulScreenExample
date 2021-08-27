@@ -55,22 +55,14 @@ protocol AuthorizationSecondListener: AnyObject {
 // MARK: Outputs
 
 struct AuthorizationSecondInteractorOutput {
-//    let state: Observable<AuthorizationInteractorState>
-//    let screenDataModel: Observable<AuthorizationScreenDataModel>
+    let state: Observable<AuthorizationSecondInteractorState>
+    let screenDataModel: Observable<AuthorizationSecondScreenDataModel>
 }
 
 struct AuthorizationSecondPresenterOutput {
-//    let phoneField: Driver<String>
-//    let isButtonActive: Signal<Bool>
-//
-//    let isPhoneFieldEditing: Signal<Bool>
-//
-//    let loadingIndicator: Signal<Bool>
-//    let isContentVisible: Driver<Bool>
-//
-//    let sendButtonTapped: Signal<Void>
-//    /// nil означает что нужно спрятать сообщение об ошибке
-//    let showError: Signal<ErrorMessageViewModel?>
+    let phoneLabel: Driver<String>
+    let codeField: Driver<String>
+    let loadingIndicator: Signal<Bool>
 }
 
 protocol AuthorizationSecondViewOutput {

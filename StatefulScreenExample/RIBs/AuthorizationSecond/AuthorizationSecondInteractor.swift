@@ -64,7 +64,7 @@ extension AuthorizationSecondInteractor: IOTransformer {
         let trait = StateTransformTrait(_state: _state, disposeBag: disposeBag)
         
         viewOutput.codeUpdateTap.asObservable()
-            .map { code in String(code.removingCharacters(except: .alphanumerics).prefix(5)) }
+            .map { code in String(code.removingCharacters(except: .arabicNumerals).prefix(5)) }
             .subscribe(onNext: { code in
                 let newModel = AuthorizationSecondScreenDataModel(phone: self._screenDataModel.value.phone , code: code)
                 self._screenDataModel.accept(newModel)
@@ -72,7 +72,13 @@ extension AuthorizationSecondInteractor: IOTransformer {
         
         let requests = makeRequests()
         
-        return AuthorizationSecondInteractorOutput()
+        StateTransform.transform(trait: trait,
+                                 viewOutput: viewOutput,
+                                 screenDataModel: _screenDataModel.asObservable(),
+                                 responses: responses,
+                                 requests: requests)
+        
+        return AuthorizationSecondInteractorOutput(state: trait.readOnlyState, screenDataModel: _screenDataModel.asObservable())
     }
 }
 

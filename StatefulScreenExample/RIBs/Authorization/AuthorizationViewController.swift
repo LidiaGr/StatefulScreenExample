@@ -51,16 +51,6 @@ final class AuthorizationViewController: UIViewController, AuthorizationViewCont
         
         initialSetup()
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        print("lolkek")
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        print("lolkek")
-    }
 }
 
 extension AuthorizationViewController {
@@ -97,9 +87,9 @@ extension AuthorizationViewController: BindableView {
     
     func bindWith(_ input: AuthorizationPresenterOutput) {
         disposeBag.insert {
-            viewWillDisappearEvent.bind { [weak self] in
-                self?.spinner.stopAnimating()
-            }
+//            viewWillDisappearEvent.bind { [weak self] in
+//                self?.spinner.stopAnimating()
+//            }
             
             input.phoneField.drive(onNext: { [weak self] number in
                 self?.phoneNumberField.text = number

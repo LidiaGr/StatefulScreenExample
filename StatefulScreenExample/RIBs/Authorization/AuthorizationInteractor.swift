@@ -61,7 +61,6 @@ extension AuthorizationInteractor: IOTransformer {
         viewOutput.phoneNumberUpdateTap.asObservable()
             .map { phoneNumber in String(phoneNumber.removingCharacters(except: .arabicNumerals).prefix(10)) }
             .subscribe(onNext: { number in
-                print(number)
                 let newNumber = AuthorizationScreenDataModel(phone: number)
                 self._screenDataModel.accept(newNumber)
             }).disposed(by: disposeBag)

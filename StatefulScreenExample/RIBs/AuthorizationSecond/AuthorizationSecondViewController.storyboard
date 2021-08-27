@@ -90,7 +90,7 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="codeField" destination="OkY-YX-srt" id="INJ-Y2-9v7"/>
+                        <outlet property="codeInputField" destination="OkY-YX-srt" id="fVu-NG-cHE"/>
                         <outlet property="phoneNumberLabel" destination="c2W-U2-bDI" id="wrk-o0-qB6"/>
                         <outlet property="textLabel" destination="iue-9O-Ct0" id="8QA-NO-ncG"/>
                         <segue destination="cRI-0D-aCb" kind="unwind" identifier="toAuthorization" unwindAction="unwindToAuthorizationScreen:" id="Zjh-H7-6Rj"/>

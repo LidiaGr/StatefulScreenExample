@@ -17,11 +17,19 @@ final class AuthorizationSecondViewController: UIViewController, AuthorizationSe
     
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var phoneNumberLabel: UILabel!
-    @IBOutlet private weak var codeField: UITextField!
+    @IBOutlet private weak var codeInputField: UITextField!
     
     @IBAction func backToAuthorizationTapped(_ sender: Any) {
         performSegue(withIdentifier: "toAuthorization", sender: self)
     }
+    
+    var spinner: UIActivityIndicatorView! = {
+        let loginSpinner = UIActivityIndicatorView(style: .large)
+        loginSpinner.color = UIColor(hexString: "#34BC48")
+        loginSpinner.translatesAutoresizingMaskIntoConstraints = false
+        loginSpinner.hidesWhenStopped = true
+        return loginSpinner
+    }()
     
     // MARK: View Events
     
@@ -39,8 +47,10 @@ final class AuthorizationSecondViewController: UIViewController, AuthorizationSe
 
 extension AuthorizationSecondViewController {
     private func initialSetup() {
-        codeField.tintColor = UIColor(hexString: "#34BC48")
-        codeField.textAlignment = .center
+        codeInputField.tintColor = UIColor(hexString: "#34BC48")
+        codeInputField.textAlignment = .center
+        
+        view.addStretchedToBounds(subview: spinner)
     }
 }
 
@@ -50,6 +60,25 @@ extension AuthorizationSecondViewController: BindableView {
     func getOutput() -> AuthorizationSecondViewOutput { viewOutput }
     
     func bindWith(_ input: AuthorizationSecondPresenterOutput) {
+        disposeBag.insert {
+            
+            input.phoneLabel.drive(onNext: { [weak self] number in
+                self?.phoneNumberLabel.text = number
+            })
+            
+            input.codeField.drive(onNext: { [weak self] code in
+                self?.codeInputField.text = code
+            })
+            
+            input.loadingIndicator.emit(onNext: { [unowned self] indicator in
+                switch indicator == true {
+                case true: spinner.startAnimating()
+                case false: spinner.stopAnimating()
+                }
+            })
+            
+            codeInputField.rx.text.orEmpty.bind(to: viewOutput.$codeUpdateTap)
+        }
     }
 }
 
@@ -58,7 +87,6 @@ extension AuthorizationSecondViewController: BindableView {
 extension AuthorizationSecondViewController {
     private struct ViewOutput: AuthorizationSecondViewOutput {
         @PublishControlEvent var codeUpdateTap: ControlEvent<String>
-        
     }
 }
 
