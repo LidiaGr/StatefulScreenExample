@@ -28,7 +28,6 @@ extension AuthorizationSecondPresenter: IOTransformer {
         let loadngIndicator = input.state.map { state -> Bool in
             switch state {
             case .isCheckingCode: return true
-//            case .userInput, .receivingCodeError : return false
             case .userInput : return false
             }
         }.asSignalIgnoringError()
@@ -41,9 +40,14 @@ extension AuthorizationSecondPresenter: IOTransformer {
             .mapAsVoid()
             .asSignalIgnoringError()
         
+        let inputStarted = input.inputStarted
+            .mapAsVoid()
+            .asSignalIgnoringError()
+        
         return AuthorizationSecondPresenterOutput(phoneLabel: phoneLabel,
                                                   codeField: codeField,
                                                   loadingIndicator: loadngIndicator,
+                                                  inputStarted: inputStarted,
                                                   success: success,
                                                   failure: failure)
     }

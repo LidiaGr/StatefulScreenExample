@@ -9,23 +9,24 @@
 import RIBs
 
 final class ProfileBuilder: Builder<RootDependency>, ProfileBuildable {
-  func build() -> ProfileRouting {
+    
+    func build(isUserAuthorized: Bool) -> ProfileRouting {
     let viewController = ProfileStackViewController.instantiateFromStoryboard()
 
-    return buildWith(viewController: viewController)
+    return buildWith(viewController: viewController, isUserAuthorized: isUserAuthorized)
   }
   
-  func buildScreenWithTableView() -> ProfileRouting {
+  func buildScreenWithTableView(isUserAuthorized: Bool) -> ProfileRouting {
     let viewController = ProfileTableViewController.instantiateFromStoryboard()
     
-    return buildWith(viewController: viewController)
+    return buildWith(viewController: viewController, isUserAuthorized: isUserAuthorized)
   }
   
-  private func buildWith<V: UIViewController>(viewController: V) -> ProfileRouting
+    private func buildWith<V: UIViewController>(viewController: V, isUserAuthorized: Bool) -> ProfileRouting
     where V: ProfileViewControllable & BindableView, V.Input == ProfilePresenterOutput, V.Output == ProfileViewOutput {
     
       let presenter = ProfilePresenter()
-      let interactor = ProfileInteractor(presenter: presenter, profileService: dependency.profileService)
+      let interactor = ProfileInteractor(presenter: presenter, profileService: dependency.profileService, isUserAuthorized: isUserAuthorized)
       
       VIPBinder.bind(view: viewController, interactor: interactor, presenter: presenter)
       

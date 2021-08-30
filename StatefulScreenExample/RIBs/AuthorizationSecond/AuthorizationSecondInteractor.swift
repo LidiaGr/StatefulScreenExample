@@ -16,7 +16,7 @@ final class AuthorizationSecondInteractor: PresentableInteractor<AuthorizationSe
     
     weak var router: AuthorizationSecondRouting?
     private let authorizationService: AuthorizationService
-    //    weak var listener: AuthorizationSecondListener?
+    weak var listener: AuthorizationSecondListener?
     
     // MARK: Internals
     
@@ -48,7 +48,9 @@ final class AuthorizationSecondInteractor: PresentableInteractor<AuthorizationSe
     private func checkCode(code: String) {
         authorizationService.checkCode(code) { [weak self] result in
             switch result {
-            case .success: self?.responses.$authorisdedSuccessfully.accept(Void())
+            case .success:
+                self?.responses.$authorizedSuccessfully.accept(Void())
+                self?.listener?.authorizationSuccess()
             case .failure(let error): self?.responses.$authorizingError.accept(error)
             }
         }
@@ -80,7 +82,8 @@ extension AuthorizationSecondInteractor: IOTransformer {
         
         return AuthorizationSecondInteractorOutput(state: trait.readOnlyState,
                                                    screenDataModel: _screenDataModel.asObservable(),
-                                                   requestSuccess: responses.$authorisdedSuccessfully.asObservable(),
+                                                   inputStarted: viewOutput.codeUpdateTap.asObservable(),
+                                                   requestSuccess: responses.$authorizedSuccessfully.asObservable(),
                                                    requestFailure: responses.$authorizingError.asObservable())
     }
 }
@@ -139,7 +142,7 @@ extension AuthorizationSecondInteractor {
 
 extension AuthorizationSecondInteractor {
     private struct Responses {
-        @PublishObservable var authorisdedSuccessfully: Observable<Void>
+        @PublishObservable var authorizedSuccessfully: Observable<Void>
         @PublishObservable var authorizingError: Observable<Error>
     }
     

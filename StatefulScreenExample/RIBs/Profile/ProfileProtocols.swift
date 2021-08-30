@@ -13,9 +13,9 @@ import RxSwift
 // MARK: - Builder
 
 protocol ProfileBuildable: Buildable {
-  func build() -> ProfileRouting
+  func build(isUserAuthorized: Bool) -> ProfileRouting
   
-  func buildScreenWithTableView() -> ProfileRouting
+  func buildScreenWithTableView(isUserAuthorized: Bool) -> ProfileRouting
 }
 
 // MARK: - Router
@@ -44,6 +44,11 @@ protocol ProfilePresentable: Presentable {}
 
 typealias ProfileInteractorState = LoadingState<Profile, Error>
 
+struct ProfileInteractorOutput {
+    let state: Observable<ProfileInteractorState>
+    let authorized: Observable<Bool>
+}
+
 struct ProfilePresenterOutput {
   let viewModel: Driver<ProfileViewModel>
   let isContentViewVisible: Driver<Bool>
@@ -53,6 +58,7 @@ struct ProfilePresenterOutput {
   
   /// nil означает что нужно спрятать сообщение об ошибке
   let showError: Signal<ErrorMessageViewModel?>
+  let authorizationStatus: Driver<Bool>
 }
 
 protocol ProfileViewOutput {

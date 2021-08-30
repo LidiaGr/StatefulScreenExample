@@ -141,7 +141,7 @@ extension AuthorizationViewController: BindableView {
                 let notificationCenter = UNUserNotificationCenter.current()
                     notificationCenter.requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
                     if granted {
-                      print("User gave permission for local notifications")
+//                      print("User gave permission for local notifications")
                     }
                 }
                 notificationCenter.delegate = self

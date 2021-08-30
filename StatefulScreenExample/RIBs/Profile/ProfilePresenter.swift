@@ -16,10 +16,10 @@ final class ProfilePresenter: ProfilePresentable {}
 
 extension ProfilePresenter: IOTransformer {
   /// Метод отвечает за преобразование состояния во ViewModel'и и сигналы (команды)
-  func transform(input state: Observable<ProfileInteractorState>) -> ProfilePresenterOutput {
-    let viewModel = Helper.viewModel(state)
+  func transform(input: ProfileInteractorOutput) -> ProfilePresenterOutput {
+    let viewModel = Helper.viewModel(input.state)
     
-    let isContentViewVisible = state.compactMap { state -> Void? in
+    let isContentViewVisible = input.state.compactMap { state -> Void? in
       // После загрузки 1-й порции данных контент всегда виден
       switch state {
       case .dataLoaded: return Void()
@@ -30,9 +30,9 @@ extension ProfilePresenter: IOTransformer {
     .startWith(false)
     .asDriverIgnoringError()
     
-    let (initialLoadingIndicatorVisible, hideRefreshControl) = refreshLoadingIndicatorEvents(state: state)
+    let (initialLoadingIndicatorVisible, hideRefreshControl) = refreshLoadingIndicatorEvents(state: input.state)
     
-    let showError = state.map { state -> ErrorMessageViewModel? in
+    let showError = input.state.map { state -> ErrorMessageViewModel? in
       switch state {
       case .loadingError(let error):
         return ErrorMessageViewModel(title: error.localizedDescription, buttonTitle: "Повторить")
@@ -43,11 +43,15 @@ extension ProfilePresenter: IOTransformer {
     // .distinctUntilChanged() - ⚠️ здесь этот оператор применять не нужно
     .asSignal(onErrorJustReturn: nil)
     
+    let status = input.authorized
+        .asDriverIgnoringError()
+    
     return ProfilePresenterOutput(viewModel: viewModel,
                                   isContentViewVisible: isContentViewVisible,
                                   initialLoadingIndicatorVisible: initialLoadingIndicatorVisible,
                                   hideRefreshControl: hideRefreshControl,
-                                  showError: showError)
+                                  showError: showError,
+                                  authorizationStatus: status)
   }
 }
 

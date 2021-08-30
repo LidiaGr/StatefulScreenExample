@@ -23,14 +23,14 @@ final class AuthorizationSecondComponent: Component<AuthorizationSecondDependenc
 // MARK: - Builder
 
 protocol AuthorizationSecondBuildable: Buildable {
-    func build(with phoneNumber: String) -> AuthorizationSecondRouting
+    func build(withListener listener: AuthorizationSecondListener, with phoneNumber: String) -> AuthorizationSecondRouting
 }
 
 // MARK: - Router
 
 protocol AuthorizationSecondInteractable: Interactable {
     var router: AuthorizationSecondRouting? { get set }
-//    var listener: AuthorizationSecondListener? { get set }
+    var listener: AuthorizationSecondListener? { get set }
 }
 
 protocol AuthorizationSecondViewControllable: ViewControllable {
@@ -50,6 +50,7 @@ protocol AuthorizationSecondPresentable: Presentable {
 
 protocol AuthorizationSecondListener: AnyObject {
     // TODO: Declare methods the interactor can invoke to communicate with other RIBs.
+    func authorizationSuccess()
 }
 
 // MARK: Outputs
@@ -57,6 +58,7 @@ protocol AuthorizationSecondListener: AnyObject {
 struct AuthorizationSecondInteractorOutput {
     let state: Observable<AuthorizationSecondInteractorState>
     let screenDataModel: Observable<AuthorizationSecondScreenDataModel>
+    let inputStarted: Observable<String>
     
     let requestSuccess: Observable<Void>
     let requestFailure: Observable<Error>
@@ -66,6 +68,7 @@ struct AuthorizationSecondPresenterOutput {
     let phoneLabel: Driver<String>
     let codeField: Driver<String>
     let loadingIndicator: Signal<Bool>
+    let inputStarted: Signal<Void>
     
     let success: Signal<Void>
     let failure: Signal<Void>

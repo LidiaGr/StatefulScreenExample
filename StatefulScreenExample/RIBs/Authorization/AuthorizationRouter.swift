@@ -25,7 +25,7 @@ final class AuthorizationRouter: ViewableRouter<AuthorizationInteractable, Autho
     }
     
     func routeToAuthorizationSecond(phoneNumber: String) {
-        let router = authorizationSecondBuilder.build(with: phoneNumber)
+        let router = authorizationSecondBuilder.build(withListener: interactor, with: phoneNumber)
         attachChild(router)
         
         viewController.uiviewController.present(router.viewControllable.uiviewController,

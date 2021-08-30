@@ -17,6 +17,8 @@ final class ProfileInteractor: PresentableInteractor<ProfilePresentable>, Profil
   
   private let profileService: ProfileService
   
+    private var authorized: BehaviorRelay<Bool>
+    
   // MARK: Internals
   
   private let _state = BehaviorRelay<ProfileInteractorState>(value: .isLoading)
@@ -24,10 +26,13 @@ final class ProfileInteractor: PresentableInteractor<ProfilePresentable>, Profil
   private let responses = Responses()
   
   private let disposeBag = DisposeBag()
+    
   
   init(presenter: ProfilePresentable,
-       profileService: ProfileService) {
+       profileService: ProfileService,
+       isUserAuthorized: Bool) {
     self.profileService = profileService
+    self.authorized = BehaviorRelay<Bool>(value: isUserAuthorized)
     super.init(presenter: presenter)
   }
   
@@ -52,7 +57,7 @@ extension ProfileInteractor: IOTransformer {
   private typealias State = ProfileInteractorState
   
   /// Метод производит биндинг переходов между всеми состояниями экрана.
-  func transform(input viewOutput: ProfileViewOutput) -> Observable<ProfileInteractorState> {
+  func transform(input viewOutput: ProfileViewOutput) -> ProfileInteractorOutput {
     let trait = StateTransformTrait(_state: _state, disposeBag: disposeBag)
     
     let requests = makeRequests()
@@ -61,7 +66,7 @@ extension ProfileInteractor: IOTransformer {
     
     bindStatefulRouting(viewOutput, trait: trait)
     
-    return trait.readOnlyState
+    return ProfileInteractorOutput(state: trait.readOnlyState, authorized: authorized.asObservable())
   }
   
   private func bindStatefulRouting(_ viewOutput: ProfileViewOutput, trait: StateTransformTrait<State>) {

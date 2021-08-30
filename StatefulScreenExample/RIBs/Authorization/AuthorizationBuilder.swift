@@ -10,13 +10,13 @@ import RIBs
 
 final class AuthorizationBuilder: Builder<RootDependency>, AuthorizationBuildable {
 
-
-    func build() -> AuthorizationRouting {
+    func build(withListener listener: AuthorizationListener) -> AuthorizationRouting {
 //        let component = AuthorizationComponent(dependency: dependency)
         let viewController = AuthorizationViewController.instantiateFromStoryboard()
         
         let presenter = AuthorizationPresenter()
         let interactor = AuthorizationInteractor(presenter: presenter, authorizationService: dependency.authorizationService)
+        interactor.listener = listener
         
         VIPBinder.bind(view: viewController, interactor: interactor, presenter: presenter)
         

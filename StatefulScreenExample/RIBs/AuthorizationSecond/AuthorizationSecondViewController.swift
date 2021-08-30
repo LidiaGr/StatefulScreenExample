@@ -12,8 +12,6 @@ import RxCocoa
 import UIKit
 
 final class AuthorizationSecondViewController: UIViewController, AuthorizationSecondViewControllable {
-
-//    weak var listener: AuthorizationSecondPresentableListener?
     
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var phoneNumberLabel: UILabel!
@@ -84,9 +82,14 @@ extension AuthorizationSecondViewController: BindableView {
                 self.spinner.stopAnimating()
             })
             
-            input.success.emit(onNext: {
-                self.spinner.stopAnimating()
-                self.performSegue(withIdentifier: "toMain", sender: self)
+            input.success.emit(onNext: { [weak self] in
+                self?.spinner.stopAnimating()
+                self?.performSegue(withIdentifier: "toMain", sender: self)
+            })
+            
+            input.inputStarted.emit(onNext: { _ in
+                self.textLabel.text = "Введите код из смс, отправленного на номер"
+                self.textLabel.textColor = UIColor(hexString: "#ACAAB2")
             })
             
             codeInputField.rx.text.orEmpty.bind(to: viewOutput.$codeUpdateTap)

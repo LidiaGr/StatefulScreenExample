@@ -23,13 +23,14 @@ final class AuthorizationComponent: Component<AuthorizationDependency> {
 }
 
 protocol AuthorizationBuildable: Buildable {
-    func build() -> AuthorizationRouting
+    func build(withListener listener: AuthorizationListener) -> AuthorizationRouting
 }
 
 // MARK: - Router
 
-protocol AuthorizationInteractable: Interactable {
+protocol AuthorizationInteractable: Interactable, AuthorizationSecondListener {
     var router: AuthorizationRouting? { get set }
+    var listener: AuthorizationListener? { get set }
 }
 
 protocol AuthorizationViewControllable: ViewControllable {
@@ -45,6 +46,11 @@ protocol AuthorizationRouting: ViewableRouting {
 
 protocol AuthorizationPresentable: Presentable {
     // TODO: Declare methods the interactor can invoke the presenter to present data.
+}
+
+protocol AuthorizationListener: AnyObject {
+    // TODO: Declare methods the interactor can invoke to communicate with other RIBs.
+    func authorizationSuccessed()
 }
 
 // MARK: Outputs

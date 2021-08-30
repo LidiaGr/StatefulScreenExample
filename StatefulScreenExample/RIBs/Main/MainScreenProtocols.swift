@@ -18,7 +18,7 @@ protocol MainScreenBuildable: Buildable {
 
 // MARK: - Router
 
-protocol MainScreenInteractable: Interactable {
+protocol MainScreenInteractable: Interactable, AuthorizationListener {
   var router: MainScreenRouting? { get set }
 }
 
@@ -27,9 +27,9 @@ protocol MainScreenViewControllable: ViewControllable {}
 // MARK: - Interactor
 
 protocol MainScreenRouting: ViewableRouting {
-  func routeToStackViewProfile()
+  func routeToStackViewProfile(isUserAuthorized: Bool)
   
-  func routeToTableViewProfile()
+  func routeToTableViewProfile(isUserAuthorized: Bool)
     
   func routeToEditProfile()
     

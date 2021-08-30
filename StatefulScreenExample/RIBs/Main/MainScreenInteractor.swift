@@ -8,10 +8,13 @@
 
 import RIBs
 import RxSwift
+import RxRelay
 
 final class MainScreenInteractor: Interactor, MainScreenInteractable {
   weak var router: MainScreenRouting?
 
+  var isUserAuthorized = BehaviorRelay<Bool>(value: false)
+    
   private let disposeBag = DisposeBag()
 }
 
@@ -19,12 +22,16 @@ final class MainScreenInteractor: Interactor, MainScreenInteractable {
 
 extension MainScreenInteractor: IOTransformer {
   func transform(input viewOutput: MainScreenViewOutput) -> Empty {
-    viewOutput.stackViewButtonTap.subscribe(onNext: { [weak self] in
-      self?.router?.routeToStackViewProfile()
+    viewOutput.stackViewButtonTap
+        .withLatestFrom(isUserAuthorized)
+        .subscribe(onNext: { [weak self] isAuthorized in
+            self?.router?.routeToStackViewProfile(isUserAuthorized: isAuthorized)
     }).disposed(by: disposeBag)
 
-    viewOutput.tableViewButtonTap.subscribe(onNext: { [weak self] in
-      self?.router?.routeToTableViewProfile()
+    viewOutput.tableViewButtonTap
+        .withLatestFrom(isUserAuthorized)
+        .subscribe(onNext: { [weak self] isAuthorized in
+        self?.router?.routeToTableViewProfile(isUserAuthorized: isAuthorized)
     }).disposed(by: disposeBag)
     
     viewOutput.editProfileButtonTap.subscribe(onNext: { [weak self] in
@@ -37,4 +44,12 @@ extension MainScreenInteractor: IOTransformer {
 
     return Empty()
   }
+}
+
+// MARK: - AuthorizationListener
+
+extension MainScreenInteractor {
+    func authorizationSuccessed() {
+        isUserAuthorized.accept(true)
+    }
 }

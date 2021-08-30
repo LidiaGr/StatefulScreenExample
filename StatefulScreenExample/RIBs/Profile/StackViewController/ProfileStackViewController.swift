@@ -26,6 +26,8 @@ final class ProfileStackViewController: UIViewController, ProfileViewControllabl
   private let addEmailView = DisclosureTextView.loadFromNib()
   
   private let myOrdersView = DisclosureTextView.loadFromNib()
+    
+  private let status = UILabel()
   
   // Service Views
   private let loadingIndicatorView = LoadingIndicatorView()
@@ -55,6 +57,7 @@ extension ProfileStackViewController {
     view.addStretchedToBounds(subview: errorMessageView)
     
     stackView.addArrangedSubviews([
+      status,
       firstNameView,
       lastNameView,
       middleNameView,
@@ -64,6 +67,9 @@ extension ProfileStackViewController {
       addEmailView,
       myOrdersView
     ])
+    
+    status.text = "Незарегистрированный пользователь"
+    status.textColor = UIColor(hexString: "#FF6464")
     
     tapGesturesInitialSetup()
   }
@@ -119,6 +125,13 @@ extension ProfileStackViewController: BindableView {
     input.hideRefreshControl.emit(to: refreshControl.rx.endRefreshing).disposed(by: disposeBag)
     
     refreshControl.rx.controlEvent(.valueChanged).bind(to: viewOutput.$pullToRefresh).disposed(by: disposeBag)
+    
+    input.authorizationStatus.drive(onNext: { [weak self] status in
+        if status == true {
+            self?.status.text = "Зарегистрированный пользователь"
+            self?.status.textColor = UIColor(hexString: "#34BC48")
+        }
+    }).disposed(by: disposeBag)
   }
   
   private func bindViewModel(_ profileViewModel: Driver<ProfileViewModel>) {

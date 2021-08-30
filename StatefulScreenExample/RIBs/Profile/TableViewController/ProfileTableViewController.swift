@@ -23,6 +23,8 @@ final class ProfileTableViewController: UIViewController, ProfileViewControllabl
     let makeCellForRowDataSource = TableViewHelper.makeCellForRowDataSource(vc: self)
     return RxTableViewSectionedAnimatedDataSource<Section>(configureCell: makeCellForRowDataSource)
   }()
+    
+  private let status = UILabel()
 
   // MARK: View Events
 
@@ -52,6 +54,13 @@ extension ProfileTableViewController {
 
     tableView.rx.setDelegate(self).disposed(by: disposeBag)
 
+    status.text = "Незарегистрированный пользователь"
+    status.textColor = UIColor(hexString: "#FF6464")
+    
+    let headerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 50))
+    headerView.addStretchedToBounds(subview: status)
+    self.tableView.tableHeaderView = headerView
+    
     dataSource.animationConfiguration = AnimationConfiguration(insertAnimation: .fade,
                                                                reloadAnimation: .fade,
                                                                deleteAnimation: .fade)
@@ -88,6 +97,13 @@ extension ProfileTableViewController: BindableView {
     input.hideRefreshControl.emit(to: refreshControl.rx.endRefreshing).disposed(by: disposeBag)
     
     refreshControl.rx.controlEvent(.valueChanged).bind(to: viewOutput.$pullToRefresh).disposed(by: disposeBag)
+    
+    input.authorizationStatus.drive(onNext: { [weak self] status in
+        if status == true {
+            self?.status.text = "Зарегистрированный пользователь"
+            self?.status.textColor = UIColor(hexString: "#34BC48")
+        }
+    }).disposed(by: disposeBag)
   }
 
   /// Преобразуем ProfileViewModel в представление, подходящее для TableView

@@ -11,10 +11,11 @@ import RxSwift
 import RxCocoa
 
 final class AuthorizationInteractor: PresentableInteractor<AuthorizationPresentable>, AuthorizationInteractable {
-
+    
     // MARK: Dependencies
     
     weak var router: AuthorizationRouting?
+    weak var listener: AuthorizationListener?
     private let authorizationService: AuthorizationService
     
     // MARK: Internals
@@ -144,6 +145,14 @@ extension AuthorizationInteractor {
                     .map { phoneNumber in State.isWaitingForCode(phoneNumber: phoneNumber) }
             }.bindToAndDisposedBy(trait: trait)
         }
+    }
+}
+
+// MARK: - AuthorizationSecondListener
+
+extension AuthorizationInteractor {
+    func authorizationSuccess() {
+        self.listener?.authorizationSuccessed()
     }
 }
 

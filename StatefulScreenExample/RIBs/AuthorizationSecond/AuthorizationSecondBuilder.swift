@@ -14,13 +14,13 @@ final class AuthorizationSecondBuilder: Builder<RootDependency>, AuthorizationSe
         super.init(dependency: dependency)
     }
 
-    func build(with phoneNumber: String) -> AuthorizationSecondRouting {
+    func build(withListener listener: AuthorizationSecondListener, with phoneNumber: String) -> AuthorizationSecondRouting {
 //        let component = AuthorizationSecondComponent(dependency: dependency)
         let viewController = AuthorizationSecondViewController.instantiateFromStoryboard()
         
         let presenter = AuthorizationSecondPresenter()
         let interactor = AuthorizationSecondInteractor(presenter: presenter, phoneNumber: phoneNumber, authorizationService: dependency.authorizationService)
-//        interactor.listener = listener
+        interactor.listener = listener
         
         VIPBinder.bind(view: viewController, interactor: interactor, presenter: presenter)
         
