@@ -34,12 +34,13 @@ final class MainScreenViewController: UIViewController, MainScreenViewControllab
 }
 
 extension MainScreenViewController {
-  private func initialSetup() {}
+    private func initialSetup() {}
 }
 
 // MARK: - BindableView
 
 extension MainScreenViewController: BindableView {
+
   func getOutput() -> MainScreenViewOutput {
     return MainScreenViewOutput(stackViewButtonTap: stackViewScreenButton.rx.tap,
                                 tableViewButtonTap: tableViewScreenButton.rx.tap,

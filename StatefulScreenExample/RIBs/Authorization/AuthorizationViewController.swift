@@ -15,6 +15,7 @@ final class AuthorizationViewController: UIViewController, AuthorizationViewCont
     
     @IBOutlet private weak var phoneNumberField: UITextField!
     @IBOutlet private weak var sendCodeButton: UIButton!
+  
     @IBOutlet private weak var textLabel1: UILabel!
     @IBOutlet private weak var textLabel2: UILabel!
     
@@ -69,7 +70,6 @@ extension AuthorizationViewController {
         phoneNumberField.leftViewMode = .always
         
         phoneNumberField.tintColor = UIColor(hexString: "#34BC48")
-
         
         sendCodeButton.isEnabled = true
         sendCodeButton.alpha = 0.5
@@ -173,7 +173,6 @@ extension AuthorizationViewController {
 // MARK: - RibStoryboardInstantiatable
 
 extension AuthorizationViewController: RibStoryboardInstantiatable {}
-
 
 // MARK: - Notification Center
 
