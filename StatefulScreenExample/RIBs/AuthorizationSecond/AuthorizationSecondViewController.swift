@@ -75,11 +75,11 @@ extension AuthorizationSecondViewController: BindableView {
                 }
             })
             
-            input.failure.emit(onNext: { _ in
-                self.textLabel.text = "Ошибка"
-                self.textLabel.textColor = UIColor(hexString: "#FF6464")
-                self.codeInputField.text = ""
-                self.spinner.stopAnimating()
+            input.failure.emit(onNext: { [weak self] in
+                self?.textLabel.text = "Ошибка"
+                self?.textLabel.textColor = UIColor(hexString: "#FF6464")
+                self?.codeInputField.text = ""
+                self?.spinner.stopAnimating()
             })
             
             input.success.emit(onNext: { [weak self] in
@@ -87,9 +87,9 @@ extension AuthorizationSecondViewController: BindableView {
                 self?.performSegue(withIdentifier: "toMain", sender: self)
             })
             
-            input.inputStarted.emit(onNext: { _ in
-                self.textLabel.text = "Введите код из смс, отправленного на номер"
-                self.textLabel.textColor = UIColor(hexString: "#ACAAB2")
+            input.inputStarted.emit(onNext: { [weak self] in
+                self?.textLabel.text = "Введите код из смс, отправленного на номер"
+                self?.textLabel.textColor = UIColor(hexString: "#ACAAB2")
             })
             
             codeInputField.rx.text.orEmpty.bind(to: viewOutput.$codeUpdateTap)

@@ -95,13 +95,13 @@ extension AuthorizationViewController: BindableView {
                 self?.phoneNumberField.text = number
             })
             
-            input.isButtonActive.emit(onNext: { value in
+            input.isButtonActive.emit(onNext: { [weak self] value in
                 if value == true {
-                    self.sendCodeButton.alpha = 1
-                    self.sendCodeButton.isEnabled = true
+                    self?.sendCodeButton.alpha = 1
+                    self?.sendCodeButton.isEnabled = true
                 } else {
-                    self.sendCodeButton.alpha = 0.5
-                    self.sendCodeButton.isEnabled = false
+                    self?.sendCodeButton.alpha = 0.5
+                    self?.sendCodeButton.isEnabled = false
                 }
             })
             
@@ -117,11 +117,11 @@ extension AuthorizationViewController: BindableView {
                 }
             })
             
-            input.isPhoneFieldEditing.emit(onNext: { value in
+            input.isPhoneFieldEditing.emit(onNext: { [weak self] value in
                 if value == true {
-                    self.plusLabel.textColor = UIColor(hexString: "#4F4E57")
+                    self?.plusLabel.textColor = UIColor(hexString: "#4F4E57")
                 } else {
-                    self.plusLabel.textColor = UIColor(hexString: "#ACAAB2")
+                    self?.plusLabel.textColor = UIColor(hexString: "#ACAAB2")
                 }
             })
             
@@ -147,8 +147,8 @@ extension AuthorizationViewController: BindableView {
                 notificationCenter.delegate = self
             })
             
-            input.successfulRequest.emit(onNext: { _ in
-                self.spinner.stopAnimating()
+            input.successfulRequest.emit(onNext: { [weak self] in
+                self?.spinner.stopAnimating()
             })
             
             phoneNumberField.rx.text.orEmpty.bind(to: viewOutput.$phoneNumberUpdateTap)

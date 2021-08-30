@@ -102,11 +102,11 @@ extension EditProfileViewController: BindableView {
             input.isContentVisible.drive(stackView.rx.isVisible)
             input.isContentVisible.drive(saveButton.rx.isVisible)
             
-            input.showFirstNameError.emit(onNext: { _ in self.firstNameField.showErrorField() })
-            input.hideFirstNameError.emit(onNext: { _ in self.firstNameField.design() })
+            input.showFirstNameError.emit(onNext: { [weak self] in self?.firstNameField.showErrorField() })
+            input.hideFirstNameError.emit(onNext: { [weak self] in self?.firstNameField.design() })
             
-            input.showEmailError.emit(onNext: { _ in self.emailField.showErrorField() })
-            input.hideEmailError.emit(onNext: { _ in self.emailField.design() })
+            input.showEmailError.emit(onNext: { [weak self] in self?.emailField.showErrorField() })
+            input.hideEmailError.emit(onNext: { [weak self] in self?.emailField.design() })
 
             
             input.viewModel.drive(onNext: { [weak self] model in
