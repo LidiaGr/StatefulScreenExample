@@ -85,7 +85,7 @@ extension EditProfileViewController {
         view.addSubview(saveButton)
         saveButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8).isActive = true
         saveButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8).isActive = true
-        saveButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        saveButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -42).isActive = true
         saveButton.heightAnchor.constraint(equalToConstant: 56).isActive = true
     }
 }
