@@ -10,7 +10,6 @@ import RIBs
 
 final class AuthorizationSecondRouter: ViewableRouter<AuthorizationSecondInteractable, AuthorizationSecondViewControllable>, AuthorizationSecondRouting {
 
-    // TODO: Constructor inject child builder protocols to allow building children.
     override init(interactor: AuthorizationSecondInteractable, viewController: AuthorizationSecondViewControllable) {
         super.init(interactor: interactor, viewController: viewController)
         interactor.router = self

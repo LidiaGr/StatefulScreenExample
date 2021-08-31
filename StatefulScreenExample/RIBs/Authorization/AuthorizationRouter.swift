@@ -10,15 +10,14 @@ import RIBs
 import RxSwift
 
 final class AuthorizationRouter: ViewableRouter<AuthorizationInteractable, AuthorizationViewControllable>, AuthorizationRouting {
-
+    
     private let authorizationSecondBuilder: AuthorizationSecondBuildable
     
     private let disposeBag = DisposeBag()
     
-    // TODO: Constructor inject child builder protocols to allow building children.
     init(interactor: AuthorizationInteractable,
-                  viewController: AuthorizationViewControllable,
-                  authorizationSecondBuilder: AuthorizationSecondBuildable) {
+         viewController: AuthorizationViewControllable,
+         authorizationSecondBuilder: AuthorizationSecondBuildable) {
         self.authorizationSecondBuilder = authorizationSecondBuilder
         super.init(interactor: interactor, viewController: viewController)
         interactor.router = self

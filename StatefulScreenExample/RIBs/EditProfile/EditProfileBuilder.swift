@@ -11,7 +11,7 @@ import RIBs
 // MARK: - Builder
 
 final class EditProfileBuilder: Builder<RootDependency>, EditProfileBuildable {
-
+    
     func build() -> EditProfileRouting {
         let viewController = EditProfileViewController()
         

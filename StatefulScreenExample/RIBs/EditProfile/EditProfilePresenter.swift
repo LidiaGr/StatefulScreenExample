@@ -17,8 +17,6 @@ final class EditProfilePresenter: EditProfilePresentable {}
 extension EditProfilePresenter: IOTransformer {
     /// Метод отвечает за преобразование состояния во ViewModel'и и сигналы (команды)
     func transform(input: EditProfileInteractorOutput) -> EditProfilePresenterOutput {
-
-//        let viewModel = Helper.viewModel(input)
         
         let viewModel = input.screenDataModel.map { model -> EditProfileViewModel in
             return EditProfileViewModel(
@@ -45,13 +43,13 @@ extension EditProfilePresenter: IOTransformer {
         }.asSignalIgnoringError()
         
         let showError = input.state.map { state -> ErrorMessageViewModel? in
-          switch state {
-          case .updatingError(let error):
-            return ErrorMessageViewModel(title: error.localizedDescription, buttonTitle: "Повторить")
-          case .isEditing, .isUpdatingProfile:
-            return nil
-          }
-        }.asSignal(onErrorJustReturn: nil)
+            switch state {
+            case .updatingError(let error):
+                return ErrorMessageViewModel(title: error.localizedDescription, buttonTitle: "Повторить")
+            case .isEditing, .isUpdatingProfile:
+                return nil
+            }
+        }.asSignalIgnoringError()
         
         let showAlert = input.updatedSuccessfully.asSignalIgnoringError()
         
@@ -85,28 +83,3 @@ extension EditProfilePresenter: IOTransformer {
                                           hideEmailError: hideEmailError)
     }
 }
-
-//extension EditProfilePresenter {
-//    private enum Helper: Namespace {
-//        static func viewModel(_ input: EditProfileInteractorOutput) -> Driver<EditProfileViewModel> {
-//            return input.state
-//                .withLatestFrom(input.screenDataModel, resultSelector: { ($0, $1) })
-//                .compactMap { state, model -> EditProfileViewModel? in
-//                switch state {
-//                case .isEditing:
-//                    return EditProfileViewModel(
-//                        firstName: TitledOptionalText(title: "Имя", maybeText: model.firstName),
-//                        lastName: TitledOptionalText(title: "Фамилия", maybeText: model.lastName),
-//                        email: TitledOptionalText(title: "E-mail", maybeText: model.email),
-//                        phone: TitledText(title: "Телефон", text: model.phone),
-//                        isFirstNameValid: model.isFirstNameValid,
-//                        isEmailValid: model.isEmailValid)
-//                case .isUpdatingProfile, .updatingError:
-//                    return nil
-//                }
-//            }
-//            .distinctUntilChanged()
-//            .asDriverIgnoringError()
-//        }
-//    }
-//}

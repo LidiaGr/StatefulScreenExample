@@ -10,15 +10,9 @@ import RIBs
 import RxCocoa
 import RxSwift
 
-protocol AuthorizationSecondDependency: Dependency {
-    // TODO: Declare the set of dependencies required by this RIB, but cannot be
-    // created by this RIB.
-}
+protocol AuthorizationSecondDependency: Dependency {}
 
-final class AuthorizationSecondComponent: Component<AuthorizationSecondDependency> {
-
-    // TODO: Declare 'fileprivate' dependencies that are only used by this RIB.
-}
+final class AuthorizationSecondComponent: Component<AuthorizationSecondDependency> {}
 
 // MARK: - Builder
 
@@ -33,27 +27,19 @@ protocol AuthorizationSecondInteractable: Interactable {
     var listener: AuthorizationSecondListener? { get set }
 }
 
-protocol AuthorizationSecondViewControllable: ViewControllable {
-    // TODO: Declare methods the router invokes to manipulate the view hierarchy.
-}
+protocol AuthorizationSecondViewControllable: ViewControllable {}
 
 // MARK: - Interactor
 
-protocol AuthorizationSecondRouting: ViewableRouting {
-    // TODO: Declare methods the interactor can invoke to manage sub-tree via the router.
-}
+protocol AuthorizationSecondRouting: ViewableRouting {}
 
-protocol AuthorizationSecondPresentable: Presentable {
-//    var listener: AuthorizationSecondPresentableListener? { get set }
-    // TODO: Declare methods the interactor can invoke the presenter to present data.
-}
+protocol AuthorizationSecondPresentable: Presentable {}
 
 protocol AuthorizationSecondListener: AnyObject {
-    // TODO: Declare methods the interactor can invoke to communicate with other RIBs.
     func authorizationSuccess()
 }
 
-// MARK: Outputs
+// MARK: - Outputs
 
 struct AuthorizationSecondInteractorOutput {
     let state: Observable<AuthorizationSecondInteractorState>
@@ -75,7 +61,7 @@ struct AuthorizationSecondPresenterOutput {
 }
 
 protocol AuthorizationSecondViewOutput {
-    var codeUpdateTap: ControlEvent<String> { get }
+    var codeChange: ControlEvent<String> { get }
 }
 
 struct AuthorizationSecondScreenDataModel {
@@ -88,6 +74,11 @@ struct AuthorizationSecondScreenDataModel {
         default: return false
         }
     }
+    
+    func copy(code: String) -> Self {
+        let copy = AuthorizationSecondScreenDataModel(phone: phone, code: code)
+        return copy
+    }
 }
 
 // MARK: - AuthorizationSecondInteractorState
@@ -95,5 +86,4 @@ struct AuthorizationSecondScreenDataModel {
 enum AuthorizationSecondInteractorState {
     case userInput
     case isCheckingCode(code: String?)
-//    case receivingCodeError(error: NetworkError, code: String)
 }

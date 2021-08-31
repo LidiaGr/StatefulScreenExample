@@ -9,13 +9,13 @@
 import RIBs
 
 final class AuthorizationSecondBuilder: Builder<RootDependency>, AuthorizationSecondBuildable {
-
+    
     override init(dependency: RootDependency) {
         super.init(dependency: dependency)
     }
-
+    
     func build(withListener listener: AuthorizationSecondListener, with phoneNumber: String) -> AuthorizationSecondRouting {
-//        let component = AuthorizationSecondComponent(dependency: dependency)
+        
         let viewController = AuthorizationSecondViewController.instantiateFromStoryboard()
         
         let presenter = AuthorizationSecondPresenter()

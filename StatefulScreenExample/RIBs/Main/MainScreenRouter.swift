@@ -59,8 +59,7 @@ final class MainScreenRouter: ViewableRouter<MainScreenInteractable, MainScreenV
         attachChild(router)
         
         viewController.uiviewController.present(router.viewControllable.uiviewController, animated: true, completion: nil)
-        //        viewController.uiviewController.navigationController?.pushViewController(router.viewControllable.uiviewController,
-        //                                                                                 animated: true)
+
         detachWhenClosed(child: router, disposedBy: disposeBag)
     }
 }

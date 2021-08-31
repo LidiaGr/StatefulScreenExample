@@ -12,16 +12,16 @@ import RxCocoa
 
 final class AuthorizationInteractor: PresentableInteractor<AuthorizationPresentable>, AuthorizationInteractable {
     
-    // MARK: Dependencies
+// MARK: - Dependencies
     
     weak var router: AuthorizationRouting?
     weak var listener: AuthorizationListener?
     private let authorizationService: AuthorizationService
     
-    // MARK: Internals
+// MARK: - Internals
     
     private let _state = BehaviorRelay<AuthorizationInteractorState>(value: .userInput)
-
+    
     private var _screenDataModel: BehaviorRelay<AuthorizationScreenDataModel>
     
     private let responses = Responses()
@@ -32,12 +32,6 @@ final class AuthorizationInteractor: PresentableInteractor<AuthorizationPresenta
         self.authorizationService = authorizationService
         _screenDataModel = BehaviorRelay<AuthorizationScreenDataModel>(value: AuthorizationScreenDataModel(phone: ""))
         super.init(presenter: presenter)
-    }
-
-    override func willResignActive() {
-        super.willResignActive()
-        // TODO: Pause any business logic.
-        // Мб здесь как-то  можно сказать презентеру и вьюхе, что надо остановить лоудер?
     }
     
     private func sendSMSCode() {
@@ -59,12 +53,12 @@ extension AuthorizationInteractor: IOTransformer {
     func transform(input viewOutput: AuthorizationViewOutput) -> AuthorizationInteractorOutput {
         let trait = StateTransformTrait(_state: _state, disposeBag: disposeBag)
         
-        viewOutput.phoneNumberUpdateTap.asObservable()
-            .map { phoneNumber in String(phoneNumber.removingCharacters(except: .arabicNumerals).prefix(10)) }
-            .subscribe(onNext: { number in
-                let newNumber = AuthorizationScreenDataModel(phone: number)
-                self._screenDataModel.accept(newNumber)
-            }).disposed(by: disposeBag)
+        viewOutput.phoneNumberChange.asObservable()
+            .withLatestFrom(_screenDataModel, resultSelector: { ($0, $1) })
+            .map { phoneNumber, model -> AuthorizationScreenDataModel in
+                model.copy(phone: String(phoneNumber.removingCharacters(except: .arabicNumerals).prefix(10))) }
+            .bind(to: _screenDataModel)
+            .disposed(by: disposeBag)
         
         let requests = makeRequests()
         
@@ -98,7 +92,6 @@ extension AuthorizationInteractor {
     private typealias State = AuthorizationInteractorState
     
     /// StateTransform реализует переходы между всеми состояниями. Функции должны быть чистыми и детерминированными
-    
     private enum StateTransform: StateTransformer {
         /// case .userInput
         static let byUserInputState: (State) -> Bool = { state -> Bool in

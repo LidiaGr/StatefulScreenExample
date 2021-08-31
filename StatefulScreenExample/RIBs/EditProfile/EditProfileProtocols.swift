@@ -13,7 +13,6 @@ import RxSwift
 // MARK: - Builder
 
 protocol EditProfileBuildable: Buildable {
-//    func build(withListener listener: EditProfileListener) -> EditProfileRouting
     func build() -> EditProfileRouting
 }
 
@@ -21,25 +20,17 @@ protocol EditProfileBuildable: Buildable {
 
 protocol EditProfileInteractable: Interactable {
     var router: EditProfileRouting? { get set }
-//    var listener: EditProfileListener? { get set }
 }
 
-protocol EditProfileViewControllable: ViewControllable {
-    // TODO: Declare methods the router invokes to manipulate the view hierarchy.
-}
+protocol EditProfileViewControllable: ViewControllable {}
 
 // MARK: - Interactor
 
-protocol EditProfileRouting: ViewableRouting {
-    // TODO: Declare methods the interactor can invoke to manage sub-tree via the router.
-}
+protocol EditProfileRouting: ViewableRouting {}
 
-protocol EditProfilePresentable: Presentable {
-//    var listener: EditProfilePresentableListener? { get set }
-    // TODO: Declare methods the interactor can invoke the presenter to present data.
-}
+protocol EditProfilePresentable: Presentable {}
 
-// MARK: Outputs
+// MARK: - Outputs
 
 struct EditProfileInteractorOutput {
     let state: Observable<EditProfileInteractorState>
@@ -51,35 +42,37 @@ struct EditProfileInteractorOutput {
 }
 
 struct EditProfilePresenterOutput {
-  let viewModel: Driver<EditProfileViewModel>
-
-  let isContentVisible: Driver<Bool>
+    let viewModel: Driver<EditProfileViewModel>
     
-  let loadingIndicator: Signal<Bool>
+    let isContentVisible: Driver<Bool>
     
-  /// nil означает что нужно спрятать сообщение об ошибке
-  let showError: Signal<ErrorMessageViewModel?>
-  
-  let showAlert: Signal<Void>
+    let loadingIndicator: Signal<Bool>
     
-  let showFirstNameError: Signal<Void>
-  let hideFirstNameError: Signal<Void>
+    /// nil означает что нужно спрятать сообщение об ошибке
+    let showError: Signal<ErrorMessageViewModel?>
     
-  let showEmailError: Signal<Void>
-  let hideEmailError: Signal<Void>
+    let showAlert: Signal<Void>
+    
+    let showFirstNameError: Signal<Void>
+    
+    let hideFirstNameError: Signal<Void>
+    
+    let showEmailError: Signal<Void>
+    
+    let hideEmailError: Signal<Void>
 }
 
 protocol EditProfileViewOutput {
-  var firstNameUpdateTap: ControlEvent<String?> { get }
-  
-  var lastNameUpdateTap: ControlEvent<String?> { get }
+    var firstNameChange: ControlEvent<String?> { get }
     
-  var emailUpdateTap: ControlEvent<String?> { get }
+    var lastNameChange: ControlEvent<String?> { get }
     
-  var saveButtonTap: ControlEvent<Void> { get }
+    var emailChange: ControlEvent<String?> { get }
     
-  var retryButtonTap: ControlEvent<Void> { get }
-  
+    var saveButtonTap: ControlEvent<Void> { get }
+    
+    var retryButtonTap: ControlEvent<Void> { get }
+    
 }
 
 struct EditProfileViewModel: Equatable {
@@ -126,12 +119,29 @@ struct EditProfileScreenDataModel {
     }
 }
 
+extension EditProfileScreenDataModel {
+    func copy(firstName: String?) -> Self {
+        let copy = EditProfileScreenDataModel(with: ProfileData(firstName: firstName, lastName: lastName, email: email, phone: phone))
+        return copy
+    }
+    
+    func copy(lastName: String?) -> Self {
+        let copy = EditProfileScreenDataModel(with: ProfileData(firstName: firstName, lastName: lastName, email: email, phone: phone))
+        return copy
+    }
+    
+    func copy(email: String?) -> Self {
+        let copy = EditProfileScreenDataModel(with: ProfileData(firstName: firstName, lastName: lastName, email: email, phone: phone))
+        return copy
+    }
+}
+
 // MARK: - EditProfileInteractorState
 
 enum EditProfileInteractorState {
-  case isEditing
-  case isUpdatingProfile
-  case updatingError(NetworkError)
+    case isEditing
+    case isUpdatingProfile
+    case updatingError(NetworkError)
 }
 
 struct NetworkError: LocalizedError {

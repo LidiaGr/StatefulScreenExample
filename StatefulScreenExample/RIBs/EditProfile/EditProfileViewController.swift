@@ -37,7 +37,7 @@ final class EditProfileViewController: UIViewController, EditProfileViewControll
     
     private let saveButton = GreenButton()
     
-    // Service Views
+    // MARK: Service Views
     private let errorMessageView = ErrorMessageView()
     
     // MARK: View Events
@@ -51,7 +51,6 @@ final class EditProfileViewController: UIViewController, EditProfileViewControll
         view.backgroundColor = .systemBackground
         
         initialSetup()
-//        tapGesturesInitialSetup()
     }
 }
 
@@ -93,7 +92,7 @@ extension EditProfileViewController {
 // MARK: - BindableView
 
 extension EditProfileViewController: BindableView {
-
+    
     func getOutput() -> EditProfileViewOutput { viewOutput }
     
     func bindWith(_ input: EditProfilePresenterOutput) {
@@ -107,11 +106,11 @@ extension EditProfileViewController: BindableView {
             
             input.showEmailError.emit(onNext: { [weak self] in self?.emailField.showErrorField() })
             input.hideEmailError.emit(onNext: { [weak self] in self?.emailField.design() })
-
+            
             
             input.viewModel.drive(onNext: { [weak self] model in
                 self?.firstNameField.setTitle(model.firstName.title, text: model.firstName.maybeText, editable: true)
-        
+                
                 self?.lastNameField.setTitle(model.lastName.title, text: model.lastName.maybeText, editable: true)
                 
                 self?.emailField.setTitle(model.email.title, text: model.email.maybeText, editable: true)
@@ -119,40 +118,39 @@ extension EditProfileViewController: BindableView {
                 self?.phoneField.setTitle(model.phone.title, text: model.phone.text.formatPhoneNumber(with: "+X XXX XXX XX XX"), editable: false)
             })
             
-            input.showError.emit(onNext: { [unowned self] maybeViewModel in
-                self.errorMessageView.isVisible = (maybeViewModel != nil)
+            input.showError.emit(onNext: { [weak self] maybeViewModel in
+                self?.errorMessageView.isVisible = (maybeViewModel != nil)
                 
                 if let viewModel = maybeViewModel {
-                    self.errorMessageView.resetToEmptyState()
+                    self?.errorMessageView.resetToEmptyState()
                     
-                    self.errorMessageView.setTitle(viewModel.title, buttonTitle: viewModel.buttonTitle, action: {
-                        self.viewOutput.$retryButtonTap.accept(Void())
+                    self?.errorMessageView.setTitle(viewModel.title, buttonTitle: viewModel.buttonTitle, action: {
+                        self?.viewOutput.$retryButtonTap.accept(Void())
                     })
                 }
             })
             
-            input.showAlert.emit(onNext: { [unowned self] _ in
-                  let alert = UIAlertController(title: "Профиль успешно обновлён", message: nil, preferredStyle: .alert)
-                  alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { _ in navigationController?.popViewController(animated: false) }))
-                  
-                  self.present(alert, animated: true, completion: nil)
+            input.showAlert.emit(onNext: { [weak self] _ in
+                let alert = UIAlertController(title: "Профиль успешно обновлён", message: nil, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { _ in self?.navigationController?.popViewController(animated: false) }))
+                
+                self?.present(alert, animated: true, completion: nil)
             } )
             
-            input.loadingIndicator.emit(onNext: { [unowned self] indicator in
+            input.loadingIndicator.emit(onNext: { [weak self] indicator in
                 switch indicator == true {
-                case true: spinner.startAnimating()
-                case false: spinner.stopAnimating()
+                case true: self?.spinner.startAnimating()
+                case false: self?.spinner.stopAnimating()
                 }
             })
             
-            firstNameField.rx.text.orEmpty.bind(to: viewOutput.$firstNameUpdateTap)
-            lastNameField.rx.text.orEmpty.bind(to: viewOutput.$lastNameUpdateTap)
-            emailField.rx.text.orEmpty.bind(to: viewOutput.$emailUpdateTap)
+            firstNameField.rx.text.orEmpty.bind(to: viewOutput.$firstNameChange)
+            lastNameField.rx.text.orEmpty.bind(to: viewOutput.$lastNameChange)
+            emailField.rx.text.orEmpty.bind(to: viewOutput.$emailChange)
             
             saveButton.rx.controlEvent(.touchUpInside).bind(to: viewOutput.$saveButtonTap)
         }
     }
-
 }
 
 // MARK: - View Output
@@ -160,11 +158,11 @@ extension EditProfileViewController: BindableView {
 extension EditProfileViewController {
     private struct ViewOutput: EditProfileViewOutput {
         
-        @PublishControlEvent var firstNameUpdateTap: ControlEvent<String?>
+        @PublishControlEvent var firstNameChange: ControlEvent<String?>
         
-        @PublishControlEvent var lastNameUpdateTap: ControlEvent<String?>
+        @PublishControlEvent var lastNameChange: ControlEvent<String?>
         
-        @PublishControlEvent var emailUpdateTap: ControlEvent<String?>
+        @PublishControlEvent var emailChange: ControlEvent<String?>
         
         @PublishControlEvent var saveButtonTap: ControlEvent<Void>
         

@@ -12,13 +12,13 @@ import RxCocoa
 
 final class EditProfileInteractor: PresentableInteractor<EditProfilePresentable>, EditProfileInteractable {
     
-    // MARK: Dependencies
+    // MARK: - Dependencies
     
     weak var router: EditProfileRouting?
-    //    weak var listener: EditProfileListener?
+
     private let editProfileService: EditProfileService
     
-    // MARK: Internals
+    // MARK: - Internals
     
     private let _state = BehaviorRelay<EditProfileInteractorState>(value: .isEditing)
     
@@ -28,13 +28,11 @@ final class EditProfileInteractor: PresentableInteractor<EditProfilePresentable>
     
     private let disposeBag = DisposeBag()
     
-    
     init(presenter: EditProfilePresentable,
          editProfileService: EditProfileService) {
         self.editProfileService = editProfileService
         _screenDataModel = BehaviorRelay<EditProfileScreenDataModel>(value: EditProfileScreenDataModel(with: editProfileService.profile))
         super.init(presenter: presenter)
-        //        presenter.listener = self
     }
     
     private func updateProfile(profile: ProfileData) {
@@ -57,9 +55,6 @@ extension EditProfileInteractor: IOTransformer {
         removingInvalidSymbols(viewOutput: viewOutput)
         
         let requests = makeRequests()
-//        let close : VoidClosure = { [weak self] in
-//            self?.router?.routeToPrev()
-//        }
         
         let output = StateTransform.transform(trait: trait, viewOutput: viewOutput, screenDataModel: _screenDataModel.asObservable(), responses: responses, requests: requests)
         
@@ -67,41 +62,42 @@ extension EditProfileInteractor: IOTransformer {
                                            screenDataModel: _screenDataModel.asObservable(),
                                            updatedSuccessfully: output.updatedSuccessfully,
                                            saveButtonTap: viewOutput.saveButtonTap.asObservable(),
-                                           firstNameUpdateTap: viewOutput.firstNameUpdateTap.asObservable(),
-                                           emailUpdateTap: viewOutput.emailUpdateTap.asObservable())
+                                           firstNameUpdateTap: viewOutput.firstNameChange.asObservable(),
+                                           emailUpdateTap: viewOutput.emailChange.asObservable())
     }
     
     private func removingInvalidSymbols(viewOutput: EditProfileViewOutput) {
-        viewOutput.firstNameUpdateTap.asObservable()
+        
+        viewOutput.firstNameChange.asObservable()
             .skip(1)
             .map { name in
                 name?.removingCharacters(in: .whitespacesAndNewlines).removingCharacters(except: .letters)
             }
-            .subscribe(onNext: { text in
-                let profileData = ProfileData(firstName: text, lastName: self._screenDataModel.value.lastName, email: self._screenDataModel.value.email, phone: self._screenDataModel.value.phone)
-                let newModel = EditProfileScreenDataModel(with: profileData)
+            .withLatestFrom(_screenDataModel, resultSelector: { ($0, $1) })
+            .subscribe(onNext: { text, model in
+                let newModel = model.copy(firstName: text)
                 self._screenDataModel.accept(newModel)
             }).disposed(by: disposeBag)
         
-        viewOutput.lastNameUpdateTap.asObservable()
+        viewOutput.lastNameChange.asObservable()
             .skip(1)
             .map { name in
                 name?.removingCharacters(in: .whitespacesAndNewlines).removingCharacters(except: .letters)
             }
-            .subscribe(onNext: { text in
-                let profileData = ProfileData(firstName: self._screenDataModel.value.firstName, lastName: text, email: self._screenDataModel.value.email, phone: self._screenDataModel.value.phone)
-                let newModel = EditProfileScreenDataModel(with: profileData)
+            .withLatestFrom(_screenDataModel, resultSelector: { ($0, $1) })
+            .subscribe(onNext: { text, model in
+                let newModel = model.copy(lastName: text)
                 self._screenDataModel.accept(newModel)
             }).disposed(by: disposeBag)
         
-        viewOutput.emailUpdateTap.asObservable()
+        viewOutput.emailChange.asObservable()
             .skip(1)
             .map { email in
                 email?.removingCharacters(in: .whitespacesAndNewlines).removingCharacters(in: .russianLetters)
             }
-            .subscribe(onNext: { text in
-                let profileData = ProfileData(firstName: self._screenDataModel.value.firstName, lastName: self._screenDataModel.value.lastName, email: text, phone: self._screenDataModel.value.phone)
-                let newModel = EditProfileScreenDataModel(with: profileData)
+            .withLatestFrom(_screenDataModel, resultSelector: { ($0, $1) })
+            .subscribe(onNext: { text, model in
+                let newModel = model.copy(email: text)
                 self._screenDataModel.accept(newModel)
             }).disposed(by: disposeBag)
     }
@@ -111,12 +107,10 @@ extension EditProfileInteractor {
     
     private typealias State = EditProfileInteractorState
     
-    /// StateTransform реализует переходы между всеми состояниями. Функции должны быть чистыми и детерминированными
-    
     private enum StateTransform: StateTransformer {
         /// case .isEditing
         static let byIsEditingState: (State) -> Bool = { state -> Bool in
-          guard case .isEditing = state else { return false }; return true
+            guard case .isEditing = state else { return false }; return true
         }
         
         /// case .isUpdatingProfile
@@ -129,10 +123,10 @@ extension EditProfileInteractor {
         }
         
         static func transform(trait: StateTransformTrait<State>,
-                                      viewOutput: EditProfileViewOutput,
-                                      screenDataModel: Observable<EditProfileScreenDataModel>,
-                                      responses: Responses,
-                                      requests: Requests) -> Output {
+                              viewOutput: EditProfileViewOutput,
+                              screenDataModel: Observable<EditProfileScreenDataModel>,
+                              responses: Responses,
+                              requests: Requests) -> Output {
             
             let updatedSuccessfully = responses.updatingProfileSuccess.filteredByState(trait.readOnlyState, filter: byIsUpdatingProfileState)
             
@@ -144,7 +138,7 @@ extension EditProfileInteractor {
                     .filter { screenDataModel in screenDataModel.isModelValid}
                     .do(afterNext: { screenDataModel in
                         let profileData = ProfileData(firstName: screenDataModel.firstName , lastName: screenDataModel.lastName, email: screenDataModel.email, phone: screenDataModel.phone)
-                            requests.updateProfile(profileData)
+                        requests.updateProfile(profileData)
                     } )
                     .map { _ in State.isUpdatingProfile }
                 
@@ -156,12 +150,12 @@ extension EditProfileInteractor {
                 /// updatingError => isUpdatingProfile
                 viewOutput.retryButtonTap
                     .filteredByState(trait.readOnlyState, filter: { state -> Bool in
-                        guard case .updatingError = state else { return false }; return true })
+                                        guard case .updatingError = state else { return false }; return true })
                     .withLatestFrom(screenDataModel)
                     .do(afterNext: { screenDataModel in
                         let profileData = ProfileData(firstName: screenDataModel.firstName , lastName: screenDataModel.lastName, email: screenDataModel.email, phone: screenDataModel.phone)
                         
-                            requests.updateProfile(profileData)
+                        requests.updateProfile(profileData)
                     })
                     .map  { _ in State.isUpdatingProfile }
             }.bindToAndDisposedBy(trait: trait)

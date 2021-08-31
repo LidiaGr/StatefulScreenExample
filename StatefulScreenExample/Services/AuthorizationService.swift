@@ -9,7 +9,7 @@
 import Foundation
 
 protocol AuthorizationService: AnyObject {
-//    var phone: String { get }
+    
     func sendSMSCode(_ completion: @escaping (Result<Void, Error>) -> Void)
     func sendNotification()
     func checkCode(_ code: String, completion: @escaping (Result<Void, Error>) -> Void)

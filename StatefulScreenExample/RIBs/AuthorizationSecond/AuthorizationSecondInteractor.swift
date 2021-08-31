@@ -12,13 +12,13 @@ import RxCocoa
 
 final class AuthorizationSecondInteractor: PresentableInteractor<AuthorizationSecondPresentable>, AuthorizationSecondInteractable {
     
-    // MARK: Dependencies
+// MARK: - Dependencies
     
     weak var router: AuthorizationSecondRouting?
     private let authorizationService: AuthorizationService
     weak var listener: AuthorizationSecondListener?
     
-    // MARK: Internals
+// MARK: - Internals
     
     private let _state = BehaviorRelay<AuthorizationSecondInteractorState>(value: .userInput)
     
@@ -28,22 +28,11 @@ final class AuthorizationSecondInteractor: PresentableInteractor<AuthorizationSe
         self.authorizationService = authorizationService
         _screenDataModel = BehaviorRelay<AuthorizationSecondScreenDataModel>(value: AuthorizationSecondScreenDataModel(phone: phoneNumber, code: ""))
         super.init(presenter: presenter)
-        //        presenter.listener = self
     }
     
     private let responses = Responses()
     
     private let disposeBag = DisposeBag()
-    
-    override func didBecomeActive() {
-        super.didBecomeActive()
-        // TODO: Implement business logic here.
-    }
-    
-    override func willResignActive() {
-        super.willResignActive()
-        // TODO: Pause any business logic.
-    }
     
     private func checkCode(code: String) {
         authorizationService.checkCode(code) { [weak self] result in
@@ -65,10 +54,11 @@ extension AuthorizationSecondInteractor: IOTransformer {
         
         let trait = StateTransformTrait(_state: _state, disposeBag: disposeBag)
         
-        viewOutput.codeUpdateTap.asObservable()
+        viewOutput.codeChange.asObservable()
             .map { code in String(code.removingCharacters(except: .arabicNumerals).prefix(5)) }
-            .subscribe(onNext: { code in
-                let newModel = AuthorizationSecondScreenDataModel(phone: self._screenDataModel.value.phone , code: code)
+            .withLatestFrom(_screenDataModel, resultSelector: { ($0, $1) })
+            .subscribe(onNext: { code, model in
+                let newModel = model.copy(code: code)
                 self._screenDataModel.accept(newModel)
             }).disposed(by: disposeBag)
         
@@ -82,7 +72,7 @@ extension AuthorizationSecondInteractor: IOTransformer {
         
         return AuthorizationSecondInteractorOutput(state: trait.readOnlyState,
                                                    screenDataModel: _screenDataModel.asObservable(),
-                                                   inputStarted: viewOutput.codeUpdateTap.asObservable(),
+                                                   inputStarted: viewOutput.codeChange.asObservable(),
                                                    requestSuccess: responses.$authorizedSuccessfully.asObservable(),
                                                    requestFailure: responses.$authorizingError.asObservable())
     }
@@ -110,15 +100,15 @@ extension AuthorizationSecondInteractor {
             
             StateTransform.transitions {
                 
-            /// userInput => isCheckingCode
-            viewOutput.codeUpdateTap
-                .filteredByState(trait.readOnlyState, filter: byUserInputState)
-                .withLatestFrom(screenDataModel)
-                .filter{ model in model.codeIsValid}
-                .do(afterNext: { model in requests.authorizationRequest(model.code) })
-                .map{ model in State.isCheckingCode(code: model.code) }
+                /// userInput => isCheckingCode
+                viewOutput.codeChange
+                    .filteredByState(trait.readOnlyState, filter: byUserInputState)
+                    .withLatestFrom(screenDataModel)
+                    .filter{ model in model.codeIsValid}
+                    .do(afterNext: { model in requests.authorizationRequest(model.code) })
+                    .map{ model in State.isCheckingCode(code: model.code) }
                 
-            ///  isCheckingCode (error) => userInput
+                ///  isCheckingCode (error) => userInput
                 responses.authorizingError
                     .filteredByState(trait.readOnlyState, filterMap: byIsCheckingCode)
                     .map { _ in State.userInput }

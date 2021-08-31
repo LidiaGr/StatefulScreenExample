@@ -29,7 +29,7 @@ final class AuthorizationSecondViewController: UIViewController, AuthorizationSe
         return loginSpinner
     }()
     
-    // MARK: View Events
+    // MARK: - View Events
     
     private let viewOutput = ViewOutput()
     
@@ -68,10 +68,10 @@ extension AuthorizationSecondViewController: BindableView {
                 self?.codeInputField.text = code
             })
             
-            input.loadingIndicator.emit(onNext: { [unowned self] indicator in
+            input.loadingIndicator.emit(onNext: { [weak self] indicator in
                 switch indicator == true {
-                case true: spinner.startAnimating()
-                case false: spinner.stopAnimating()
+                case true: self?.spinner.startAnimating()
+                case false: self?.spinner?.stopAnimating()
                 }
             })
             
@@ -92,7 +92,7 @@ extension AuthorizationSecondViewController: BindableView {
                 self?.textLabel.textColor = UIColor(hexString: "#ACAAB2")
             })
             
-            codeInputField.rx.text.orEmpty.bind(to: viewOutput.$codeUpdateTap)
+            codeInputField.rx.text.orEmpty.bind(to: viewOutput.$codeChange)
         }
     }
 }
@@ -101,7 +101,7 @@ extension AuthorizationSecondViewController: BindableView {
 
 extension AuthorizationSecondViewController {
     private struct ViewOutput: AuthorizationSecondViewOutput {
-        @PublishControlEvent var codeUpdateTap: ControlEvent<String>
+        @PublishControlEvent var codeChange: ControlEvent<String>
     }
 }
 

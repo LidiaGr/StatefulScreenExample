@@ -36,7 +36,7 @@ final class AuthorizationViewController: UIViewController, AuthorizationViewCont
         return loginSpinner
     }()
     
-    // Service Views
+    // MARK: Service Views
     private let errorMessageView = ErrorMessageView()
     
     // MARK: View Events
@@ -67,9 +67,7 @@ extension AuthorizationViewController {
         
         phoneNumberField.leftView = paddingView
         phoneNumberField.leftViewMode = .always
-        
         phoneNumberField.tintColor = UIColor(hexString: "#34BC48")
-
         
         sendCodeButton.isEnabled = true
         sendCodeButton.alpha = 0.5
@@ -87,9 +85,6 @@ extension AuthorizationViewController: BindableView {
     
     func bindWith(_ input: AuthorizationPresenterOutput) {
         disposeBag.insert {
-//            viewWillDisappearEvent.bind { [weak self] in
-//                self?.spinner.stopAnimating()
-//            }
             
             input.phoneField.drive(onNext: { [weak self] number in
                 self?.phoneNumberField.text = number
@@ -105,14 +100,14 @@ extension AuthorizationViewController: BindableView {
                 }
             })
             
-            input.showError.emit(onNext: { [unowned self] maybeViewModel in
-                self.errorMessageView.isVisible = (maybeViewModel != nil)
+            input.showError.emit(onNext: { [weak self] maybeViewModel in
+                self?.errorMessageView.isVisible = (maybeViewModel != nil)
                 
                 if let viewModel = maybeViewModel {
-                    self.errorMessageView.resetToEmptyState()
+                    self?.errorMessageView.resetToEmptyState()
                     
-                    self.errorMessageView.setTitle(viewModel.title, buttonTitle: viewModel.buttonTitle, action: {
-                        self.viewOutput.$retryAuthorizationButtonTap.accept(Void())
+                    self?.errorMessageView.setTitle(viewModel.title, buttonTitle: viewModel.buttonTitle, action: {
+                        self?.viewOutput.$retryAuthorizationButtonTap.accept(Void())
                     })
                 }
             })
@@ -125,10 +120,10 @@ extension AuthorizationViewController: BindableView {
                 }
             })
             
-            input.loadingIndicator.emit(onNext: { [unowned self] indicator in
+            input.loadingIndicator.emit(onNext: { [weak self] indicator in
                 switch indicator == true {
-                case true: spinner.startAnimating()
-                case false: spinner.stopAnimating()
+                case true: self?.spinner.startAnimating()
+                case false: self?.spinner.stopAnimating()
                 }
             })
             
@@ -139,9 +134,8 @@ extension AuthorizationViewController: BindableView {
             
             input.sendButtonTapped.emit(onNext: { _ in
                 let notificationCenter = UNUserNotificationCenter.current()
-                    notificationCenter.requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
+                notificationCenter.requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
                     if granted {
-//                      print("User gave permission for local notifications")
                     }
                 }
                 notificationCenter.delegate = self
@@ -151,7 +145,7 @@ extension AuthorizationViewController: BindableView {
                 self?.spinner.stopAnimating()
             })
             
-            phoneNumberField.rx.text.orEmpty.bind(to: viewOutput.$phoneNumberUpdateTap)
+            phoneNumberField.rx.text.orEmpty.bind(to: viewOutput.$phoneNumberChange)
             sendCodeButton.rx.controlEvent(.touchUpInside).bind(to: viewOutput.$sendCodeButtonTap)
         }
     }
@@ -162,7 +156,7 @@ extension AuthorizationViewController: BindableView {
 extension AuthorizationViewController {
     private struct ViewOutput: AuthorizationViewOutput {
         
-        @PublishControlEvent var phoneNumberUpdateTap: ControlEvent<String>
+        @PublishControlEvent var phoneNumberChange: ControlEvent<String>
         
         @PublishControlEvent var sendCodeButtonTap: ControlEvent<Void>
         
@@ -180,9 +174,5 @@ extension AuthorizationViewController: RibStoryboardInstantiatable {}
 extension AuthorizationViewController: UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         completionHandler([.alert, .sound])
-    }
-    
-    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        // обработка после перехода в приложение по нажатию на уведомление
     }
 }
