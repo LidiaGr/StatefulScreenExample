@@ -47,7 +47,13 @@ extension AuthorizationSecondViewController {
     private func initialSetup() {
         codeInputField.tintColor = UIColor(hexString: "#34BC48")
         codeInputField.textAlignment = .center
+      
+        codeInputField.keyboardType = .numberPad
+        codeInputField.spellCheckingType = .no
+        codeInputField.autocorrectionType = .no
         
+        hideKeyboardWhenTappedAround()
+      
         view.addStretchedToBounds(subview: spinner)
     }
 }

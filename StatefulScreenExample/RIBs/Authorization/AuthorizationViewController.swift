@@ -69,9 +69,15 @@ extension AuthorizationViewController {
         phoneNumberField.leftViewMode = .always
         phoneNumberField.tintColor = UIColor(hexString: "#34BC48")
         
+        phoneNumberField.keyboardType = .numberPad
+        phoneNumberField.spellCheckingType = .no
+        phoneNumberField.autocorrectionType = .no
+        
+        hideKeyboardWhenTappedAround()
+      
         sendCodeButton.isEnabled = true
         sendCodeButton.alpha = 0.5
-        
+      
         view.addStretchedToBounds(subview: errorMessageView)
         view.addStretchedToBounds(subview: spinner)
     }
